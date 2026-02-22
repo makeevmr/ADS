@@ -1,0 +1,15 @@
+#pragma once
+
+#include <cstdint>
+
+namespace ads::algo::euclidean {
+
+////////////////////////////////////////////////////////////////////////////////
+
+std::uint64_t gcd(std::uint64_t a, std::uint64_t b);
+
+std::uint64_t lcm(std::uint64_t a, std::uint64_t b);
+
+////////////////////////////////////////////////////////////////////////////////
+
+}  // namespace ads::algo::euclidean

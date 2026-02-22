@@ -16,27 +16,27 @@ For example
 ```
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --target test_segment_tree
-./unittests/data_structures/test_segment_tree
+./tests/ds/test_segment_tree
 ```
 
-## Unittest targets
+## Tests targets
 
 ### Algorithms
 - `test_euclidean`
 - `test_kmp`
-- `test_sieve_of_eratosthenes`
+- `test_sieve`
 
 ### Data structures
-- `test_aho_corasick_automata`
+- `test_aho_corasick`
 - `test_segment_tree`
 
 ## Executable paths
 
 ### Algorithms
-- `./unittests/algorithms/test_euclidean`
-- `./unittests/algorithms/test_kmp`
-- `./unittests/algorithms/test_sieve_of_eratosthenes`
+- `./tests/algo/test_euclidean`
+- `./tests/algo/test_kmp`
+- `./tests/algo/test_sieve`
 
 ### Data structures
-- `./unittests/data_structures/test_aho_corasick_automata`
-- `./unittests/data_structures/test_segment_tree`
+- `./tests/ds/test_aho_corasick`
+- `./tests/ds/test_segment_tree`

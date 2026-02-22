@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SOURCE_DIR src)
-set(UNITTESTS_DIR unittests)
+set(SOURCE_DIR ads)
+set(UNITTESTS_DIR tests)
 
 set(CMAKE_CXX_FLAGS_RELEASE "")
 set(CMAKE_CXX_FLAGS_DEBUG "")
@@ -36,9 +36,9 @@ list(
   -Wsign-conversion
   -Wsign-promo)
 
-# executable names for unittests
-list(APPEND ALGO_DIR_NAMES euclidean kmp sieve_of_eratosthenes)
-list(APPEND DS_DIR_NAMES aho_corasick_automata segment_tree)
+# executable names for tests
+list(APPEND ALGO_DIR_NAMES euclidean kmp sieve)
+list(APPEND DS_DIR_NAMES aho_corasick segment_tree)
 
 include_directories(${SOURCE_DIR})
 include_directories(${UNITTESTS_DIR})

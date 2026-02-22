@@ -1,0 +1,15 @@
+#pragma once
+
+#include <vector>
+#include <string>
+
+namespace ads::algo::kmp {
+
+////////////////////////////////////////////////////////////////////////////////
+
+[[nodiscard]] std::vector<std::size_t> kmpSubstrSearch(
+    const std::string& text, const std::string& substr);
+
+////////////////////////////////////////////////////////////////////////////////
+
+}  // namespace ads::algo::kmp
