@@ -1,6 +1,5 @@
 #ifndef ADS_DS_MAP_MAP_INL_HPP_
-#error \
-    "Direct inclusion of this file is not allowed, include aho_corasick_automata.hpp"
+#error "Direct inclusion of this file is not allowed, include map.hpp"
 // For the sake of sane code completion.
 #include "map.hpp"
 #endif

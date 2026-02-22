@@ -1,6 +1,5 @@
 #ifndef ADS_DS_SEGMENT_TREE_SEGMENT_TREE_INL_HPP_
-#error \
-    "Direct inclusion of this file is not allowed, include aho_corasick_automata.hpp"
+#error "Direct inclusion of this file is not allowed, include segment_tree.hpp"
 // For the sake of sane code completion.
 #include "segment_tree.hpp"
 #endif
