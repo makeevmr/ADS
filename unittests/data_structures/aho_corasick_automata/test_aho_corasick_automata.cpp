@@ -5,7 +5,8 @@
 
 #include "data_structures/aho_corasick_automata/aho_corasick_automata.hpp"
 
-typedef ads::AhoCorasickAutomata<'a', 'z'> LetterAhoCorasickAutomata;
+typedef ads::ds::aho_corasick::AhoCorasickAutomata<'a', 'z'>
+    LetterAhoCorasickAutomata;
 
 void expectSetEquality(
     const LetterAhoCorasickAutomata::occurrences& occurrences,
