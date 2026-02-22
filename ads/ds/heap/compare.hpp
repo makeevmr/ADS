@@ -13,3 +13,7 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ads::ds::heap
+
+#define ADS_DS_HEAP_COMPARE_INL_HPP_
+#include "compare-inl.hpp"
+#undef ADS_DS_HEAP_COMPARE_INL_HPP_

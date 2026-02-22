@@ -81,3 +81,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ads::ds::heap
+
+#define ADS_DS_HEAP_HEAP_INL_HPP_
+#include "heap-inl.hpp"
+#undef ADS_DS_HEAP_HEAP_INL_HPP_

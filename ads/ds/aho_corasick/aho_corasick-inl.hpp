@@ -1,4 +1,4 @@
-#ifndef CUSTOMADS_SRC_DATA_STRUCTURES_AHO_CORASICK_AUTOMATA_AHO_CORASICK_AUTOMATA_INL_HPP_
+#ifndef ADS_DS_AHO_CORASICK_AHO_CORASICK_AUTOMATA_INL_HPP_
 #error \
     "Direct inclusion of this file is not allowed, include aho_corasick_automata.hpp"
 // For the sake of sane code completion.

@@ -1,8 +1,11 @@
+#ifndef ADS_DS_HEAP_HEAP_INL_HPP_
+#error \
+    "Direct inclusion of this file is not allowed, include aho_corasick_automata.hpp"
+// For the sake of sane code completion.
 #include "heap.hpp"
+#endif
 
 #include <stdexcept>
-
-#include "compare.hpp"
 
 namespace ads::ds::heap {
 
@@ -275,5 +278,3 @@ void Heap<T, Compare>::makeHeap() noexcept(std::is_nothrow_swappable_v<T>) {
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ads::ds::heap
-
-template class ads::ds::heap::Heap<int, ads::ds::heap::MoreCompare<int>>;
