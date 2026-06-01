@@ -3,8 +3,8 @@
 #include "algo/expect_equality.hpp"
 #include "algo/sieve/sieve.hpp"
 
-using namespace ads::algo;
-using namespace ads::algo::sieve;
+using namespace NAds::NAlgo;
+using namespace NAds::NAlgo::NSieve;
 
 TEST(SieveOfEratosthenes, Test1) {
   std::vector<bool> expected_result = {false, false, true, true, false,

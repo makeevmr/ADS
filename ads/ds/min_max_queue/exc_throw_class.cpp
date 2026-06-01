@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-namespace ads::ds::min_max_queue {
+namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -61,4 +61,4 @@ ExcThrowClass::~ExcThrowClass() {
 }
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::min_max_queue
+}  // namespace NAds::NDs::NMinMaxQueue

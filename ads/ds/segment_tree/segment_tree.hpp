@@ -4,7 +4,7 @@
 #include <vector>
 #include <type_traits>
 
-namespace ads::ds::segment_tree {
+namespace NAds::NDs::NSegmentTree {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::segment_tree
+}  // namespace NAds::NDs::NSegmentTree
 
 #define ADS_DS_SEGMENT_TREE_SEGMENT_TREE_INL_HPP_
 #include "segment_tree-inl.hpp"

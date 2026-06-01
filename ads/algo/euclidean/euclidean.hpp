@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace ads::algo::euclidean {
+namespace NAds::NAlgo::NEuclidean {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -12,4 +12,4 @@ std::uint64_t lcm(std::uint64_t a, std::uint64_t b);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::algo::euclidean
+}  // namespace NAds::NAlgo::NEuclidean

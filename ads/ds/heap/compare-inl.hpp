@@ -4,7 +4,7 @@
 #include "compare.hpp"
 #endif
 
-namespace ads::ds::heap {
+namespace NAds::NDs::NHeap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -15,4 +15,4 @@ bool MoreCompare<T>::operator()(const T& left, const T& right) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::heap
+}  // namespace NAds::NDs::NHeap

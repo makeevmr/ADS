@@ -4,7 +4,7 @@
 
 #include "ds/segment_tree/segment_tree.hpp"
 
-using namespace ads::ds::segment_tree;
+using namespace NAds::NDs::NSegmentTree;
 
 template <typename T>
 struct Sum {

@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-namespace ads::ds::queue {
+namespace NAds::NDs::NQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -113,7 +113,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::queue
+}  // namespace NAds::NDs::NQueue
 
 #define ADS_DS_QUEUE_QUEUE_INL_HPP_
 #include "queue-inl.hpp"

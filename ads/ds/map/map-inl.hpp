@@ -4,7 +4,7 @@
 #include "map.hpp"
 #endif
 
-namespace ads::ds::map {
+namespace NAds::NDs::NMap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -332,12 +332,12 @@ Map<Key, T, Compare>::Node::~Node() {
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::Iterator::Iterator(
     Map<Key, T, Compare>::Node* ptr) noexcept
-    : ptr_(ptr){};
+    : ptr_(ptr) {};
 
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::Iterator::Iterator(
     const Map<Key, T, Compare>::Iterator& other) noexcept
-    : ptr_(other.ptr_){};
+    : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator=(
@@ -349,7 +349,7 @@ Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator=(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator::~Iterator(){};
+Map<Key, T, Compare>::Iterator::~Iterator() {};
 
 template <typename Key, typename T, typename Compare>
 [[nodiscard]] Map<Key, T, Compare>::Iterator::reference
@@ -406,17 +406,17 @@ template <typename Key, typename T, typename Compare>
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::ConstIterator::ConstIterator(
     Map<Key, T, Compare>::Node* ptr) noexcept
-    : ptr_(ptr){};
+    : ptr_(ptr) {};
 
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::ConstIterator::ConstIterator(
     const Map<Key, T, Compare>::Iterator& other) noexcept
-    : ptr_(other.ptr_){};
+    : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::ConstIterator::ConstIterator(
     const ConstIterator& other) noexcept
-    : ptr_(other.ptr_){};
+    : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
 Map<Key, T, Compare>::ConstIterator&
@@ -429,7 +429,7 @@ Map<Key, T, Compare>::ConstIterator::operator=(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator::~ConstIterator(){};
+Map<Key, T, Compare>::ConstIterator::~ConstIterator() {};
 
 template <typename Key, typename T, typename Compare>
 [[nodiscard]] Map<Key, T, Compare>::ConstIterator::reference
@@ -679,4 +679,4 @@ template <typename Key, typename T, typename Compare>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::map
+}  // namespace NAds::NDs::NMap

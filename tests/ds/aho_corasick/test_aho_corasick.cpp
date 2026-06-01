@@ -5,12 +5,12 @@
 
 #include "ds/aho_corasick/aho_corasick.hpp"
 
-using namespace ads::ds::aho_corasick;
+using namespace NAds::NDs::NAhoCorasick;
 
-typedef AhoCorasick<'a', 'z'> LetterAhoCorasick;
+using letter_aho_corasick = AhoCorasick<'a', 'z'>;
 
 void expectSetEquality(
-    const LetterAhoCorasick::occurrences& occurrences,
+    const letter_aho_corasick::occurrences& occurrences,
     const std::unordered_map<std::size_t, std::unordered_set<std::size_t>>&
         expected_occurrences) {
   std::size_t expected_occurrences_total_size = 0;
@@ -26,7 +26,7 @@ void expectSetEquality(
 }
 
 TEST(AhoCorasickAutomata, SimpleTest) {
-  LetterAhoCorasick automata;
+  letter_aho_corasick automata;
   automata.addString("he");
   automata.addString("she");
   automata.addString("hers");

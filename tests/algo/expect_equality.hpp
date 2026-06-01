@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace ads::algo {
+namespace NAds::NAlgo {
 
 template <typename T>
 void expectVectorEquality(const std::vector<T>& computed_vec,
@@ -13,4 +13,4 @@ void expectVectorEquality(const std::vector<T>& computed_vec,
   }
 }
 
-}  // namespace ads::algo
+}  // namespace NAds::NAlgo

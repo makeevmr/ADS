@@ -2,7 +2,7 @@
 
 #include "stack.hpp"
 
-namespace ads::ds::min_max_queue {
+namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -106,7 +106,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::min_max_queue
+}  // namespace NAds::NDs::NMinMaxQueue
 
 #define ADS_DS_MIN_MAX_QUEUE_QUEUE_INL_HPP_
 #include "queue-inl.hpp"

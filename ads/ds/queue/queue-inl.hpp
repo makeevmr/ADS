@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <type_traits>
 
-namespace ads::ds::queue {
+namespace NAds::NDs::NQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -355,4 +355,4 @@ void Queue<T, 0>::resize() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::queue
+}  // namespace NAds::NDs::NQueue

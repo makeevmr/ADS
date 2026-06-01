@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <limits>
 
-namespace ads::ds::aho_corasick {
+namespace NAds::NDs::NAhoCorasick {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +61,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::aho_corasick
+}  // namespace NAds::NDs::NAhoCorasick
 
 #define ADS_DS_AHO_CORASICK_AHO_CORASICK_AUTOMATA_INL_HPP_
 #include "aho_corasick-inl.hpp"

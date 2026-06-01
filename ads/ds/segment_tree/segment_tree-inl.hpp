@@ -4,7 +4,7 @@
 #include "segment_tree.hpp"
 #endif
 
-namespace ads::ds::segment_tree {
+namespace NAds::NDs::NSegmentTree {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -110,4 +110,4 @@ void SegmentTree<T, Functor, kNeutralElement>::subtreeIndexUpdate(
 }
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::segment_tree
+}  // namespace NAds::NDs::NSegmentTree

@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace ads::ds::heap {
+namespace NAds::NDs::NHeap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +80,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::heap
+}  // namespace NAds::NDs::NHeap
 
 #define ADS_DS_HEAP_HEAP_INL_HPP_
 #include "heap-inl.hpp"

@@ -4,7 +4,7 @@
 
 #include "min_max_node.hpp"
 
-namespace ads::ds::min_max_queue {
+namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -84,7 +84,7 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::min_max_queue
+}  // namespace NAds::NDs::NMinMaxQueue
 
 #define ADS_DS_MIN_MAX_QUEUE_STACK_INL_HPP_
 #include "stack-inl.hpp"

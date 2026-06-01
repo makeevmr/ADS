@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <type_traits>
 
-namespace ads::ds::min_max_queue {
+namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -234,4 +234,4 @@ void Stack<MinMaxNode>::MoveStackContent<MinMaxNode>::get(
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::min_max_queue
+}  // namespace NAds::NDs::NMinMaxQueue

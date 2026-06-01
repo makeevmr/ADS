@@ -3,8 +3,8 @@
 #include "algo/expect_equality.hpp"
 #include "algo/kmp/kmp.hpp"
 
-using namespace ads::algo;
-using namespace ads::algo::kmp;
+using namespace NAds::NAlgo;
+using namespace NAds::NAlgo::NKmp;
 
 // TODO: add tests
 TEST(KMP, Test1) {

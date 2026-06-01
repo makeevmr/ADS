@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <iterator>
 
-namespace ads::ds::map {
+namespace NAds::NDs::NMap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +209,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::map
+}  // namespace NAds::NDs::NMap
 
 #define ADS_DS_MAP_MAP_INL_HPP_
 #include "map-inl.hpp"

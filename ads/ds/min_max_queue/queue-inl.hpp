@@ -4,7 +4,7 @@
 #include "queue.hpp"
 #endif
 
-namespace ads::ds::min_max_queue {
+namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -241,4 +241,4 @@ void Queue<MinMaxNode>::resize(size_type new_capacity) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::min_max_queue
+}  // namespace NAds::NDs::NMinMaxQueue

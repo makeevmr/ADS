@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-namespace ads::ds::heap {
+namespace NAds::NDs::NHeap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -276,4 +276,4 @@ void Heap<T, Compare>::makeHeap() noexcept(std::is_nothrow_swappable_v<T>) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::heap
+}  // namespace NAds::NDs::NHeap

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ads::ds::heap {
+namespace NAds::NDs::NHeap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::heap
+}  // namespace NAds::NDs::NHeap
 
 #define ADS_DS_HEAP_COMPARE_INL_HPP_
 #include "compare-inl.hpp"

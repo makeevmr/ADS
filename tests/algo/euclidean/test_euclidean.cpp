@@ -2,7 +2,7 @@
 
 #include "algo/euclidean/euclidean.hpp"
 
-using namespace ads::algo::euclidean;
+using namespace NAds::NAlgo::NEuclidean;
 
 // TODO: add tests
 TEST(Euclidean, TestGCD) {

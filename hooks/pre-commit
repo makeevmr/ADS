@@ -16,11 +16,28 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Map each staged *-inl.hpp to its owner header (X-inl.hpp -> X.hpp). An -inl
+# file is not a standalone translation unit: fed to clang-tidy directly its
+# include guard is unset, so the fallback "#include X.hpp" pulls the header,
+# which re-includes the -inl with the guard set -> definitions parsed twice ->
+# "redefinition" errors. Tidying the owner .hpp instead parses the -inl in the
+# correct context, and HeaderFilterRegex '\.hpp$' still reports diagnostics
+# located inside the -inl file. Dedupe so each header is checked once.
+TIDY_FILES=$(for f in $STAGED_FILES; do
+    case "$f" in
+        *-inl.hpp)
+            owner="${f%-inl.hpp}.hpp"
+            if [ -f "$owner" ]; then echo "$owner"; else echo "$f"; fi
+            ;;
+        *) echo "$f" ;;
+    esac
+done | sort -u)
+
 echo "Running clang-tidy on staged files..."
 
 # Run clang-tidy. Assumes compile_commands.json is in your build directory.
 # Replace "-p build" with your build directory path if different.
-clang-tidy -p build $STAGED_FILES --warnings-as-errors='*'
+clang-tidy -p build $TIDY_FILES --warnings-as-errors='*'
 
 # Capture the exit status
 if [ $? -ne 0 ]; then

@@ -7,7 +7,7 @@
 #include <queue>
 #include <algorithm>
 
-namespace ads::ds::aho_corasick {
+namespace NAds::NDs::NAhoCorasick {
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -121,4 +121,4 @@ AhoCorasick<kAlphaLeft, kAlphaRight>::Node::Node()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace ads::ds::aho_corasick
+}  // namespace NAds::NDs::NAhoCorasick
