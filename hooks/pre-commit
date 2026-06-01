@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Find staged C++ source and header files (added/copied/modified, no deletes)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.cpp' '*.cc' '*.cxx' '*.h' '*.hpp')
+
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+# Check formatting first (cheap, fails fast). --dry-run --Werror does not
+# modify files; it exits non-zero if any reformatting is needed.
+echo "Running clang-format check on staged files..."
+clang-format --dry-run --Werror $STAGED_FILES
+if [ $? -ne 0 ]; then
+    echo "❌ Clang-format check failed. Run: clang-format -i <files>. Commit aborted."
+    exit 1
+fi
+
+echo "Running clang-tidy on staged files..."
+
+# Run clang-tidy. Assumes compile_commands.json is in your build directory.
+# Replace "-p build" with your build directory path if different.
+clang-tidy -p build $STAGED_FILES --warnings-as-errors='*'
+
+# Capture the exit status
+if [ $? -ne 0 ]; then
+    echo "❌ Clang-tidy failed on staged files. Commit aborted."
+    exit 1
+fi
+
+echo "✅ Clang-format and clang-tidy passed!"
+exit 0

@@ -8,6 +8,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_CLANG_TIDY "clang-tidy;--warnings-as-errors=*")
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  file(COPY "${CMAKE_SOURCE_DIR}/hooks/pre-commit"
+       DESTINATION "${CMAKE_SOURCE_DIR}/.git/hooks"
+       FILE_PERMISSIONS
+         OWNER_READ OWNER_WRITE OWNER_EXECUTE
+         GROUP_READ GROUP_EXECUTE
+         WORLD_READ WORLD_EXECUTE)
+endif()
+
 set(SOURCE_DIR ads)
 set(UNITTESTS_DIR tests)
 
