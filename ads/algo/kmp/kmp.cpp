@@ -9,9 +9,9 @@ namespace {
 ////////////////////////////////////////////////////////////////////////////////
 
 [[nodiscard]] std::vector<std::size_t> prefixFunction(const std::string& s) {
-  const std::size_t Ssize = s.size();
-  std::vector<std::size_t> pref_func(Ssize);
-  for (std::size_t i = 1; i < Ssize; ++i) {
+  const std::size_t s_size = s.size();
+  std::vector<std::size_t> pref_func(s_size);
+  for (std::size_t i = 1; i < s_size; ++i) {
     std::size_t j = pref_func[i - 1];
     while (j > 0 && s[i] != s[j]) {
       j = pref_func[j - 1];
