@@ -13,14 +13,14 @@ namespace NAds::NDs::NAhoCorasick {
 
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-AhoCorasick<kAlphaLeft, kAlphaRight>::AhoCorasick()
+TAhoCorasick<kAlphaLeft, kAlphaRight>::TAhoCorasick()
     : is_built_(false),
       next_str_num_(0),
-      nodes_(std::vector<Node>(1)) {}
+      nodes_(std::vector<TNode>(1)) {}
 
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-void AhoCorasick<kAlphaLeft, kAlphaRight>::addString(const std::string& s) {
+void TAhoCorasick<kAlphaLeft, kAlphaRight>::addString(const std::string& s) {
   std::size_t curr_node = 0;
   for (const char& symbol : s) {
     const std::size_t symbol_ind =
@@ -40,22 +40,22 @@ void AhoCorasick<kAlphaLeft, kAlphaRight>::addString(const std::string& s) {
 // Return pairs[index of end position of string in text, string index]
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-[[nodiscard]] AhoCorasick<kAlphaLeft, kAlphaRight>::occurrences
-AhoCorasick<kAlphaLeft, kAlphaRight>::findAllOccurrences(
+[[nodiscard]] TAhoCorasick<kAlphaLeft, kAlphaRight>::TOccurrences
+TAhoCorasick<kAlphaLeft, kAlphaRight>::findAllOccurrences(
     const std::string& text) {
   if (!is_built_) {
     buildAutomata();
     is_built_ = true;
   }
   std::size_t curr_node = 0;
-  std::vector<OccurrenceInfo> occurences;
+  std::vector<TOccurrenceInfo> occurences;
   const std::size_t text_size = text.size();
   for (std::size_t i = 0; i < text_size; ++i) {
     curr_node = nodes_[curr_node].next_[text[i] - kAlphaLeft];
     std::size_t traverse_back_node = curr_node;
     do {
       if (nodes_[traverse_back_node].is_terminal_) {
-        occurences.push_back(OccurrenceInfo{
+        occurences.push_back(TOccurrenceInfo{
             .str_start_pos_ = ((i + 1) - nodes_[traverse_back_node].str_size_),
             .str_num_ = nodes_[traverse_back_node].str_num_});
       }
@@ -70,7 +70,7 @@ AhoCorasick<kAlphaLeft, kAlphaRight>::findAllOccurrences(
 // Lecture: https://www.youtube.com/watch?v=V7S80KpbQpk&list=LL&index=5&t=2s
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-void AhoCorasick<kAlphaLeft, kAlphaRight>::buildAutomata() {
+void TAhoCorasick<kAlphaLeft, kAlphaRight>::buildAutomata() {
   nodes_[0].suffix_link_ = kNoPathFlag;
   nodes_[0].to_terminal_link_ = kNoPathFlag;
   for (char c = kAlphaLeft; c <= kAlphaRight; ++c) {
@@ -111,7 +111,7 @@ void AhoCorasick<kAlphaLeft, kAlphaRight>::buildAutomata() {
 
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-AhoCorasick<kAlphaLeft, kAlphaRight>::Node::Node()
+TAhoCorasick<kAlphaLeft, kAlphaRight>::TNode::TNode()
     : is_terminal_(false),
       str_num_(kUndefinedFlag),
       suffix_link_(kUndefinedFlag),

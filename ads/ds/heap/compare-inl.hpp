@@ -9,7 +9,7 @@ namespace NAds::NDs::NHeap {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-bool MoreCompare<T>::operator()(const T& left, const T& right) {
+bool TMoreCompare<T>::operator()(const T& left, const T& right) {
   return left > right;
 }
 

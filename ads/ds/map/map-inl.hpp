@@ -9,32 +9,32 @@ namespace NAds::NDs::NMap {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Map()
+TMap<Key, T, Compare>::TMap()
     : root_(nullptr),
-      b_iter_(Iterator(nullptr)),
-      e_iter_(Iterator(nullptr)),
+      b_iter_(TIterator(nullptr)),
+      e_iter_(TIterator(nullptr)),
       size_(0),
       comparator_(Compare()) {}
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Map(const Map& other)
-    : root_(other.root_ == nullptr ? nullptr : new Node(*other.root_)),
-      b_iter_(Iterator(beginNode(root_))),
+TMap<Key, T, Compare>::TMap(const TMap& other)
+    : root_(other.root_ == nullptr ? nullptr : new TNode(*other.root_)),
+      b_iter_(TIterator(beginNode(root_))),
       e_iter_(nullptr),
       size_(other.size_),
       comparator_(Compare()) {}
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Map& Map<Key, T, Compare>::operator=(
-    const Map<Key, T, Compare>& other) {
+TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
+    const TMap<Key, T, Compare>& other) {
   if (this != &other) {
     delete root_;
     root_ = nullptr;
     size_ = 0;
-    b_iter_ = Iterator(nullptr);
+    b_iter_ = TIterator(nullptr);
     if (other.root_ != nullptr) {
-      root_ = new Node(*other.root_);
-      b_iter_ = Iterator(beginNode(root_));
+      root_ = new TNode(*other.root_);
+      b_iter_ = TIterator(beginNode(root_));
       size_ = other.size_;
     }
   }
@@ -42,104 +42,104 @@ Map<Key, T, Compare>::Map& Map<Key, T, Compare>::operator=(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Map(Map&& other) noexcept
+TMap<Key, T, Compare>::TMap(TMap&& other) noexcept
     : root_(other.root_),
       b_iter_(other.b_iter_),
       e_iter_(nullptr),
       size_(other.size_),
       comparator_(Compare()) {
   other.root_ = nullptr;
-  other.b_iter_ = Iterator(nullptr);
+  other.b_iter_ = TIterator(nullptr);
   other.size_ = 0;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Map& Map<Key, T, Compare>::operator=(
-    Map<Key, T, Compare>&& other) noexcept {
+TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
+    TMap<Key, T, Compare>&& other) noexcept {
   if (this != &other) {
     root_ = other.root_;
     b_iter_ = other.b_iter_;
     size_ = other.size_;
     other.root_ = nullptr;
-    other.b_iter_ = Iterator(nullptr);
+    other.b_iter_ = TIterator(nullptr);
     other.size_ = 0;
   }
   return *this;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::~Map() {
+TMap<Key, T, Compare>::~TMap() {
   delete root_;
   root_ = nullptr;
-  b_iter_ = Iterator(nullptr);
+  b_iter_ = TIterator(nullptr);
   size_ = 0;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::iterator
-Map<Key, T, Compare>::begin() noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TIterator
+TMap<Key, T, Compare>::begin() noexcept {
   return b_iter_;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::const_iterator Map<Key, T, Compare>::begin()
-    const noexcept {
-  return ConstIterator(b_iter_);
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
+TMap<Key, T, Compare>::begin() const noexcept {
+  return TConstIterator(b_iter_);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::const_iterator
-Map<Key, T, Compare>::cbegin() const noexcept {
-  return ConstIterator(b_iter_);
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
+TMap<Key, T, Compare>::cbegin() const noexcept {
+  return TConstIterator(b_iter_);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::iterator
-Map<Key, T, Compare>::end() noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TIterator
+TMap<Key, T, Compare>::end() noexcept {
   return e_iter_;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::const_iterator Map<Key, T, Compare>::end()
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator TMap<Key, T, Compare>::end()
     const noexcept {
-  return ConstIterator(e_iter_);
+  return TConstIterator(e_iter_);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::const_iterator Map<Key, T, Compare>::cend()
-    const noexcept {
-  return ConstIterator(e_iter_);
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
+TMap<Key, T, Compare>::cend() const noexcept {
+  return TConstIterator(e_iter_);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::empty() const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::empty() const noexcept {
   return size_ == 0ULL;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::size_type Map<Key, T, Compare>::getSize()
+[[nodiscard]] TMap<Key, T, Compare>::TSizeType TMap<Key, T, Compare>::getSize()
     const noexcept {
   return size_;
 }
 
 template <typename Key, typename T, typename Compare>
-std::pair<typename Map<Key, T, Compare>::iterator, bool>
-Map<Key, T, Compare>::insert(const_reference value) {
-  Node* parent = findParent(value.first);
+std::pair<typename TMap<Key, T, Compare>::TIterator, bool>
+TMap<Key, T, Compare>::insert(TConstReference value) {
+  TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->value->first == value.first)) {
-    return std::pair<iterator, bool>{Iterator(parent), false};
+    return std::pair<TIterator, bool>{TIterator(parent), false};
   }
-  Node* new_node =
-      new Node({new value_type(value), nullptr, nullptr, parent, 1});
+  TNode* new_node =
+      new TNode({new TValueType(value), nullptr, nullptr, parent, 1});
   ++size_;
   if (parent == nullptr) {
     root_ = new_node;
-    b_iter_ = Iterator(root_);
+    b_iter_ = TIterator(root_);
   } else {
     if (comparator_(value.first, b_iter_->first)) {
-      b_iter_ = Iterator(new_node);
+      b_iter_ = TIterator(new_node);
     }
-    Node* rebalance_node = nullptr;
+    TNode* rebalance_node = nullptr;
     if (comparator_(value.first, parent->value->first)) {
       parent->left = new_node;
       rebalance_node = parent;
@@ -161,27 +161,27 @@ Map<Key, T, Compare>::insert(const_reference value) {
       rebalance_node = rebalance_node->parent;
     }
   }
-  return std::pair<iterator, bool>{Iterator(new_node), true};
+  return std::pair<TIterator, bool>{TIterator(new_node), true};
 }
 
 template <typename Key, typename T, typename Compare>
-std::pair<typename Map<Key, T, Compare>::iterator, bool>
-Map<Key, T, Compare>::insert(value_type&& value) {
-  Node* parent = findParent(value.first);
+std::pair<typename TMap<Key, T, Compare>::TIterator, bool>
+TMap<Key, T, Compare>::insert(TValueType&& value) {
+  TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->value->first == value.first)) {
-    return std::pair<iterator, bool>{Iterator(parent), false};
+    return std::pair<TIterator, bool>{TIterator(parent), false};
   }
-  Node* new_node =
-      new Node({new value_type(std::move(value)), nullptr, nullptr, parent, 1});
+  TNode* new_node = new TNode(
+      {new TValueType(std::move(value)), nullptr, nullptr, parent, 1});
   ++size_;
   if (parent == nullptr) {
     root_ = new_node;
-    b_iter_ = Iterator(root_);
+    b_iter_ = TIterator(root_);
   } else {
     if (comparator_(value.first, b_iter_->first)) {
-      b_iter_ = Iterator(new_node);
+      b_iter_ = TIterator(new_node);
     }
-    Node* rebalance_node = nullptr;
+    TNode* rebalance_node = nullptr;
     if (comparator_(value.first, parent->value->first)) {
       parent->left = new_node;
       rebalance_node = parent;
@@ -203,18 +203,18 @@ Map<Key, T, Compare>::insert(value_type&& value) {
       rebalance_node = rebalance_node->parent;
     }
   }
-  return std::pair<iterator, bool>{Iterator(new_node), true};
+  return std::pair<TIterator, bool>{TIterator(new_node), true};
 }
 
 template <typename Key, typename T, typename Compare>
-void Map<Key, T, Compare>::erase(
-    const Map<Key, T, Compare>::key_type& erased_key) noexcept {
+void TMap<Key, T, Compare>::erase(
+    const TMap<Key, T, Compare>::TKeyType& erased_key) noexcept {
   if (root_ == nullptr) {
     return;
   }
-  Node* current_node = findNode(erased_key);
+  TNode* current_node = findNode(erased_key);
   if (current_node != nullptr) {
-    Node* rebalance_node = nullptr;
+    TNode* rebalance_node = nullptr;
     if (current_node->left == nullptr && current_node->right == nullptr) {
       rebalance_node = trivialNodeErase(current_node, nullptr);
     } else if (current_node->left != nullptr &&
@@ -224,8 +224,8 @@ void Map<Key, T, Compare>::erase(
                current_node->right != nullptr) {
       rebalance_node = trivialNodeErase(current_node, current_node->right);
     } else {
-      Node* next_node = next(current_node);
-      Node* right_child = next_node->right;
+      TNode* next_node = next(current_node);
+      TNode* right_child = next_node->right;
       rebalance_node = next_node->parent;
       if (right_child != nullptr) {
         right_child->parent = rebalance_node;
@@ -245,7 +245,7 @@ void Map<Key, T, Compare>::erase(
     }
     bool is_level_changed = true;
     while ((rebalance_node != nullptr) && is_level_changed) {
-      size_type init_level = rebalance_node->level;
+      TSizeType init_level = rebalance_node->level;
       decreaseNodeLevel(rebalance_node);
       is_level_changed = init_level != rebalance_node->level;
       if (is_level_changed) {
@@ -267,31 +267,31 @@ void Map<Key, T, Compare>::erase(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::iterator Map<Key, T, Compare>::find(
-    const typename Map<Key, T, Compare>::key_type& search_key) noexcept {
-  return Iterator(findNode(search_key));
+TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::find(
+    const typename TMap<Key, T, Compare>::TKeyType& search_key) noexcept {
+  return TIterator(findNode(search_key));
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::const_iterator Map<Key, T, Compare>::find(
-    const typename Map<Key, T, Compare>::key_type& search_key) const noexcept {
-  return ConstIterator(findNode(search_key));
+TMap<Key, T, Compare>::TConstIterator TMap<Key, T, Compare>::find(
+    const typename TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+  return TConstIterator(findNode(search_key));
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::contains(
-    const typename Map<Key, T, Compare>::key_type& key) const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::contains(
+    const typename TMap<Key, T, Compare>::TKeyType& key) const noexcept {
   return findNode(key) != nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Node::Node(Map<Key, T, Compare>::pointer value,
-                                 Map<Key, T, Compare>::Node* left,
-                                 Map<Key, T, Compare>::Node* right,
-                                 Map<Key, T, Compare>::Node* parent,
-                                 Map::size_type level)
+TMap<Key, T, Compare>::TNode::TNode(TMap<Key, T, Compare>::TPointer value,
+                                    TMap<Key, T, Compare>::TNode* left,
+                                    TMap<Key, T, Compare>::TNode* right,
+                                    TMap<Key, T, Compare>::TNode* parent,
+                                    TMap::TSizeType level)
     : value(value),
       left(left),
       right(right),
@@ -299,24 +299,24 @@ Map<Key, T, Compare>::Node::Node(Map<Key, T, Compare>::pointer value,
       level(level) {}
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Node::Node(const Map<Key, T, Compare>::Node& other)
-    : value(new value_type(*(other.value))),
+TMap<Key, T, Compare>::TNode::TNode(const TMap<Key, T, Compare>::TNode& other)
+    : value(new TValueType(*(other.value))),
       left(nullptr),
       right(nullptr),
       parent(nullptr),
       level(other.level) {
   if (other.left != nullptr) {
-    left = new Node(*other.left);
+    left = new TNode(*other.left);
     left->parent = this;
   }
   if (other.right != nullptr) {
-    right = new Node(*other.right);
+    right = new TNode(*other.right);
     right->parent = this;
   }
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Node::~Node() {
+TMap<Key, T, Compare>::TNode::~TNode() {
   delete value;
   value = nullptr;
   delete left;
@@ -330,18 +330,18 @@ Map<Key, T, Compare>::Node::~Node() {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator::Iterator(
-    Map<Key, T, Compare>::Node* ptr) noexcept
+TMap<Key, T, Compare>::TIterator::TIterator(
+    TMap<Key, T, Compare>::TNode* ptr) noexcept
     : ptr_(ptr) {};
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator::Iterator(
-    const Map<Key, T, Compare>::Iterator& other) noexcept
+TMap<Key, T, Compare>::TIterator::TIterator(
+    const TMap<Key, T, Compare>::TIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator=(
-    const Map<Key, T, Compare>::Iterator& other) & noexcept {
+TMap<Key, T, Compare>::TIterator& TMap<Key, T, Compare>::TIterator::operator=(
+    const TMap<Key, T, Compare>::TIterator& other) & noexcept {
   if (this != &other) {
     ptr_ = other.ptr_;
   }
@@ -349,79 +349,83 @@ Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator=(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator::~Iterator() {};
+TMap<Key, T, Compare>::TIterator::~TIterator() {};
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Iterator::reference
-Map<Key, T, Compare>::Iterator::operator*() const noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TIterator::TReference
+TMap<Key, T, Compare>::TIterator::operator*() const noexcept {
   return *(ptr_->value);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Iterator::pointer
-Map<Key, T, Compare>::Iterator::operator->() const noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TIterator::TPointer
+TMap<Key, T, Compare>::TIterator::operator->() const noexcept {
   return ptr_->value;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator++() {
-  ptr_ = Map::next(ptr_);
+TMap<Key, T, Compare>::TIterator&
+TMap<Key, T, Compare>::TIterator::operator++() {
+  ptr_ = TMap::next(ptr_);
   return *this;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator Map<Key, T, Compare>::Iterator::operator++(int) {
-  Iterator tmp = *this;
+TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::TIterator::operator++(
+    int) {
+  TIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator& Map<Key, T, Compare>::Iterator::operator--() {
-  ptr_ = Map::prev(ptr_);
+TMap<Key, T, Compare>::TIterator&
+TMap<Key, T, Compare>::TIterator::operator--() {
+  ptr_ = TMap::prev(ptr_);
   return *this;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Iterator Map<Key, T, Compare>::Iterator::operator--(int) {
-  Iterator tmp = *this;
+TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::TIterator::operator--(
+    int) {
+  TIterator tmp = *this;
   --(*this);
   return tmp;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::Iterator::operator==(
-    const Iterator& right) const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::TIterator::operator==(
+    const TIterator& right) const noexcept {
   return ptr_ == right.ptr_;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::Iterator::operator!=(
-    const Iterator& right) const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::TIterator::operator!=(
+    const TIterator& right) const noexcept {
   return ptr_ != right.ptr_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator::ConstIterator(
-    Map<Key, T, Compare>::Node* ptr) noexcept
+TMap<Key, T, Compare>::TConstIterator::TConstIterator(
+    TMap<Key, T, Compare>::TNode* ptr) noexcept
     : ptr_(ptr) {};
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator::ConstIterator(
-    const Map<Key, T, Compare>::Iterator& other) noexcept
+TMap<Key, T, Compare>::TConstIterator::TConstIterator(
+    const TMap<Key, T, Compare>::TIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator::ConstIterator(
-    const ConstIterator& other) noexcept
+TMap<Key, T, Compare>::TConstIterator::TConstIterator(
+    const TConstIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator&
-Map<Key, T, Compare>::ConstIterator::operator=(
-    const Map<Key, T, Compare>::ConstIterator& other) & noexcept {
+TMap<Key, T, Compare>::TConstIterator&
+TMap<Key, T, Compare>::TConstIterator::operator=(
+    const TMap<Key, T, Compare>::TConstIterator& other) & noexcept {
   if (this != &other) {
     ptr_ = other.ptr_;
   }
@@ -429,71 +433,71 @@ Map<Key, T, Compare>::ConstIterator::operator=(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator::~ConstIterator() {};
+TMap<Key, T, Compare>::TConstIterator::~TConstIterator() {};
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::ConstIterator::reference
-Map<Key, T, Compare>::ConstIterator::operator*() const noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator::TReference
+TMap<Key, T, Compare>::TConstIterator::operator*() const noexcept {
   return *(ptr_->value);
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::ConstIterator::pointer
-Map<Key, T, Compare>::ConstIterator::operator->() const noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TConstIterator::TPointer
+TMap<Key, T, Compare>::TConstIterator::operator->() const noexcept {
   return ptr_->value;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator&
-Map<Key, T, Compare>::ConstIterator::operator++() {
-  ptr_ = Map::next(ptr_);
+TMap<Key, T, Compare>::TConstIterator&
+TMap<Key, T, Compare>::TConstIterator::operator++() {
+  ptr_ = TMap::next(ptr_);
   return *this;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator
-Map<Key, T, Compare>::ConstIterator::operator++(int) {
-  Map<Key, T, Compare>::ConstIterator tmp = *this;
+TMap<Key, T, Compare>::TConstIterator
+TMap<Key, T, Compare>::TConstIterator::operator++(int) {
+  TMap<Key, T, Compare>::TConstIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator&
-Map<Key, T, Compare>::ConstIterator::operator--() {
-  ptr_ = Map::prev(ptr_);
+TMap<Key, T, Compare>::TConstIterator&
+TMap<Key, T, Compare>::TConstIterator::operator--() {
+  ptr_ = TMap::prev(ptr_);
   return *this;
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::ConstIterator
-Map<Key, T, Compare>::ConstIterator::operator--(int) {
-  Map<Key, T, Compare>::ConstIterator tmp = *this;
+TMap<Key, T, Compare>::TConstIterator
+TMap<Key, T, Compare>::TConstIterator::operator--(int) {
+  TMap<Key, T, Compare>::TConstIterator tmp = *this;
   --(*this);
   return tmp;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::ConstIterator::operator==(
-    const Map<Key, T, Compare>::ConstIterator& right) const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::TConstIterator::operator==(
+    const TMap<Key, T, Compare>::TConstIterator& right) const noexcept {
   return ptr_ == right.ptr_;
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool Map<Key, T, Compare>::ConstIterator::operator!=(
-    const Map<Key, T, Compare>::ConstIterator& right) const noexcept {
+[[nodiscard]] bool TMap<Key, T, Compare>::TConstIterator::operator!=(
+    const TMap<Key, T, Compare>::TConstIterator& right) const noexcept {
   return ptr_ != right.ptr_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Node* Map<Key, T, Compare>::skew(
-    Map<Key, T, Compare>::Node* node) noexcept {
+TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::skew(
+    TMap<Key, T, Compare>::TNode* node) noexcept {
   if ((node->left == nullptr) || (node->level != node->left->level)) {
     return node;
   }
-  Node* left_node = node->left;
+  TNode* left_node = node->left;
   node->left = left_node->right;
   if (left_node->right != nullptr) {
     left_node->right->parent = node;
@@ -515,13 +519,13 @@ Map<Key, T, Compare>::Node* Map<Key, T, Compare>::skew(
 }
 
 template <typename Key, typename T, typename Compare>
-Map<Key, T, Compare>::Node* Map<Key, T, Compare>::split(
-    Map<Key, T, Compare>::Node* node) noexcept {
+TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::split(
+    TMap<Key, T, Compare>::TNode* node) noexcept {
   if (node->right == nullptr || node->right->right == nullptr ||
       node->level != node->right->right->level) {
     return node;
   }
-  Node* right_node = node->right;
+  TNode* right_node = node->right;
   node->right = right_node->left;
   if (right_node->left != nullptr) {
     right_node->left->parent = node;
@@ -544,14 +548,14 @@ Map<Key, T, Compare>::Node* Map<Key, T, Compare>::split(
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node*
-Map<Key, T, Compare>::trivialNodeErase(
-    Map<Key, T, Compare>::Node* node_to_erase,
-    Map<Key, T, Compare>::Node* child) noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TNode*
+TMap<Key, T, Compare>::trivialNodeErase(
+    TMap<Key, T, Compare>::TNode* node_to_erase,
+    TMap<Key, T, Compare>::TNode* child) noexcept {
   if (child != nullptr) {
     child->parent = node_to_erase->parent;
   }
-  Node* parent = nullptr;
+  TNode* parent = nullptr;
   if (root_ != node_to_erase) {
     parent = node_to_erase->parent;
     if (parent->left == node_to_erase) {
@@ -562,7 +566,7 @@ Map<Key, T, Compare>::trivialNodeErase(
   } else {
     root_ = child;
   }
-  if (b_iter_ == Iterator(node_to_erase)) {
+  if (b_iter_ == TIterator(node_to_erase)) {
     ++b_iter_;
   }
   --size_;
@@ -574,11 +578,11 @@ Map<Key, T, Compare>::trivialNodeErase(
 }
 
 template <typename Key, typename T, typename Compare>
-void Map<Key, T, Compare>::decreaseNodeLevel(
-    Map<Key, T, Compare>::Node* node) noexcept {
-  size_type left_diff =
+void TMap<Key, T, Compare>::decreaseNodeLevel(
+    TMap<Key, T, Compare>::TNode* node) noexcept {
+  TSizeType left_diff =
       node->left != nullptr ? node->level - node->left->level : node->level;
-  size_type right_diff =
+  TSizeType right_diff =
       node->right != nullptr ? node->level - node->right->level : node->level;
   if (left_diff > 1 || right_diff > 1) {
     if (node->right != nullptr && node->right->level == node->level) {
@@ -589,16 +593,16 @@ void Map<Key, T, Compare>::decreaseNodeLevel(
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node* Map<Key, T, Compare>::next(
-    const Map<Key, T, Compare>::Node* node) noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::next(
+    const TMap<Key, T, Compare>::TNode* node) noexcept {
   if (node->right != nullptr) {
-    Node* current_node = node->right;
+    TNode* current_node = node->right;
     while (current_node->left != nullptr) {
       current_node = current_node->left;
     }
     return current_node;
   }
-  Node* parent = node->parent;
+  TNode* parent = node->parent;
   while (parent != nullptr && (parent->right == node)) {
     node = parent;
     parent = node->parent;
@@ -607,16 +611,16 @@ template <typename Key, typename T, typename Compare>
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node* Map<Key, T, Compare>::prev(
-    const Map<Key, T, Compare>::Node* node) noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::prev(
+    const TMap<Key, T, Compare>::TNode* node) noexcept {
   if (node->left != nullptr) {
-    Node* current_node = node->left;
+    TNode* current_node = node->left;
     while (current_node->right != nullptr) {
       current_node = current_node->right;
     }
     return current_node;
   }
-  Node* parent = node->parent;
+  TNode* parent = node->parent;
   while (parent != nullptr && (parent->left == node)) {
     node = parent;
     parent = node->parent;
@@ -625,11 +629,11 @@ template <typename Key, typename T, typename Compare>
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node* Map<Key, T, Compare>::findNode(
-    const Map<Key, T, Compare>::key_type& search_key) const noexcept {
-  Node* node = root_;
+[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::findNode(
+    const TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+  TNode* node = root_;
   while (node != nullptr) {
-    const key_type key = node->value->first;
+    const TKeyType key = node->value->first;
     if (!(comparator_(key, search_key)) && !(comparator_(search_key, key))) {
       break;
     }
@@ -643,13 +647,13 @@ template <typename Key, typename T, typename Compare>
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node* Map<Key, T, Compare>::findParent(
-    const Map<Key, T, Compare>::key_type& search_key) const noexcept {
-  Node* parent = nullptr;
-  Node* node = root_;
+[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::findParent(
+    const TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+  TNode* parent = nullptr;
+  TNode* node = root_;
   while (node != nullptr) {
     parent = node;
-    const key_type key = node->value->first;
+    const TKeyType key = node->value->first;
     if (!(comparator_(key, search_key)) && !(comparator_(search_key, key))) {
       break;
     }
@@ -666,8 +670,8 @@ template <typename Key, typename T, typename Compare>
 }
 
 template <typename Key, typename T, typename Compare>
-[[nodiscard]] Map<Key, T, Compare>::Node* Map<Key, T, Compare>::beginNode(
-    Map<Key, T, Compare>::Node* node) noexcept {
+[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::beginNode(
+    TMap<Key, T, Compare>::TNode* node) noexcept {
   if (node == nullptr) {
     return nullptr;
   }

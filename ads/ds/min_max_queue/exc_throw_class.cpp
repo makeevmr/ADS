@@ -6,7 +6,7 @@ namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-ExcThrowClass::ExcThrowClass() {
+TExcThrowClass::TExcThrowClass() {
   ++created_objects;
   if (created_objects % 20 == 0) {
     throw std::runtime_error("Exception in default constructor");
@@ -17,7 +17,7 @@ ExcThrowClass::ExcThrowClass() {
   }
 }
 
-ExcThrowClass::ExcThrowClass(const ExcThrowClass& other) {
+TExcThrowClass::TExcThrowClass(const TExcThrowClass& other) {
   ++created_objects;
   if (created_objects % 20 == 0) {
     throw std::runtime_error("Exception in copy constructor");
@@ -28,7 +28,7 @@ ExcThrowClass::ExcThrowClass(const ExcThrowClass& other) {
   }
 }
 
-ExcThrowClass& ExcThrowClass::operator=(const ExcThrowClass& other) {
+TExcThrowClass& TExcThrowClass::operator=(const TExcThrowClass& other) {
   if (this != &other) {
     delete[] data_;
     data_ = new int[10];
@@ -39,13 +39,13 @@ ExcThrowClass& ExcThrowClass::operator=(const ExcThrowClass& other) {
   return *this;
 }
 
-ExcThrowClass::ExcThrowClass(ExcThrowClass&& other) noexcept
+TExcThrowClass::TExcThrowClass(TExcThrowClass&& other) noexcept
     : data_(other.data_) {
   ++created_objects;
   other.data_ = nullptr;
 }
 
-ExcThrowClass& ExcThrowClass::operator=(ExcThrowClass&& other) noexcept {
+TExcThrowClass& TExcThrowClass::operator=(TExcThrowClass&& other) noexcept {
   ++created_objects;
   if (this != &other) {
     delete[] data_;
@@ -55,7 +55,7 @@ ExcThrowClass& ExcThrowClass::operator=(ExcThrowClass&& other) noexcept {
   return *this;
 }
 
-ExcThrowClass::~ExcThrowClass() {
+TExcThrowClass::~TExcThrowClass() {
   --created_objects;
   delete[] data_;
 }

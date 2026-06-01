@@ -9,31 +9,31 @@ namespace NAds::NDs::NQueue {
 // Queue implementation on a ring buffer
 // If N > 0 then allocate memory on stack
 template <typename T, std::size_t N>
-class Queue {
+class TQueue {
 public:
-  using reference = T&;
-  using const_reference = const T&;
+  using TReference = T&;
+  using TConstReference = const T&;
 
-  Queue() noexcept;
+  TQueue() noexcept;
 
-  Queue(const Queue<T, N>& other);
+  TQueue(const TQueue<T, N>& other);
 
-  Queue& operator=(const Queue<T, N>& other);
+  TQueue& operator=(const TQueue<T, N>& other);
 
-  Queue(Queue<T, N>&& other) noexcept;
+  TQueue(TQueue<T, N>&& other) noexcept;
 
-  Queue& operator=(Queue<T, N>&& other) noexcept;
+  TQueue& operator=(TQueue<T, N>&& other) noexcept;
 
-  ~Queue();
+  ~TQueue();
 
   // Element access
-  [[nodiscard]] reference front();
+  [[nodiscard]] TReference front();
 
-  [[nodiscard]] const_reference front() const;
+  [[nodiscard]] TConstReference front() const;
 
-  [[nodiscard]] reference back();
+  [[nodiscard]] TReference back();
 
-  [[nodiscard]] const_reference back() const;
+  [[nodiscard]] TConstReference back() const;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
@@ -57,31 +57,31 @@ private:
 
 // If N == 0 then allocate memory on heap
 template <typename T>
-class Queue<T, 0> {
+class TQueue<T, 0> {
 public:
-  using reference = T&;
-  using const_reference = const T&;
+  using TReference = T&;
+  using TConstReference = const T&;
 
-  explicit Queue<T, 0>(std::size_t capacity);
+  explicit TQueue<T, 0>(std::size_t capacity);
 
-  Queue(const Queue<T, 0>& other);
+  TQueue(const TQueue<T, 0>& other);
 
-  Queue& operator=(const Queue<T, 0>& other);
+  TQueue& operator=(const TQueue<T, 0>& other);
 
-  Queue(Queue<T, 0>&& other) noexcept;
+  TQueue(TQueue<T, 0>&& other) noexcept;
 
-  Queue& operator=(Queue<T, 0>&& other) noexcept;
+  TQueue& operator=(TQueue<T, 0>&& other) noexcept;
 
-  ~Queue();
+  ~TQueue();
 
   // Element access
-  [[nodiscard]] reference front();
+  [[nodiscard]] TReference front();
 
-  [[nodiscard]] const_reference front() const;
+  [[nodiscard]] TConstReference front() const;
 
-  [[nodiscard]] reference back();
+  [[nodiscard]] TReference back();
 
-  [[nodiscard]] const_reference back() const;
+  [[nodiscard]] TConstReference back() const;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
@@ -96,11 +96,11 @@ public:
   void push(T&& value);
 
 private:
-  void swap(Queue<T, 0>& other) noexcept;
+  void swap(TQueue<T, 0>& other) noexcept;
 
   void free(std::size_t destructor_calls) noexcept;
 
-  void uninitializedCopy(const Queue<T, 0>& other);
+  void uninitializedCopy(const TQueue<T, 0>& other);
 
   void resize();
 

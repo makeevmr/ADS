@@ -8,32 +8,32 @@ namespace NAds::NDs::NMinMaxQueue {
 
 // Queue implementation using two stacks
 template <typename T>
-class Queue {
+class TQueue {
 public:
-  using reference = T&;
-  using const_reference = const T&;
-  using size_type = std::size_t;
+  using TReference = T&;
+  using TConstReference = const T&;
+  using TSizeType = std::size_t;
 
-  explicit Queue(const size_type& capacity);
+  explicit TQueue(const TSizeType& capacity);
 
-  Queue(const Queue<T>& other);
+  TQueue(const TQueue<T>& other);
 
-  Queue& operator=(const Queue<T>& other);
+  TQueue& operator=(const TQueue<T>& other);
 
-  Queue(Queue<T>&& other) noexcept;
+  TQueue(TQueue<T>&& other) noexcept;
 
-  Queue& operator=(Queue<T>&& other) noexcept;
+  TQueue& operator=(TQueue<T>&& other) noexcept;
 
-  ~Queue();
+  ~TQueue();
 
   // Element access
-  [[nodiscard]] reference front();
+  [[nodiscard]] TReference front();
 
-  [[nodiscard]] const_reference front() const;
+  [[nodiscard]] TConstReference front() const;
 
-  [[nodiscard]] reference back();
+  [[nodiscard]] TReference back();
 
-  [[nodiscard]] const_reference back() const;
+  [[nodiscard]] TConstReference back() const;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
@@ -48,40 +48,40 @@ public:
   void push(T&& value);
 
 private:
-  size_type size_;
-  Stack<T> push_stack_;
-  Stack<T> pop_stack_;
+  TSizeType size_;
+  TStack<T> push_stack_;
+  TStack<T> pop_stack_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-class Queue<MinMaxNode> {
+class TQueue<TMinMaxNode> {
 public:
-  using reference = MinMaxNode&;
-  using const_reference = const MinMaxNode&;
-  using size_type = std::size_t;
+  using TReference = TMinMaxNode&;
+  using TConstReference = const TMinMaxNode&;
+  using TSizeType = std::size_t;
 
-  explicit Queue(const size_type& capacity);
+  explicit TQueue(const TSizeType& capacity);
 
-  Queue(const Queue<MinMaxNode>& other);
+  TQueue(const TQueue<TMinMaxNode>& other);
 
-  Queue& operator=(const Queue<MinMaxNode>& other);
+  TQueue& operator=(const TQueue<TMinMaxNode>& other);
 
-  Queue(Queue<MinMaxNode>&& other) noexcept;
+  TQueue(TQueue<TMinMaxNode>&& other) noexcept;
 
-  Queue& operator=(Queue<MinMaxNode>&& other) noexcept;
+  TQueue& operator=(TQueue<TMinMaxNode>&& other) noexcept;
 
-  ~Queue();
+  ~TQueue();
 
   // Element access
-  [[nodiscard]] reference front();
+  [[nodiscard]] TReference front();
 
-  [[nodiscard]] const_reference front() const;
+  [[nodiscard]] TConstReference front() const;
 
-  [[nodiscard]] reference back();
+  [[nodiscard]] TReference back();
 
-  [[nodiscard]] const_reference back() const;
+  [[nodiscard]] TConstReference back() const;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
@@ -96,12 +96,12 @@ public:
 
   void push(int value);
 
-  void resize(size_type new_capacity);
+  void resize(TSizeType new_capacity);
 
 private:
-  size_type size_;
-  Stack<MinMaxNode> push_stack_;
-  Stack<MinMaxNode> pop_stack_;
+  TSizeType size_;
+  TStack<TMinMaxNode> push_stack_;
+  TStack<TMinMaxNode> pop_stack_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

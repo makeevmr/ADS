@@ -4,19 +4,19 @@ namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class ExcThrowClass {
+class TExcThrowClass {
 public:
-  ExcThrowClass();
+  TExcThrowClass();
 
-  ExcThrowClass(const ExcThrowClass& other);
+  TExcThrowClass(const TExcThrowClass& other);
 
-  ExcThrowClass& operator=(const ExcThrowClass& other);
+  TExcThrowClass& operator=(const TExcThrowClass& other);
 
-  ExcThrowClass(ExcThrowClass&& other) noexcept;
+  TExcThrowClass(TExcThrowClass&& other) noexcept;
 
-  ExcThrowClass& operator=(ExcThrowClass&& other) noexcept;
+  TExcThrowClass& operator=(TExcThrowClass&& other) noexcept;
 
-  ~ExcThrowClass();
+  ~TExcThrowClass();
 
 private:
   inline static unsigned int created_objects = 0;

@@ -4,7 +4,7 @@ namespace NAds::NDs::NMinMaxQueue {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-struct MinMaxNode {
+struct TMinMaxNode {
   int self_value;
   int min_value;
   int max_value;

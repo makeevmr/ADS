@@ -7,21 +7,21 @@
 using namespace NAds::NDs::NSegmentTree;
 
 template <typename T>
-struct Sum {
+struct TSum {
   T operator()(const T& left, const T& right) const noexcept {
     return left + right;
   }
 };
 
 template <typename T>
-struct Max {
+struct TMax {
   T operator()(const T& left, const T& right) const noexcept {
     return std::max(left, right);
   }
 };
 
 template <typename T>
-struct Min {
+struct TMin {
   T operator()(const T& left, const T& right) const noexcept {
     return std::min(left, right);
   }
@@ -29,14 +29,14 @@ struct Min {
 
 TEST(SegmentTree, CreateTree) {
   std::vector<int> vec = {1, 2, 3, 7, 10};
-  SegmentTree<int, Sum<int>, 0> segment_tree(vec);
+  TSegmentTree<int, TSum<int>, 0> segment_tree(vec);
   EXPECT_EQ(3, segment_tree.segmentQuery(0ULL, 1ULL));
   EXPECT_EQ(20, segment_tree.segmentQuery(2ULL, 4ULL));
 }
 
 TEST(SegmentTree, UpdateTree) {
   std::vector<int> vec = {1, 2, 3, 7, 10};
-  SegmentTree<int, Sum<int>, 0> segment_tree(vec);
+  TSegmentTree<int, TSum<int>, 0> segment_tree(vec);
   segment_tree.indexUpdate(0, 10);
   segment_tree.indexUpdate(1, 7);
   EXPECT_EQ(20, segment_tree.segmentQuery(0ULL, 2ULL));
@@ -45,9 +45,10 @@ TEST(SegmentTree, UpdateTree) {
 
 TEST(SegmentTree, ThrowError) {
   std::vector<int> empty_vec;
-  EXPECT_THROW((SegmentTree<int, Sum<int>, 0>(empty_vec)), std::runtime_error);
+  EXPECT_THROW((TSegmentTree<int, TSum<int>, 0>(empty_vec)),
+               std::runtime_error);
   std::vector<int> vec = {1, 2, 3, 7, 10};
-  SegmentTree<int, Sum<int>, 0> segment_tree(vec);
+  TSegmentTree<int, TSum<int>, 0> segment_tree(vec);
   EXPECT_THROW(static_cast<void>(segment_tree.segmentQuery(8ULL, 3ULL)),
                std::range_error);
   EXPECT_THROW(static_cast<void>(segment_tree.segmentQuery(2ULL, 7ULL)),
@@ -59,7 +60,8 @@ TEST(SegmentTree, ThrowError) {
 TEST(SegmentTree, MaxOperator) {
   std::vector<int> vec = {-4, -10, 15, 25, 6, 2, 3, 7, 10, 0, -45};
   const std::size_t vec_size = vec.size();
-  SegmentTree<int, Max<int>, std::numeric_limits<int>::min()> segment_tree(vec);
+  TSegmentTree<int, TMax<int>, std::numeric_limits<int>::min()> segment_tree(
+      vec);
   EXPECT_EQ(segment_tree.segmentQuery(0ULL, vec_size - 1), 25);
   EXPECT_EQ(segment_tree.segmentQuery(8ULL, vec_size - 1), 10);
   EXPECT_EQ(segment_tree.segmentQuery(0ULL, 6ULL), 25);
@@ -73,7 +75,8 @@ TEST(SegmentTree, MaxOperator) {
 TEST(SegmentTree, MinOperator) {
   std::vector<int> vec = {-4, -10, 15, 25, 6, 2, 3, 7, 10, 0, -45};
   const std::size_t vec_size = vec.size();
-  SegmentTree<int, Min<int>, std::numeric_limits<int>::max()> segment_tree(vec);
+  TSegmentTree<int, TMin<int>, std::numeric_limits<int>::max()> segment_tree(
+      vec);
   EXPECT_EQ(segment_tree.segmentQuery(0ULL, vec_size - 1), -45);
   EXPECT_EQ(segment_tree.segmentQuery(8ULL, vec_size - 1), -45);
   EXPECT_EQ(segment_tree.segmentQuery(0ULL, 6ULL), -10);

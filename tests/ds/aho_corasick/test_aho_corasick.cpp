@@ -7,10 +7,10 @@
 
 using namespace NAds::NDs::NAhoCorasick;
 
-using letter_aho_corasick = AhoCorasick<'a', 'z'>;
+using TLetterAhoCorasick = TAhoCorasick<'a', 'z'>;
 
 void expectSetEquality(
-    const letter_aho_corasick::occurrences& occurrences,
+    const TLetterAhoCorasick::TOccurrences& occurrences,
     const std::unordered_map<std::size_t, std::unordered_set<std::size_t>>&
         expected_occurrences) {
   std::size_t expected_occurrences_total_size = 0;
@@ -26,7 +26,7 @@ void expectSetEquality(
 }
 
 TEST(AhoCorasickAutomata, SimpleTest) {
-  letter_aho_corasick automata;
+  TLetterAhoCorasick automata;
   automata.addString("he");
   automata.addString("she");
   automata.addString("hers");

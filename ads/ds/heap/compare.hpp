@@ -5,7 +5,7 @@ namespace NAds::NDs::NHeap {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-class MoreCompare {
+class TMoreCompare {
 public:
   bool operator()(const T& left, const T& right);
 };

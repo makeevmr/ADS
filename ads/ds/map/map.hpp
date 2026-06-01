@@ -11,200 +11,198 @@ namespace NAds::NDs::NMap {
 // The comparator must satisfy strict weak ordering relation
 // TODO try to implement custom Allocator
 template <typename Key, typename T, typename Compare>
-class Map {
+class TMap {
 private:
-  struct Node;
-  class Iterator;
-  class ConstIterator;
+  struct TNode;
+  class TIterator;
+  class TConstIterator;
 
 public:
-  using key_type = Key;
-  using mapped_type = T;
-  using value_type = std::pair<const Key, T>;
-  using size_type = std::size_t;
-  using difference_type = std::ptrdiff_t;
-  using key_compare = Compare;
-  using reference = value_type&;
-  using const_reference = const value_type&;
-  using pointer = value_type*;
-  using const_pointer = const value_type*;
-  using iterator = Iterator;
-  using const_iterator = ConstIterator;
+  using TKeyType = Key;
+  using TMappedType = T;
+  using TValueType = std::pair<const Key, T>;
+  using TSizeType = std::size_t;
+  using TDifferenceType = std::ptrdiff_t;
+  using TKeyCompare = Compare;
+  using TReference = TValueType&;
+  using TConstReference = const TValueType&;
+  using TPointer = TValueType*;
+  using TConstPointer = const TValueType*;
 
-  Map();
+  TMap();
 
-  Map(const Map& other);
+  TMap(const TMap& other);
 
-  Map& operator=(const Map& other);
+  TMap& operator=(const TMap& other);
 
-  Map(Map&& other) noexcept;
+  TMap(TMap&& other) noexcept;
 
-  Map& operator=(Map&& other) noexcept;
+  TMap& operator=(TMap&& other) noexcept;
 
-  ~Map();
+  ~TMap();
 
   // Iterators
-  [[nodiscard]] iterator begin() noexcept;
+  [[nodiscard]] TIterator begin() noexcept;
 
-  [[nodiscard]] const_iterator begin() const noexcept;
+  [[nodiscard]] TConstIterator begin() const noexcept;
 
-  [[nodiscard]] const_iterator cbegin() const noexcept;
+  [[nodiscard]] TConstIterator cbegin() const noexcept;
 
-  [[nodiscard]] iterator end() noexcept;
+  [[nodiscard]] TIterator end() noexcept;
 
-  [[nodiscard]] const_iterator end() const noexcept;
+  [[nodiscard]] TConstIterator end() const noexcept;
 
-  [[nodiscard]] const_iterator cend() const noexcept;
+  [[nodiscard]] TConstIterator cend() const noexcept;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
 
-  [[nodiscard]] size_type getSize() const noexcept;
+  [[nodiscard]] TSizeType getSize() const noexcept;
 
   // Modifiers
 
-  // Return a pair consisting of an iterator to the inserted element (or to
+  // Return a pair consisting of an TIterator to the inserted element (or to
   // the element that prevented the insertion) and a bool value set to true if
   // and only if the insertion took place.
-  std::pair<iterator, bool> insert(const_reference value);
+  std::pair<TIterator, bool> insert(TConstReference value);
 
-  std::pair<iterator, bool> insert(value_type&& value);
+  std::pair<TIterator, bool> insert(TValueType&& value);
 
   // TODO change function signature
-  void erase(const key_type& erased_key) noexcept;
+  void erase(const TKeyType& erased_key) noexcept;
 
   // Lookup
-  iterator find(const key_type& search_key) noexcept;
+  TIterator find(const TKeyType& search_key) noexcept;
 
-  const_iterator find(const key_type& search_key) const noexcept;
+  TConstIterator find(const TKeyType& search_key) const noexcept;
 
-  [[nodiscard]] bool contains(const key_type& key) const noexcept;
+  [[nodiscard]] bool contains(const TKeyType& key) const noexcept;
 
 private:
-  struct Node {
-    Node(Map::pointer value, Node* left, Node* right, Node* parent,
-         Map::size_type level);
+  struct TNode {
+    TNode(TMap::TPointer value, TNode* left, TNode* right, TNode* parent,
+          TMap::TSizeType level);
 
-    Node(const Node& other);
+    TNode(const TNode& other);
 
-    ~Node();
+    ~TNode();
 
-    Map::pointer value;
-    Node* left;
-    Node* right;
-    Node* parent;
-    Map::size_type level;
+    TMap::TPointer value;
+    TNode* left;
+    TNode* right;
+    TNode* parent;
+    TMap::TSizeType level;
   };
 
-  class Iterator {
+  class TIterator {
   private:
-    friend Map::ConstIterator;
+    friend TMap::TConstIterator;
 
   public:
-    using iterator_category = std::bidirectional_iterator_tag;
-    using difference_type = Map::difference_type;
-    using value_type = Map::value_type;
-    using reference = Map::reference;
-    using pointer = Map::pointer;
+    using TIteratorCategory = std::bidirectional_iterator_tag;
+    using TDifferenceType = TMap::TDifferenceType;
+    using TValueType = TMap::TValueType;
+    using TReference = TMap::TReference;
+    using TPointer = TMap::TPointer;
 
-    explicit Iterator(Node* ptr) noexcept;
+    explicit TIterator(TNode* ptr) noexcept;
 
-    Iterator(const Iterator& other) noexcept;
+    TIterator(const TIterator& other) noexcept;
 
-    Iterator& operator=(const Iterator& other) & noexcept;
+    TIterator& operator=(const TIterator& other) & noexcept;
 
-    ~Iterator();
+    ~TIterator();
 
-    [[nodiscard]] reference operator*() const noexcept;
+    [[nodiscard]] TReference operator*() const noexcept;
 
-    [[nodiscard]] pointer operator->() const noexcept;
+    [[nodiscard]] TPointer operator->() const noexcept;
 
-    Iterator& operator++();
+    TIterator& operator++();
 
-    Iterator operator++(int);
+    TIterator operator++(int);
 
-    Iterator& operator--();
+    TIterator& operator--();
 
-    Iterator operator--(int);
+    TIterator operator--(int);
 
-    [[nodiscard]] bool operator==(const Iterator& right) const noexcept;
+    [[nodiscard]] bool operator==(const TIterator& right) const noexcept;
 
-    [[nodiscard]] bool operator!=(const Iterator& right) const noexcept;
+    [[nodiscard]] bool operator!=(const TIterator& right) const noexcept;
 
   private:
-    Node* ptr_;
+    TNode* ptr_;
   };
 
-  class ConstIterator {
+  class TConstIterator {
   public:
-    using iterator_category = std::bidirectional_iterator_tag;
-    using difference_type = Map::difference_type;
-    using value_type = Map::value_type;
-    using reference = Map::const_reference;
-    using pointer = Map::const_pointer;
+    using TIteratorCategory = std::bidirectional_iterator_tag;
+    using TDifferenceType = TMap::TDifferenceType;
+    using TValueType = TMap::TValueType;
+    using TReference = TMap::TConstReference;
+    using TPointer = TMap::TConstPointer;
 
-    explicit ConstIterator(Node* ptr) noexcept;
+    explicit TConstIterator(TNode* ptr) noexcept;
 
-    explicit ConstIterator(const Iterator& other) noexcept;
+    explicit TConstIterator(const TIterator& other) noexcept;
 
-    ConstIterator(const ConstIterator& other) noexcept;
+    TConstIterator(const TConstIterator& other) noexcept;
 
-    ConstIterator& operator=(const ConstIterator& other) & noexcept;
+    TConstIterator& operator=(const TConstIterator& other) & noexcept;
 
-    ~ConstIterator();
+    ~TConstIterator();
 
-    [[nodiscard]] reference operator*() const noexcept;
+    [[nodiscard]] TReference operator*() const noexcept;
 
-    [[nodiscard]] pointer operator->() const noexcept;
+    [[nodiscard]] TPointer operator->() const noexcept;
 
-    ConstIterator& operator++();
+    TConstIterator& operator++();
 
-    ConstIterator operator++(int);
+    TConstIterator operator++(int);
 
-    ConstIterator& operator--();
+    TConstIterator& operator--();
 
-    ConstIterator operator--(int);
+    TConstIterator operator--(int);
 
-    [[nodiscard]] bool operator==(const ConstIterator& right) const noexcept;
+    [[nodiscard]] bool operator==(const TConstIterator& right) const noexcept;
 
-    [[nodiscard]] bool operator!=(const ConstIterator& right) const noexcept;
+    [[nodiscard]] bool operator!=(const TConstIterator& right) const noexcept;
 
   private:
-    Node* ptr_;
+    TNode* ptr_;
   };
 
-  Node* skew(Node* node) noexcept;
+  TNode* skew(TNode* node) noexcept;
 
-  Node* split(Node* node) noexcept;
+  TNode* split(TNode* node) noexcept;
 
   // Deleting a node in case of less than two children
   // return parent of erased node
-  [[nodiscard]] Node* trivialNodeErase(Node* node_to_erase,
-                                       Node* child) noexcept;
+  [[nodiscard]] TNode* trivialNodeErase(TNode* node_to_erase,
+                                        TNode* child) noexcept;
 
-  void static decreaseNodeLevel(Node* node) noexcept;
+  void static decreaseNodeLevel(TNode* node) noexcept;
 
-  [[nodiscard]] static Node* next(const Node* node) noexcept;
+  [[nodiscard]] static TNode* next(const TNode* node) noexcept;
 
-  [[nodiscard]] static Node* prev(const Node* node) noexcept;
+  [[nodiscard]] static TNode* prev(const TNode* node) noexcept;
 
   // return a pointer to the node containing the key, return nullptr if such a
   // key does not exist
   // TODO add noexcept condition for Compare class
-  [[nodiscard]] Node* findNode(const key_type& search_key) const noexcept;
+  [[nodiscard]] TNode* findNode(const TKeyType& search_key) const noexcept;
 
   // return a pointer to the node containing the key, otherwise return the
   // parent of the new inserted node (return nullptr if map is empty)
-  [[nodiscard]] Node* findParent(const key_type& search_key) const noexcept;
+  [[nodiscard]] TNode* findParent(const TKeyType& search_key) const noexcept;
 
   // Pointer to leftmost node
-  [[nodiscard]] static Node* beginNode(Node* node) noexcept;
+  [[nodiscard]] static TNode* beginNode(TNode* node) noexcept;
 
-  Node* root_;
-  iterator b_iter_;
-  iterator e_iter_;
-  size_type size_;
-  key_compare comparator_;
+  TNode* root_;
+  TIterator b_iter_;
+  TIterator e_iter_;
+  TSizeType size_;
+  TKeyCompare comparator_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

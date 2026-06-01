@@ -12,19 +12,19 @@ namespace NAds::NDs::NAhoCorasick {
 // TODO: add tests
 template <char kAlphaLeft, char kAlphaRight>
 requires(kAlphaRight >= kAlphaLeft)
-class AhoCorasick {
+class TAhoCorasick {
 private:
-  struct OccurrenceInfo;
+  struct TOccurrenceInfo;
 
 public:
-  using occurrences = std::vector<OccurrenceInfo>;
+  using TOccurrences = std::vector<TOccurrenceInfo>;
 
-  AhoCorasick();
+  TAhoCorasick();
 
   void addString(const std::string& s);
 
   // Return pairs[index of end position of string in text, string index]
-  [[nodiscard]] occurrences findAllOccurrences(const std::string& text);
+  [[nodiscard]] TOccurrences findAllOccurrences(const std::string& text);
 
 private:
   static constexpr std::int64_t kAlphaSize =
@@ -38,8 +38,8 @@ private:
   // Lecture: https://www.youtube.com/watch?v=V7S80KpbQpk&list=LL&index=5&t=2s
   void buildAutomata();
 
-  struct Node {
-    Node();
+  struct TNode {
+    TNode();
 
     bool is_terminal_;
     std::size_t str_num_;
@@ -49,14 +49,14 @@ private:
     std::size_t next_[kAlphaSize];
   };
 
-  struct OccurrenceInfo {
+  struct TOccurrenceInfo {
     std::size_t str_start_pos_;
     std::size_t str_num_;
   };
 
   bool is_built_;
   std::size_t next_str_num_;
-  std::vector<Node> nodes_;
+  std::vector<TNode> nodes_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

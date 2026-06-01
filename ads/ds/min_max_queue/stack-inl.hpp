@@ -12,13 +12,13 @@ namespace NAds::NDs::NMinMaxQueue {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-Stack<T>::Stack(const size_type& capacity)
+TStack<T>::TStack(const TSizeType& capacity)
     : data_(reinterpret_cast<T*>(::operator new(sizeof(T) * capacity))),
       size_(0),
       capacity_(capacity) {}
 
 template <typename T>
-Stack<T>::Stack(const Stack<T>& other)
+TStack<T>::TStack(const TStack<T>& other)
     : data_(reinterpret_cast<T*>(::operator new(sizeof(T) * other.capacity_))),
       size_(other.size_),
       capacity_(other.capacity_) {
@@ -26,7 +26,7 @@ Stack<T>::Stack(const Stack<T>& other)
 }
 
 template <typename T>
-Stack<T>::Stack& Stack<T>::operator=(const Stack<T>& other) {
+TStack<T>::TStack& TStack<T>::operator=(const TStack<T>& other) {
   if (this != &other) {
     T* new_data =
         reinterpret_cast<T*>(::operator new(sizeof(T) * other.capacity_));
@@ -40,7 +40,7 @@ Stack<T>::Stack& Stack<T>::operator=(const Stack<T>& other) {
 }
 
 template <typename T>
-Stack<T>::Stack(Stack<T>&& other) noexcept
+TStack<T>::TStack(TStack<T>&& other) noexcept
     : data_(nullptr),
       size_(0),
       capacity_(0) {
@@ -48,7 +48,7 @@ Stack<T>::Stack(Stack<T>&& other) noexcept
 }
 
 template <typename T>
-Stack<T>::Stack& Stack<T>::operator=(Stack<T>&& other) noexcept {
+TStack<T>::TStack& TStack<T>::operator=(TStack<T>&& other) noexcept {
   if (this != &other) {
     free(data_, size_);
     data_ = nullptr;
@@ -60,12 +60,12 @@ Stack<T>::Stack& Stack<T>::operator=(Stack<T>&& other) noexcept {
 }
 
 template <typename T>
-Stack<T>::~Stack() {
+TStack<T>::~TStack() {
   free(data_, size_);
 }
 
 template <typename T>
-[[nodiscard]] Stack<T>::reference Stack<T>::top() {
+[[nodiscard]] TStack<T>::TReference TStack<T>::top() {
   if (size_ == 0) {
     throw std::length_error("Empty stack");
   }
@@ -73,7 +73,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Stack<T>::const_reference Stack<T>::top() const {
+[[nodiscard]] TStack<T>::TConstReference TStack<T>::top() const {
   if (size_ == 0) {
     throw std::length_error("Empty stack");
   }
@@ -81,7 +81,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Stack<T>::reference Stack<T>::bottom() {
+[[nodiscard]] TStack<T>::TReference TStack<T>::bottom() {
   if (size_ == 0) {
     throw std::length_error("Empty stack");
   }
@@ -89,7 +89,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Stack<T>::const_reference Stack<T>::bottom() const {
+[[nodiscard]] TStack<T>::TConstReference TStack<T>::bottom() const {
   if (size_ == 0) {
     throw std::length_error("Empty stack");
   }
@@ -97,20 +97,20 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] bool Stack<T>::empty() const noexcept {
+[[nodiscard]] bool TStack<T>::empty() const noexcept {
   return size_ == 0;
 }
 
 template <typename T>
-[[nodiscard]] Stack<T>::size_type Stack<T>::getSize() const noexcept {
+[[nodiscard]] TStack<T>::TSizeType TStack<T>::getSize() const noexcept {
   return size_;
 }
 
 template <typename T>
-void Stack<T>::resize(size_type new_capacity) {
+void TStack<T>::resize(TSizeType new_capacity) {
   T* new_data = reinterpret_cast<T*>(::operator new(sizeof(T) * new_capacity));
   if (std::is_move_constructible_v<T>) {
-    size_type copied_objects = 0;
+    TSizeType copied_objects = 0;
     while (copied_objects < size_) {
       new (new_data + copied_objects) T(std::move(data_[copied_objects]));
       ++copied_objects;
@@ -125,7 +125,7 @@ void Stack<T>::resize(size_type new_capacity) {
 }
 
 template <typename T>
-void Stack<T>::pop() {
+void TStack<T>::pop() {
   if (size_ == 0) {
     throw std::length_error("Empty stack");
   }
@@ -136,7 +136,7 @@ void Stack<T>::pop() {
 }
 
 template <typename T>
-void Stack<T>::push(const T& value) {
+void TStack<T>::push(const T& value) {
   if (size_ == capacity_) {
     resize(capacity_ * 2 + 1);
   }
@@ -145,7 +145,7 @@ void Stack<T>::push(const T& value) {
 }
 
 template <typename T>
-void Stack<T>::push(const T&& value) {
+void TStack<T>::push(const T&& value) {
   if (size_ == capacity_) {
     resize(capacity_ * 2 + 1);
   }
@@ -157,8 +157,8 @@ void Stack<T>::push(const T&& value) {
 
 template <typename T>
 template <typename Type>
-void Stack<T>::MoveStackContent<Type>::get(Stack<Type>& move_to,
-                                           Stack<Type>& move_from) {
+void TStack<T>::TMoveStackContent<Type>::get(TStack<Type>& move_to,
+                                             TStack<Type>& move_from) {
   if (std::is_move_constructible_v<Type>) {
     while (!move_from.empty()) {
       move_to.push(std::move(move_from.top()));
@@ -175,16 +175,16 @@ void Stack<T>::MoveStackContent<Type>::get(Stack<Type>& move_to,
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void Stack<T>::swap(Stack<T>& other) noexcept {
+void TStack<T>::swap(TStack<T>& other) noexcept {
   std::swap(data_, other.data_);
   std::swap(size_, other.size_);
   std::swap(capacity_, other.capacity_);
 }
 
 template <typename T>
-void Stack<T>::free(T* data_to_free, size_type destructor_calls) noexcept {
+void TStack<T>::free(T* data_to_free, TSizeType destructor_calls) noexcept {
   if (!std::is_trivially_destructible_v<T>) {
-    size_type destroyed_objects = 0;
+    TSizeType destroyed_objects = 0;
     while (destroyed_objects < destructor_calls) {
       (data_to_free + destroyed_objects)->~T();
       ++destroyed_objects;
@@ -194,8 +194,8 @@ void Stack<T>::free(T* data_to_free, size_type destructor_calls) noexcept {
 }
 
 template <typename T>
-void Stack<T>::uninitializedCopy(T* copy_to, const Stack<T>& copy_from) {
-  size_type copied_objects = 0;
+void TStack<T>::uninitializedCopy(T* copy_to, const TStack<T>& copy_from) {
+  TSizeType copied_objects = 0;
   try {
     for (; copied_objects < copy_from.size_; ++copied_objects) {
       new (copy_to + copied_objects) T(copy_from.data_[copied_objects]);
@@ -209,24 +209,24 @@ void Stack<T>::uninitializedCopy(T* copy_to, const Stack<T>& copy_from) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // Specialization for a problem condition
-void Stack<MinMaxNode>::MoveStackContent<MinMaxNode>::get(
-    Stack<MinMaxNode>& move_to, Stack<MinMaxNode>& move_from) {
+void TStack<TMinMaxNode>::TMoveStackContent<TMinMaxNode>::get(
+    TStack<TMinMaxNode>& move_to, TStack<TMinMaxNode>& move_from) {
   while (!move_from.empty()) {
     if (move_to.empty()) {
-      MinMaxNode& move_from_top = move_from.top();
-      move_to.push(MinMaxNode{move_from_top.self_value,
-                              move_from_top.self_value,
-                              move_from_top.self_value});
+      TMinMaxNode& move_from_top = move_from.top();
+      move_to.push(TMinMaxNode{move_from_top.self_value,
+                               move_from_top.self_value,
+                               move_from_top.self_value});
     } else {
-      MinMaxNode& move_to_top = move_to.top();
-      MinMaxNode& move_from_top = move_from.top();
-      move_to.push(MinMaxNode{move_from_top.self_value,
-                              move_to_top.min_value < move_from_top.self_value
-                                  ? move_to_top.min_value
-                                  : move_from_top.self_value,
-                              move_to_top.max_value > move_from_top.self_value
-                                  ? move_to_top.max_value
-                                  : move_from_top.self_value});
+      TMinMaxNode& move_to_top = move_to.top();
+      TMinMaxNode& move_from_top = move_from.top();
+      move_to.push(TMinMaxNode{move_from_top.self_value,
+                               move_to_top.min_value < move_from_top.self_value
+                                   ? move_to_top.min_value
+                                   : move_from_top.self_value,
+                               move_to_top.max_value > move_from_top.self_value
+                                   ? move_to_top.max_value
+                                   : move_from_top.self_value});
     }
     move_from.pop();
   }

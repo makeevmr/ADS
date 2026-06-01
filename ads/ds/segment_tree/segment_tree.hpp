@@ -20,9 +20,9 @@ concept BinaryOperator =
 // 1. To assign new_value to all elements in segment_tree_[left, ..., right]
 template <typename T, typename Functor, T kNeutralElement>
 requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-class SegmentTree {
+class TSegmentTree {
 public:
-  explicit SegmentTree(const std::vector<T>& vec);
+  explicit TSegmentTree(const std::vector<T>& vec);
 
   [[nodiscard]] T segmentQuery(const std::size_t& left,
                                const std::size_t& right) const;

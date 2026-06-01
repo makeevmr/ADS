@@ -9,28 +9,28 @@ namespace NAds::NDs::NMinMaxQueue {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-Queue<T>::Queue(const size_type& capacity)
+TQueue<T>::TQueue(const TSizeType& capacity)
     : size_(0),
-      push_stack_(Stack<T>(capacity)),
-      pop_stack_(Stack<T>(capacity)) {}
+      push_stack_(TStack<T>(capacity)),
+      pop_stack_(TStack<T>(capacity)) {}
 
 template <typename T>
-Queue<T>::Queue(const Queue<T>& other) = default;
+TQueue<T>::TQueue(const TQueue<T>& other) = default;
 
 template <typename T>
-Queue<T>::Queue& Queue<T>::operator=(const Queue<T>& other) = default;
+TQueue<T>::TQueue& TQueue<T>::operator=(const TQueue<T>& other) = default;
 
 template <typename T>
-Queue<T>::Queue(Queue<T>&& other) noexcept = default;
+TQueue<T>::TQueue(TQueue<T>&& other) noexcept = default;
 
 template <typename T>
-Queue<T>::Queue& Queue<T>::operator=(Queue<T>&& other) noexcept = default;
+TQueue<T>::TQueue& TQueue<T>::operator=(TQueue<T>&& other) noexcept = default;
 
 template <typename T>
-Queue<T>::~Queue() = default;
+TQueue<T>::~TQueue() = default;
 
 template <typename T>
-[[nodiscard]] Queue<T>::reference Queue<T>::front() {
+[[nodiscard]] TQueue<T>::TReference TQueue<T>::front() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -41,7 +41,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Queue<T>::const_reference Queue<T>::front() const {
+[[nodiscard]] TQueue<T>::TConstReference TQueue<T>::front() const {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -52,7 +52,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Queue<T>::reference Queue<T>::back() {
+[[nodiscard]] TQueue<T>::TReference TQueue<T>::back() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -63,7 +63,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] Queue<T>::const_reference Queue<T>::back() const {
+[[nodiscard]] TQueue<T>::TConstReference TQueue<T>::back() const {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -75,61 +75,61 @@ template <typename T>
 
 template <typename T>
 // Capacity
-[[nodiscard]] bool Queue<T>::empty() const noexcept {
+[[nodiscard]] bool TQueue<T>::empty() const noexcept {
   return size_ == 0;
 }
 
 template <typename T>
-[[nodiscard]] std::size_t Queue<T>::getSize() const noexcept {
+[[nodiscard]] std::size_t TQueue<T>::getSize() const noexcept {
   return size_;
 }
 
 template <typename T>
 // Modifiers
-void Queue<T>::pop() {
+void TQueue<T>::pop() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
   if (pop_stack_.empty()) {
-    Stack<T>::template MoveStackContent<T>::get(pop_stack_, push_stack_);
+    TStack<T>::template MoveStackContent<T>::get(pop_stack_, push_stack_);
   }
   pop_stack_.pop();
   --size_;
 }
 
 template <typename T>
-void Queue<T>::push(const T& value) {
+void TQueue<T>::push(const T& value) {
   push_stack_.push(value);
   ++size_;
 }
 
 template <typename T>
-void Queue<T>::push(T&& value) {
+void TQueue<T>::push(T&& value) {
   push_stack_.push(value);
   ++size_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Queue<MinMaxNode>::Queue(const size_type& capacity)
+TQueue<TMinMaxNode>::TQueue(const TSizeType& capacity)
     : size_(0),
-      push_stack_(Stack<MinMaxNode>(capacity)),
-      pop_stack_(Stack<MinMaxNode>(capacity)) {}
+      push_stack_(TStack<TMinMaxNode>(capacity)),
+      pop_stack_(TStack<TMinMaxNode>(capacity)) {}
 
-Queue<MinMaxNode>::Queue(const Queue<MinMaxNode>& other) = default;
+TQueue<TMinMaxNode>::TQueue(const TQueue<TMinMaxNode>& other) = default;
 
-Queue<MinMaxNode>& Queue<MinMaxNode>::operator=(
-    const Queue<MinMaxNode>& other) = default;
+TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(
+    const TQueue<TMinMaxNode>& other) = default;
 
-Queue<MinMaxNode>::Queue(Queue<MinMaxNode>&& other) noexcept = default;
+TQueue<TMinMaxNode>::TQueue(TQueue<TMinMaxNode>&& other) noexcept = default;
 
-Queue<MinMaxNode>& Queue<MinMaxNode>::operator=(
-    Queue<MinMaxNode>&& other) noexcept = default;
+TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(
+    TQueue<TMinMaxNode>&& other) noexcept = default;
 
-Queue<MinMaxNode>::~Queue() = default;
+TQueue<TMinMaxNode>::~TQueue() = default;
 
 // Element access
-[[nodiscard]] Queue<MinMaxNode>::reference Queue<MinMaxNode>::front() {
+[[nodiscard]] TQueue<TMinMaxNode>::TReference TQueue<TMinMaxNode>::front() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -139,7 +139,7 @@ Queue<MinMaxNode>::~Queue() = default;
   return pop_stack_.top();
 }
 
-[[nodiscard]] Queue<MinMaxNode>::const_reference Queue<MinMaxNode>::front()
+[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::front()
     const {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
@@ -150,7 +150,7 @@ Queue<MinMaxNode>::~Queue() = default;
   return pop_stack_.top();
 }
 
-[[nodiscard]] Queue<MinMaxNode>::reference Queue<MinMaxNode>::back() {
+[[nodiscard]] TQueue<TMinMaxNode>::TReference TQueue<TMinMaxNode>::back() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -160,7 +160,7 @@ Queue<MinMaxNode>::~Queue() = default;
   return pop_stack_.bottom();
 }
 
-[[nodiscard]] Queue<MinMaxNode>::const_reference Queue<MinMaxNode>::back()
+[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::back()
     const {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
@@ -172,29 +172,29 @@ Queue<MinMaxNode>::~Queue() = default;
 }
 
 // Capacity
-[[nodiscard]] bool Queue<MinMaxNode>::empty() const noexcept {
+[[nodiscard]] bool TQueue<TMinMaxNode>::empty() const noexcept {
   return size_ == 0;
 }
 
-[[nodiscard]] std::size_t Queue<MinMaxNode>::getSize() const noexcept {
+[[nodiscard]] std::size_t TQueue<TMinMaxNode>::getSize() const noexcept {
   return size_;
 }
 
 // Requests
-[[nodiscard]] int Queue<MinMaxNode>::getMaxDiff() const {
+[[nodiscard]] int TQueue<TMinMaxNode>::getMaxDiff() const {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
   if (push_stack_.empty()) {
-    const MinMaxNode& pop_stack_top = pop_stack_.top();
+    const TMinMaxNode& pop_stack_top = pop_stack_.top();
     return pop_stack_top.max_value - pop_stack_top.min_value;
   }
   if (pop_stack_.empty()) {
-    const MinMaxNode& push_stack_top = push_stack_.top();
+    const TMinMaxNode& push_stack_top = push_stack_.top();
     return push_stack_top.max_value - push_stack_top.min_value;
   }
-  const MinMaxNode& pop_stack_top = pop_stack_.top();
-  const MinMaxNode& push_stack_top = push_stack_.top();
+  const TMinMaxNode& pop_stack_top = pop_stack_.top();
+  const TMinMaxNode& push_stack_top = push_stack_.top();
   int max_value = push_stack_top.max_value > pop_stack_top.max_value
                       ? push_stack_top.max_value
                       : pop_stack_top.max_value;
@@ -205,24 +205,24 @@ Queue<MinMaxNode>::~Queue() = default;
 }
 
 // Modifiers
-void Queue<MinMaxNode>::pop() {
+void TQueue<TMinMaxNode>::pop() {
   if (size_ == 0) {
     throw std::length_error("Empty queue");
   }
   if (pop_stack_.empty()) {
-    Stack<MinMaxNode>::template MoveStackContent<MinMaxNode>::get(pop_stack_,
-                                                                  push_stack_);
+    TStack<TMinMaxNode>::template TMoveStackContent<TMinMaxNode>::get(
+        pop_stack_, push_stack_);
   }
   pop_stack_.pop();
   --size_;
 }
 
-void Queue<MinMaxNode>::push(int value) {
+void TQueue<TMinMaxNode>::push(int value) {
   if (push_stack_.empty()) {
-    push_stack_.push(MinMaxNode{value, value, value});
+    push_stack_.push(TMinMaxNode{value, value, value});
   } else {
-    MinMaxNode&& node_to_push = {value, value, value};
-    const MinMaxNode& top_node = push_stack_.top();
+    TMinMaxNode&& node_to_push = {value, value, value};
+    const TMinMaxNode& top_node = push_stack_.top();
     if (top_node.min_value < node_to_push.min_value) {
       node_to_push.min_value = top_node.min_value;
     }
@@ -234,7 +234,7 @@ void Queue<MinMaxNode>::push(int value) {
   ++size_;
 }
 
-void Queue<MinMaxNode>::resize(size_type new_capacity) {
+void TQueue<TMinMaxNode>::resize(TSizeType new_capacity) {
   pop_stack_.resize(new_capacity);
   push_stack_.resize(new_capacity);
 }

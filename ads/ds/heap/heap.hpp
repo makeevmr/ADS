@@ -7,75 +7,75 @@ namespace NAds::NDs::NHeap {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, typename Compare>
-class Heap {
+class THeap {
 public:
-  using value_type = T;
-  using size_type = std::size_t;
-  using value_compare = Compare;
-  using reference = T&;
-  using const_reference = const T&;
+  using TValueType = T;
+  using TSizeType = std::size_t;
+  using TValueCompare = Compare;
+  using TReference = T&;
+  using TConstReference = const T&;
 
-  Heap();
+  THeap();
 
-  explicit Heap(size_type capacity);
+  explicit THeap(TSizeType capacity);
 
-  Heap(value_type* construct_from_data, size_type size);
+  THeap(TValueType* construct_from_data, TSizeType size);
 
-  Heap(const Heap<T, Compare>& other);
+  THeap(const THeap<T, Compare>& other);
 
-  Heap<T, Compare>& operator=(const Heap<T, Compare>& other);
+  THeap<T, Compare>& operator=(const THeap<T, Compare>& other);
 
-  Heap(Heap&& other) noexcept;
+  THeap(THeap&& other) noexcept;
 
-  Heap<T, Compare>& operator=(Heap<T, Compare>&& other) noexcept;
+  THeap<T, Compare>& operator=(THeap<T, Compare>&& other) noexcept;
 
-  ~Heap();
+  ~THeap();
 
   // Element access
-  [[nodiscard]] const_reference top() const;
+  [[nodiscard]] TConstReference top() const;
 
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
 
-  [[nodiscard]] size_type getSize() const noexcept;
+  [[nodiscard]] TSizeType getSize() const noexcept;
 
   // Modifiers
-  void push(const value_type& value);
+  void push(const TValueType& value);
 
-  void push(const value_type&& value);
+  void push(const TValueType&& value);
 
   void pop();
 
 private:
-  void swap(Heap<T, Compare>& other) noexcept;
+  void swap(THeap<T, Compare>& other) noexcept;
 
-  static void free(value_type* data_to_free,
-                   size_type destructor_calls) noexcept;
+  static void free(TValueType* data_to_free,
+                   TSizeType destructor_calls) noexcept;
 
-  static void uninitializedCopy(value_type* copy_to,
-                                const Heap<T, Compare>& copy_from);
+  static void uninitializedCopy(TValueType* copy_to,
+                                const THeap<T, Compare>& copy_from);
 
-  static void uninitializedCopy(value_type* copy_to,
-                                const value_type* copy_from, size_type size);
+  static void uninitializedCopy(TValueType* copy_to,
+                                const TValueType* copy_from, TSizeType size);
 
-  [[nodiscard]] size_type getLeft(size_type index) const noexcept;
+  [[nodiscard]] TSizeType getLeft(TSizeType index) const noexcept;
 
-  [[nodiscard]] size_type getRight(size_type index) const noexcept;
+  [[nodiscard]] TSizeType getRight(TSizeType index) const noexcept;
 
-  [[nodiscard]] size_type getParent(size_type index) const noexcept;
+  [[nodiscard]] TSizeType getParent(TSizeType index) const noexcept;
 
   void resize();
 
-  void siftingDown(size_type index) noexcept(std::is_nothrow_swappable_v<T>);
+  void siftingDown(TSizeType index) noexcept(std::is_nothrow_swappable_v<T>);
 
-  void siftingUp(size_type index) noexcept(std::is_nothrow_swappable_v<T>);
+  void siftingUp(TSizeType index) noexcept(std::is_nothrow_swappable_v<T>);
 
   void makeHeap() noexcept(std::is_nothrow_swappable_v<T>);
 
-  value_type* data_;
-  size_type size_;
-  size_type capacity_;
-  value_compare comparator_;
+  TValueType* data_;
+  TSizeType size_;
+  TSizeType capacity_;
+  TValueCompare comparator_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
