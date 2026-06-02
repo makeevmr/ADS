@@ -4,6 +4,8 @@
 #include "segment_tree.hpp"
 #endif
 
+#include <stdexcept>
+
 namespace NAds::NDs::NSegmentTree {
 
 ////////////////////////////////////////////////////////////////////////////////
