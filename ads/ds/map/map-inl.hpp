@@ -8,25 +8,25 @@ namespace NAds::NDs::NMap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TMap()
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TMap()
     : root_(nullptr),
       b_iter_(TIterator(nullptr)),
       e_iter_(TIterator(nullptr)),
       size_(0),
-      comparator_(Compare()) {}
+      comparator_(TCompare()) {}
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TMap(const TMap& other)
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TMap(const TMap& other)
     : root_(other.root_ == nullptr ? nullptr : new TNode(*other.root_)),
       b_iter_(TIterator(beginNode(root_))),
       e_iter_(nullptr),
       size_(other.size_),
-      comparator_(Compare()) {}
+      comparator_(TCompare()) {}
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
-    const TMap<Key, T, Compare>& other) {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TMap& TMap<TKey, T, TCompare>::operator=(
+    const TMap<TKey, T, TCompare>& other) {
   if (this != &other) {
     delete root_;
     root_ = nullptr;
@@ -41,21 +41,21 @@ TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TMap(TMap&& other) noexcept
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TMap(TMap&& other) noexcept
     : root_(other.root_),
       b_iter_(other.b_iter_),
       e_iter_(nullptr),
       size_(other.size_),
-      comparator_(Compare()) {
+      comparator_(TCompare()) {
   other.root_ = nullptr;
   other.b_iter_ = TIterator(nullptr);
   other.size_ = 0;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
-    TMap<Key, T, Compare>&& other) noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TMap& TMap<TKey, T, TCompare>::operator=(
+    TMap<TKey, T, TCompare>&& other) noexcept {
   if (this != &other) {
     root_ = other.root_;
     b_iter_ = other.b_iter_;
@@ -67,64 +67,64 @@ TMap<Key, T, Compare>::TMap& TMap<Key, T, Compare>::operator=(
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::~TMap() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::~TMap() {
   delete root_;
   root_ = nullptr;
   b_iter_ = TIterator(nullptr);
   size_ = 0;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TIterator
-TMap<Key, T, Compare>::begin() noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator
+TMap<TKey, T, TCompare>::begin() noexcept {
   return b_iter_;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
-TMap<Key, T, Compare>::begin() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::begin() const noexcept {
   return TConstIterator(b_iter_);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
-TMap<Key, T, Compare>::cbegin() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::cbegin() const noexcept {
   return TConstIterator(b_iter_);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TIterator
-TMap<Key, T, Compare>::end() noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator
+TMap<TKey, T, TCompare>::end() noexcept {
   return e_iter_;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator TMap<Key, T, Compare>::end()
-    const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::end() const noexcept {
   return TConstIterator(e_iter_);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator
-TMap<Key, T, Compare>::cend() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::cend() const noexcept {
   return TConstIterator(e_iter_);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::empty() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::empty() const noexcept {
   return size_ == 0ULL;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TSizeType TMap<Key, T, Compare>::getSize()
-    const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TSizeType
+TMap<TKey, T, TCompare>::getSize() const noexcept {
   return size_;
 }
 
-template <typename Key, typename T, typename Compare>
-std::pair<typename TMap<Key, T, Compare>::TIterator, bool>
-TMap<Key, T, Compare>::insert(TConstReference value) {
+template <typename TKey, typename T, typename TCompare>
+std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool>
+TMap<TKey, T, TCompare>::insert(TConstReference value) {
   TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->value->first == value.first)) {
     return std::pair<TIterator, bool>{TIterator(parent), false};
@@ -164,9 +164,9 @@ TMap<Key, T, Compare>::insert(TConstReference value) {
   return std::pair<TIterator, bool>{TIterator(new_node), true};
 }
 
-template <typename Key, typename T, typename Compare>
-std::pair<typename TMap<Key, T, Compare>::TIterator, bool>
-TMap<Key, T, Compare>::insert(TValueType&& value) {
+template <typename TKey, typename T, typename TCompare>
+std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool>
+TMap<TKey, T, TCompare>::insert(TValueType&& value) {
   TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->value->first == value.first)) {
     return std::pair<TIterator, bool>{TIterator(parent), false};
@@ -206,9 +206,9 @@ TMap<Key, T, Compare>::insert(TValueType&& value) {
   return std::pair<TIterator, bool>{TIterator(new_node), true};
 }
 
-template <typename Key, typename T, typename Compare>
-void TMap<Key, T, Compare>::erase(
-    const TMap<Key, T, Compare>::TKeyType& erased_key) noexcept {
+template <typename TKey, typename T, typename TCompare>
+void TMap<TKey, T, TCompare>::erase(
+    const TMap<TKey, T, TCompare>::TKeyType& erased_key) noexcept {
   if (root_ == nullptr) {
     return;
   }
@@ -266,40 +266,42 @@ void TMap<Key, T, Compare>::erase(
   }
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::find(
-    const typename TMap<Key, T, Compare>::TKeyType& search_key) noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::find(
+    const typename TMap<TKey, T, TCompare>::TKeyType& search_key) noexcept {
   return TIterator(findNode(search_key));
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator TMap<Key, T, Compare>::find(
-    const typename TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::find(
+    const typename TMap<TKey, T, TCompare>::TKeyType& search_key)
+    const noexcept {
   return TConstIterator(findNode(search_key));
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::contains(
-    const typename TMap<Key, T, Compare>::TKeyType& key) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::contains(
+    const typename TMap<TKey, T, TCompare>::TKeyType& key) const noexcept {
   return findNode(key) != nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TNode::TNode(TMap<Key, T, Compare>::TPointer value,
-                                    TMap<Key, T, Compare>::TNode* left,
-                                    TMap<Key, T, Compare>::TNode* right,
-                                    TMap<Key, T, Compare>::TNode* parent,
-                                    TMap::TSizeType level)
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TNode::TNode(TMap<TKey, T, TCompare>::TPointer value,
+                                      TMap<TKey, T, TCompare>::TNode* left,
+                                      TMap<TKey, T, TCompare>::TNode* right,
+                                      TMap<TKey, T, TCompare>::TNode* parent,
+                                      TMap::TSizeType level)
     : value(value),
       left(left),
       right(right),
       parent(parent),
       level(level) {}
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TNode::TNode(const TMap<Key, T, Compare>::TNode& other)
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TNode::TNode(
+    const TMap<TKey, T, TCompare>::TNode& other)
     : value(new TValueType(*(other.value))),
       left(nullptr),
       right(nullptr),
@@ -315,8 +317,8 @@ TMap<Key, T, Compare>::TNode::TNode(const TMap<Key, T, Compare>::TNode& other)
   }
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TNode::~TNode() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TNode::~TNode() {
   delete value;
   value = nullptr;
   delete left;
@@ -329,171 +331,172 @@ TMap<Key, T, Compare>::TNode::~TNode() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator::TIterator(
-    TMap<Key, T, Compare>::TNode* ptr) noexcept
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator::TIterator(
+    TMap<TKey, T, TCompare>::TNode* ptr) noexcept
     : ptr_(ptr) {};
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator::TIterator(
-    const TMap<Key, T, Compare>::TIterator& other) noexcept
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator::TIterator(
+    const TMap<TKey, T, TCompare>::TIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator& TMap<Key, T, Compare>::TIterator::operator=(
-    const TMap<Key, T, Compare>::TIterator& other) & noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator&
+TMap<TKey, T, TCompare>::TIterator::operator=(
+    const TMap<TKey, T, TCompare>::TIterator& other) & noexcept {
   if (this != &other) {
     ptr_ = other.ptr_;
   }
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator::~TIterator() {};
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator::~TIterator() {};
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TIterator::TReference
-TMap<Key, T, Compare>::TIterator::operator*() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator::TReference
+TMap<TKey, T, TCompare>::TIterator::operator*() const noexcept {
   return *(ptr_->value);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TIterator::TPointer
-TMap<Key, T, Compare>::TIterator::operator->() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator::TPointer
+TMap<TKey, T, TCompare>::TIterator::operator->() const noexcept {
   return ptr_->value;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator&
-TMap<Key, T, Compare>::TIterator::operator++() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator&
+TMap<TKey, T, TCompare>::TIterator::operator++() {
   ptr_ = TMap::next(ptr_);
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::TIterator::operator++(
-    int) {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator
+TMap<TKey, T, TCompare>::TIterator::operator++(int) {
   TIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator&
-TMap<Key, T, Compare>::TIterator::operator--() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator&
+TMap<TKey, T, TCompare>::TIterator::operator--() {
   ptr_ = TMap::prev(ptr_);
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TIterator TMap<Key, T, Compare>::TIterator::operator--(
-    int) {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TIterator
+TMap<TKey, T, TCompare>::TIterator::operator--(int) {
   TIterator tmp = *this;
   --(*this);
   return tmp;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::TIterator::operator==(
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::TIterator::operator==(
     const TIterator& right) const noexcept {
   return ptr_ == right.ptr_;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::TIterator::operator!=(
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::TIterator::operator!=(
     const TIterator& right) const noexcept {
   return ptr_ != right.ptr_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator::TConstIterator(
-    TMap<Key, T, Compare>::TNode* ptr) noexcept
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
+    TMap<TKey, T, TCompare>::TNode* ptr) noexcept
     : ptr_(ptr) {};
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator::TConstIterator(
-    const TMap<Key, T, Compare>::TIterator& other) noexcept
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
+    const TMap<TKey, T, TCompare>::TIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator::TConstIterator(
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
     const TConstIterator& other) noexcept
     : ptr_(other.ptr_) {};
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator&
-TMap<Key, T, Compare>::TConstIterator::operator=(
-    const TMap<Key, T, Compare>::TConstIterator& other) & noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator&
+TMap<TKey, T, TCompare>::TConstIterator::operator=(
+    const TMap<TKey, T, TCompare>::TConstIterator& other) & noexcept {
   if (this != &other) {
     ptr_ = other.ptr_;
   }
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator::~TConstIterator() {};
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator::~TConstIterator() {};
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator::TReference
-TMap<Key, T, Compare>::TConstIterator::operator*() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator::TReference
+TMap<TKey, T, TCompare>::TConstIterator::operator*() const noexcept {
   return *(ptr_->value);
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TConstIterator::TPointer
-TMap<Key, T, Compare>::TConstIterator::operator->() const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator::TPointer
+TMap<TKey, T, TCompare>::TConstIterator::operator->() const noexcept {
   return ptr_->value;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator&
-TMap<Key, T, Compare>::TConstIterator::operator++() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator&
+TMap<TKey, T, TCompare>::TConstIterator::operator++() {
   ptr_ = TMap::next(ptr_);
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator
-TMap<Key, T, Compare>::TConstIterator::operator++(int) {
-  TMap<Key, T, Compare>::TConstIterator tmp = *this;
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::TConstIterator::operator++(int) {
+  TMap<TKey, T, TCompare>::TConstIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator&
-TMap<Key, T, Compare>::TConstIterator::operator--() {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator&
+TMap<TKey, T, TCompare>::TConstIterator::operator--() {
   ptr_ = TMap::prev(ptr_);
   return *this;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TConstIterator
-TMap<Key, T, Compare>::TConstIterator::operator--(int) {
-  TMap<Key, T, Compare>::TConstIterator tmp = *this;
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TConstIterator
+TMap<TKey, T, TCompare>::TConstIterator::operator--(int) {
+  TMap<TKey, T, TCompare>::TConstIterator tmp = *this;
   --(*this);
   return tmp;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::TConstIterator::operator==(
-    const TMap<Key, T, Compare>::TConstIterator& right) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::TConstIterator::operator==(
+    const TMap<TKey, T, TCompare>::TConstIterator& right) const noexcept {
   return ptr_ == right.ptr_;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] bool TMap<Key, T, Compare>::TConstIterator::operator!=(
-    const TMap<Key, T, Compare>::TConstIterator& right) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] bool TMap<TKey, T, TCompare>::TConstIterator::operator!=(
+    const TMap<TKey, T, TCompare>::TConstIterator& right) const noexcept {
   return ptr_ != right.ptr_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::skew(
-    TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::skew(
+    TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if ((node->left == nullptr) || (node->level != node->left->level)) {
     return node;
   }
@@ -518,9 +521,9 @@ TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::skew(
   return left_node;
 }
 
-template <typename Key, typename T, typename Compare>
-TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::split(
-    TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::split(
+    TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if (node->right == nullptr || node->right->right == nullptr ||
       node->level != node->right->right->level) {
     return node;
@@ -547,11 +550,11 @@ TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::split(
   return right_node;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode*
-TMap<Key, T, Compare>::trivialNodeErase(
-    TMap<Key, T, Compare>::TNode* node_to_erase,
-    TMap<Key, T, Compare>::TNode* child) noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
+TMap<TKey, T, TCompare>::trivialNodeErase(
+    TMap<TKey, T, TCompare>::TNode* node_to_erase,
+    TMap<TKey, T, TCompare>::TNode* child) noexcept {
   if (child != nullptr) {
     child->parent = node_to_erase->parent;
   }
@@ -577,9 +580,9 @@ TMap<Key, T, Compare>::trivialNodeErase(
   return parent;
 }
 
-template <typename Key, typename T, typename Compare>
-void TMap<Key, T, Compare>::decreaseNodeLevel(
-    TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+void TMap<TKey, T, TCompare>::decreaseNodeLevel(
+    TMap<TKey, T, TCompare>::TNode* node) noexcept {
   TSizeType left_diff =
       node->left != nullptr ? node->level - node->left->level : node->level;
   TSizeType right_diff =
@@ -592,9 +595,9 @@ void TMap<Key, T, Compare>::decreaseNodeLevel(
   }
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::next(
-    const TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::next(
+    const TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if (node->right != nullptr) {
     TNode* current_node = node->right;
     while (current_node->left != nullptr) {
@@ -610,9 +613,9 @@ template <typename Key, typename T, typename Compare>
   return parent;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::prev(
-    const TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::prev(
+    const TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if (node->left != nullptr) {
     TNode* current_node = node->left;
     while (current_node->right != nullptr) {
@@ -628,9 +631,9 @@ template <typename Key, typename T, typename Compare>
   return parent;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::findNode(
-    const TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::findNode(
+    const TMap<TKey, T, TCompare>::TKeyType& search_key) const noexcept {
   TNode* node = root_;
   while (node != nullptr) {
     const TKeyType key = node->value->first;
@@ -646,9 +649,10 @@ template <typename Key, typename T, typename Compare>
   return node;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::findParent(
-    const TMap<Key, T, Compare>::TKeyType& search_key) const noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
+TMap<TKey, T, TCompare>::findParent(
+    const TMap<TKey, T, TCompare>::TKeyType& search_key) const noexcept {
   TNode* parent = nullptr;
   TNode* node = root_;
   while (node != nullptr) {
@@ -669,9 +673,10 @@ template <typename Key, typename T, typename Compare>
   return parent;
 }
 
-template <typename Key, typename T, typename Compare>
-[[nodiscard]] TMap<Key, T, Compare>::TNode* TMap<Key, T, Compare>::beginNode(
-    TMap<Key, T, Compare>::TNode* node) noexcept {
+template <typename TKey, typename T, typename TCompare>
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
+TMap<TKey, T, TCompare>::beginNode(
+    TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if (node == nullptr) {
     return nullptr;
   }

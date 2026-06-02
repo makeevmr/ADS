@@ -8,9 +8,9 @@ namespace NAds::NDs::NSegmentTree {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-TSegmentTree<T, Functor, kNeutralElement>::TSegmentTree(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+TSegmentTree<T, TFunctor, kNeutralElement>::TSegmentTree(
     const std::vector<T>& vec)
     : bin_operation_(),
       vec_size_(vec.size()),
@@ -21,9 +21,9 @@ TSegmentTree<T, Functor, kNeutralElement>::TSegmentTree(
   build(vec, 0ULL, 0ULL, vec.size() - 1);
 }
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-[[nodiscard]] T TSegmentTree<T, Functor, kNeutralElement>::segmentQuery(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+[[nodiscard]] T TSegmentTree<T, TFunctor, kNeutralElement>::segmentQuery(
     const std::size_t& left, const std::size_t& right) const {
   if (left > right) {
     throw std::range_error(
@@ -35,9 +35,9 @@ requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
   return subtreeSegmentQuery(0ULL, 0ULL, vec_size_ - 1, left, right);
 }
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, Functor, kNeutralElement>::indexUpdate(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+void TSegmentTree<T, TFunctor, kNeutralElement>::indexUpdate(
     const std::size_t& vec_ind, const T& new_vec_value) {
   if (vec_ind >= vec_size_) {
     throw std::range_error("Index exceeds the size of the vector");
@@ -45,9 +45,9 @@ void TSegmentTree<T, Functor, kNeutralElement>::indexUpdate(
   subtreeIndexUpdate(0ULL, 0ULL, vec_size_ - 1, vec_ind, new_vec_value);
 }
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, Functor, kNeutralElement>::build(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+void TSegmentTree<T, TFunctor, kNeutralElement>::build(
     const std::vector<T>& base_array, const std::size_t& tree_ind,
     const std::size_t& segment_left, const std::size_t& segment_right) {
   if (segment_left == segment_right) {
@@ -63,9 +63,9 @@ void TSegmentTree<T, Functor, kNeutralElement>::build(
   }
 }
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-[[nodiscard]] T TSegmentTree<T, Functor, kNeutralElement>::subtreeSegmentQuery(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+[[nodiscard]] T TSegmentTree<T, TFunctor, kNeutralElement>::subtreeSegmentQuery(
     const std::size_t& tree_ind, const std::size_t& segment_left,
     const std::size_t& segment_right, const std::size_t& query_left,
     const std::size_t& query_right) const {
@@ -86,9 +86,9 @@ requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
                           query_right));
 }
 
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, Functor, kNeutralElement>::subtreeIndexUpdate(
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
+void TSegmentTree<T, TFunctor, kNeutralElement>::subtreeIndexUpdate(
     const std::size_t& tree_ind, const std::size_t& segment_left,
     const std::size_t& segment_right, const std::size_t& vec_ind,
     const T& new_vec_value) {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdexcept>
 #include <vector>
 #include <type_traits>
 
@@ -8,18 +7,18 @@ namespace NAds::NDs::NSegmentTree {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename Functor, typename ArgType>
-concept BinaryOperator =
-    requires(Functor func_obj, ArgType arg1, ArgType arg2) {
-      { func_obj(arg1, arg2) } -> std::same_as<ArgType>;
+template <typename TFunctor, typename TArgType>
+concept CBinaryOperator =
+    requires(TFunctor func_obj, TArgType arg1, TArgType arg2) {
+      { func_obj(arg1, arg2) } -> std::same_as<TArgType>;
     };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO add methods:
 // 1. To assign new_value to all elements in segment_tree_[left, ..., right]
-template <typename T, typename Functor, T kNeutralElement>
-requires BinaryOperator<Functor, T> && std::is_copy_assignable_v<T>
+template <typename T, typename TFunctor, T kNeutralElement>
+requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
 class TSegmentTree {
 public:
   explicit TSegmentTree(const std::vector<T>& vec);
@@ -44,7 +43,7 @@ private:
                           const std::size_t& segment_right,
                           const std::size_t& vec_ind, const T& new_vec_value);
 
-  Functor bin_operation_;
+  TFunctor bin_operation_;
   std::size_t vec_size_;
   std::vector<T> segment_tree_;
 };

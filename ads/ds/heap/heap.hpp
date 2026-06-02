@@ -6,12 +6,12 @@ namespace NAds::NDs::NHeap {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, typename Compare>
+template <typename T, typename TCompare>
 class THeap {
 public:
   using TValueType = T;
   using TSizeType = std::size_t;
-  using TValueCompare = Compare;
+  using TValueCompare = TCompare;
   using TReference = T&;
   using TConstReference = const T&;
 
@@ -21,13 +21,13 @@ public:
 
   THeap(TValueType* construct_from_data, TSizeType size);
 
-  THeap(const THeap<T, Compare>& other);
+  THeap(const THeap<T, TCompare>& other);
 
-  THeap<T, Compare>& operator=(const THeap<T, Compare>& other);
+  THeap<T, TCompare>& operator=(const THeap<T, TCompare>& other);
 
   THeap(THeap&& other) noexcept;
 
-  THeap<T, Compare>& operator=(THeap<T, Compare>&& other) noexcept;
+  THeap<T, TCompare>& operator=(THeap<T, TCompare>&& other) noexcept;
 
   ~THeap();
 
@@ -47,13 +47,13 @@ public:
   void pop();
 
 private:
-  void swap(THeap<T, Compare>& other) noexcept;
+  void swap(THeap<T, TCompare>& other) noexcept;
 
   static void free(TValueType* data_to_free,
                    TSizeType destructor_calls) noexcept;
 
   static void uninitializedCopy(TValueType* copy_to,
-                                const THeap<T, Compare>& copy_from);
+                                const THeap<T, TCompare>& copy_from);
 
   static void uninitializedCopy(TValueType* copy_to,
                                 const TValueType* copy_from, TSizeType size);

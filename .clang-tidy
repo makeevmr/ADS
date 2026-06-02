@@ -1,17 +1,12 @@
 ---
 
-Checks: '-*,cppcoreguidelines-avoid-goto,cppcoreguidelines-pro-type-const-cast, google-runtime-int, modernize-use-nullptr, readability-braces-around-statements, readability-container-size-empty, readability-redundant-control-flow, readability-identifier-naming, readability-simplify-boolean-expr, readability-implicit-bool-conversion, google-explicit-constructor, modernize-use-using'
+Checks: '-*,cppcoreguidelines-avoid-goto,cppcoreguidelines-pro-type-const-cast,cppcoreguidelines-use-enum-class,google-runtime-int,modernize-use-nullptr,readability-braces-around-statements,readability-container-size-empty,readability-redundant-control-flow,readability-identifier-naming,readability-simplify-boolean-expr,readability-implicit-bool-conversion,google-explicit-constructor,modernize-use-using'
 
 HeaderFilterRegex: '\.hpp$'
 
 WarningsAsErrors: '*'
 
 CheckOptions:
-  - key: readability-identifier-naming.NamespaceCase
-    value: CamelCase
-  - key: readability-identifier-naming.NamespacePrefix
-    value: 'N'
-
   - key: readability-identifier-naming.ClassCase
     value: CamelCase
   - key: readability-identifier-naming.ClassPrefix
@@ -27,6 +22,33 @@ CheckOptions:
   - key: readability-identifier-naming.TypeAliasPrefix
     value: 'T'
 
+  - key: readability-identifier-naming.TypeTemplateParameterCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypeTemplateParameterPrefix
+    value: 'T'
+  - key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp
+    value: '^T$'
+
+  - key: readability-identifier-naming.NamespaceCase
+    value: CamelCase
+  - key: readability-identifier-naming.NamespacePrefix
+    value: 'N'
+
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumPrefix
+    value: 'E'
+
+  - key: readability-identifier-naming.ConceptCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConceptPrefix
+    value: 'C'
+
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+
   - key: readability-identifier-naming.FunctionCase
     value: camelBack
 
@@ -35,11 +57,6 @@ CheckOptions:
 
   - key: readability-identifier-naming.VariableCase
     value: lower_case
-
-  - key: readability-identifier-naming.PrivateMemberCase
-    value: lower_case
-  - key: readability-identifier-naming.PrivateMemberSuffix
-    value: '_'
 
   - key: readability-identifier-naming.GlobalConstantCase
     value: CamelCase
@@ -56,13 +73,7 @@ CheckOptions:
   - key: readability-identifier-naming.ConstexprVariablePrefix
     value: k
 
-  - key: readability-identifier-naming.TypeTemplateParameterCase
-    value: CamelCase
-
   - key: readability-simplify-boolean-expr.ChainedConditionalReturn
     value: '1'
   - key: readability-simplify-boolean-expr.ChainedConditionalAssignment
     value: '1'
-
-  - key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp
-    value: expr-type

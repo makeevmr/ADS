@@ -54,10 +54,10 @@ public:
   void push(const T&& value);
 
   // Move content of one push_stack to pop_stack
-  template <typename Type>
+  template <typename TType>
   class TMoveStackContent {
   public:
-    static void get(TStack<Type>& move_to, TStack<Type>& move_from);
+    static void get(TStack<TType>& move_to, TStack<TType>& move_from);
   };
 
 private:

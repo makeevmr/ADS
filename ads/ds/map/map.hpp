@@ -10,7 +10,7 @@ namespace NAds::NDs::NMap {
 // Implementation of map using AA Tree
 // The comparator must satisfy strict weak ordering relation
 // TODO try to implement custom Allocator
-template <typename Key, typename T, typename Compare>
+template <typename TKey, typename T, typename TCompare>
 class TMap {
 private:
   struct TNode;
@@ -18,12 +18,12 @@ private:
   class TConstIterator;
 
 public:
-  using TKeyType = Key;
+  using TKeyType = TKey;
   using TMappedType = T;
-  using TValueType = std::pair<const Key, T>;
+  using TValueType = std::pair<const TKey, T>;
   using TSizeType = std::size_t;
   using TDifferenceType = std::ptrdiff_t;
-  using TKeyCompare = Compare;
+  using TKeyCompare = TCompare;
   using TReference = TValueType&;
   using TConstReference = const TValueType&;
   using TPointer = TValueType*;

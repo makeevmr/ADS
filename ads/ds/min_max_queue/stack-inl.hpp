@@ -156,10 +156,10 @@ void TStack<T>::push(const T&& value) {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-template <typename Type>
-void TStack<T>::TMoveStackContent<Type>::get(TStack<Type>& move_to,
-                                             TStack<Type>& move_from) {
-  if (std::is_move_constructible_v<Type>) {
+template <typename TType>
+void TStack<T>::TMoveStackContent<TType>::get(TStack<TType>& move_to,
+                                              TStack<TType>& move_from) {
+  if (std::is_move_constructible_v<TType>) {
     while (!move_from.empty()) {
       move_to.push(std::move(move_from.top()));
       --move_from.size_;
