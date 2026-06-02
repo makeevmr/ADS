@@ -17,7 +17,7 @@ concept CBinaryOperator =
 
 // TODO add methods:
 // 1. To assign new_value to all elements in segment_tree_[left, ..., right]
-template <typename T, typename TFunctor, T kNeutralElement>
+template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
 class TSegmentTree {
 public:
@@ -43,9 +43,9 @@ private:
                           const std::size_t& segment_right,
                           const std::size_t& vec_ind, const T& new_vec_value);
 
-  TFunctor bin_operation_;
-  std::size_t vec_size_;
-  std::vector<T> segment_tree_;
+  TFunctor BinOperation_;
+  std::size_t VecSize_;
+  std::vector<T> SegmentTree_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -19,9 +19,9 @@ void expectSetEquality(
   }
   EXPECT_EQ(occurrences.size(), expected_occurrences_total_size);
   for (const auto& occurrence : occurrences) {
-    auto f_iter = expected_occurrences.find(occurrence.str_start_pos_);
+    auto f_iter = expected_occurrences.find(occurrence.StrStartPos);
     EXPECT_TRUE(f_iter != expected_occurrences.end());
-    EXPECT_TRUE(f_iter->second.contains(occurrence.str_num_));
+    EXPECT_TRUE(f_iter->second.contains(occurrence.StrNum));
   }
 }
 

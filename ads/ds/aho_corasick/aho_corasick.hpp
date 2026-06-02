@@ -10,8 +10,8 @@ namespace NAds::NDs::NAhoCorasick {
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO: add tests
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
 class TAhoCorasick {
 private:
   struct TOccurrenceInfo;
@@ -27,11 +27,11 @@ public:
   [[nodiscard]] TOccurrences findAllOccurrences(const std::string& text);
 
 private:
-  static constexpr std::int64_t kAlphaSize =
-      static_cast<std::int64_t>(kAlphaRight - kAlphaLeft) + 1;
-  static constexpr std::size_t kUndefinedFlag =
+  static constexpr std::int64_t AlphaSize =
+      static_cast<std::int64_t>(AlphaRight - AlphaLeft) + 1;
+  static constexpr std::size_t UndefinedFlag =
       std::numeric_limits<std::size_t>::max();
-  static constexpr std::size_t kNoPathFlag = kUndefinedFlag - 1;
+  static constexpr std::size_t NoPathFlag = UndefinedFlag - 1;
 
   // This function must be called after all strings was added
   // Aho-Corasick algorithm implementation
@@ -41,22 +41,22 @@ private:
   struct TNode {
     TNode();
 
-    bool is_terminal_;
-    std::size_t str_num_;
-    std::size_t str_size_;
-    std::size_t suffix_link_;
-    std::size_t to_terminal_link_;
-    std::size_t next_[kAlphaSize];
+    bool IsTerminal;
+    std::size_t StrNum;
+    std::size_t StrSize;
+    std::size_t SuffixLink;
+    std::size_t ToTerminalLink;
+    std::size_t Next[AlphaSize];
   };
 
   struct TOccurrenceInfo {
-    std::size_t str_start_pos_;
-    std::size_t str_num_;
+    std::size_t StrStartPos;
+    std::size_t StrNum;
   };
 
-  bool is_built_;
-  std::size_t next_str_num_;
-  std::vector<TNode> nodes_;
+  bool IsBuilt_;
+  std::size_t NextStrNum_;
+  std::vector<TNode> Nodes_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

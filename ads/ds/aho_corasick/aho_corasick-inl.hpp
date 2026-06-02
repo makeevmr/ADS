@@ -11,56 +11,55 @@ namespace NAds::NDs::NAhoCorasick {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
-TAhoCorasick<kAlphaLeft, kAlphaRight>::TAhoCorasick()
-    : is_built_(false),
-      next_str_num_(0),
-      nodes_(std::vector<TNode>(1)) {}
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
+TAhoCorasick<AlphaLeft, AlphaRight>::TAhoCorasick()
+    : IsBuilt_(false),
+      NextStrNum_(0),
+      Nodes_(std::vector<TNode>(1)) {}
 
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
-void TAhoCorasick<kAlphaLeft, kAlphaRight>::addString(const std::string& s) {
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
+void TAhoCorasick<AlphaLeft, AlphaRight>::addString(const std::string& s) {
   std::size_t curr_node = 0;
   for (const char& symbol : s) {
-    const std::size_t symbol_ind =
-        static_cast<std::size_t>(symbol - kAlphaLeft);
-    if (nodes_[curr_node].next_[symbol_ind] == kUndefinedFlag) {
-      is_built_ = false;
-      nodes_[curr_node].next_[symbol_ind] = nodes_.size();
-      nodes_.emplace_back();
+    const std::size_t symbol_ind = static_cast<std::size_t>(symbol - AlphaLeft);
+    if (Nodes_[curr_node].Next[symbol_ind] == UndefinedFlag) {
+      IsBuilt_ = false;
+      Nodes_[curr_node].Next[symbol_ind] = Nodes_.size();
+      Nodes_.emplace_back();
     }
-    curr_node = nodes_[curr_node].next_[symbol_ind];
+    curr_node = Nodes_[curr_node].Next[symbol_ind];
   }
-  nodes_[curr_node].is_terminal_ = true;
-  nodes_[curr_node].str_num_ = next_str_num_++;
-  nodes_[curr_node].str_size_ = s.size();
+  Nodes_[curr_node].IsTerminal = true;
+  Nodes_[curr_node].StrNum = NextStrNum_++;
+  Nodes_[curr_node].StrSize = s.size();
 }
 
 // Return pairs[index of end position of string in text, string index]
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
-[[nodiscard]] TAhoCorasick<kAlphaLeft, kAlphaRight>::TOccurrences
-TAhoCorasick<kAlphaLeft, kAlphaRight>::findAllOccurrences(
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
+[[nodiscard]] TAhoCorasick<AlphaLeft, AlphaRight>::TOccurrences
+TAhoCorasick<AlphaLeft, AlphaRight>::findAllOccurrences(
     const std::string& text) {
-  if (!is_built_) {
+  if (!IsBuilt_) {
     buildAutomata();
-    is_built_ = true;
+    IsBuilt_ = true;
   }
   std::size_t curr_node = 0;
   std::vector<TOccurrenceInfo> occurences;
   const std::size_t text_size = text.size();
   for (std::size_t i = 0; i < text_size; ++i) {
-    curr_node = nodes_[curr_node].next_[text[i] - kAlphaLeft];
+    curr_node = Nodes_[curr_node].Next[text[i] - AlphaLeft];
     std::size_t traverse_back_node = curr_node;
     do {
-      if (nodes_[traverse_back_node].is_terminal_) {
+      if (Nodes_[traverse_back_node].IsTerminal) {
         occurences.push_back(TOccurrenceInfo{
-            .str_start_pos_ = ((i + 1) - nodes_[traverse_back_node].str_size_),
-            .str_num_ = nodes_[traverse_back_node].str_num_});
+            .StrStartPos = ((i + 1) - Nodes_[traverse_back_node].StrSize),
+            .StrNum = Nodes_[traverse_back_node].StrNum});
       }
-      traverse_back_node = nodes_[traverse_back_node].to_terminal_link_;
-    } while (traverse_back_node != kNoPathFlag);
+      traverse_back_node = Nodes_[traverse_back_node].ToTerminalLink;
+    } while (traverse_back_node != NoPathFlag);
   }
   return occurences;
 }
@@ -68,14 +67,14 @@ TAhoCorasick<kAlphaLeft, kAlphaRight>::findAllOccurrences(
 // This function must be called after all strings was added
 // Aho-Corasick algorithm implementation
 // Lecture: https://www.youtube.com/watch?v=V7S80KpbQpk&list=LL&index=5&t=2s
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
-void TAhoCorasick<kAlphaLeft, kAlphaRight>::buildAutomata() {
-  nodes_[0].suffix_link_ = kNoPathFlag;
-  nodes_[0].to_terminal_link_ = kNoPathFlag;
-  for (char c = kAlphaLeft; c <= kAlphaRight; ++c) {
-    if (nodes_[0].next_[c - kAlphaLeft] == kUndefinedFlag) {
-      nodes_[0].next_[c - kAlphaLeft] = 0;
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
+void TAhoCorasick<AlphaLeft, AlphaRight>::buildAutomata() {
+  Nodes_[0].SuffixLink = NoPathFlag;
+  Nodes_[0].ToTerminalLink = NoPathFlag;
+  for (char c = AlphaLeft; c <= AlphaRight; ++c) {
+    if (Nodes_[0].Next[c - AlphaLeft] == UndefinedFlag) {
+      Nodes_[0].Next[c - AlphaLeft] = 0;
     }
   }
   std::queue<std::size_t> nodes_queue;
@@ -83,40 +82,39 @@ void TAhoCorasick<kAlphaLeft, kAlphaRight>::buildAutomata() {
   while (!nodes_queue.empty()) {
     std::size_t parent = nodes_queue.front();
     nodes_queue.pop();
-    for (char c = kAlphaLeft; c <= kAlphaRight; ++c) {
-      std::size_t child = nodes_[parent].next_[c - kAlphaLeft];
-      if (nodes_[child].suffix_link_ != kUndefinedFlag) {
+    for (char c = AlphaLeft; c <= AlphaRight; ++c) {
+      std::size_t child = Nodes_[parent].Next[c - AlphaLeft];
+      if (Nodes_[child].SuffixLink != UndefinedFlag) {
         continue;
       }
-      nodes_[child].suffix_link_ =
-          (parent == 0
-               ? 0
-               : nodes_[nodes_[parent].suffix_link_].next_[c - kAlphaLeft]);
-      const std::size_t& suff_link_node = nodes_[child].suffix_link_;
-      nodes_[child].to_terminal_link_ =
-          (nodes_[suff_link_node].is_terminal_
+      Nodes_[child].SuffixLink =
+          (parent == 0 ? 0
+                       : Nodes_[Nodes_[parent].SuffixLink].Next[c - AlphaLeft]);
+      const std::size_t& suff_link_node = Nodes_[child].SuffixLink;
+      Nodes_[child].ToTerminalLink =
+          (Nodes_[suff_link_node].IsTerminal
                ? suff_link_node
-               : nodes_[suff_link_node].to_terminal_link_);
-      for (char d = kAlphaLeft; d <= kAlphaRight; ++d) {
-        if (nodes_[child].next_[d - kAlphaLeft] != kUndefinedFlag) {
+               : Nodes_[suff_link_node].ToTerminalLink);
+      for (char d = AlphaLeft; d <= AlphaRight; ++d) {
+        if (Nodes_[child].Next[d - AlphaLeft] != UndefinedFlag) {
           continue;
         }
-        nodes_[child].next_[d - kAlphaLeft] =
-            nodes_[nodes_[child].suffix_link_].next_[d - kAlphaLeft];
+        Nodes_[child].Next[d - AlphaLeft] =
+            Nodes_[Nodes_[child].SuffixLink].Next[d - AlphaLeft];
       }
       nodes_queue.push(child);
     }
   }
 }
 
-template <char kAlphaLeft, char kAlphaRight>
-requires(kAlphaRight >= kAlphaLeft)
-TAhoCorasick<kAlphaLeft, kAlphaRight>::TNode::TNode()
-    : is_terminal_(false),
-      str_num_(kUndefinedFlag),
-      suffix_link_(kUndefinedFlag),
-      to_terminal_link_(kUndefinedFlag) {
-  std::fill(next_, next_ + kAlphaSize, kUndefinedFlag);
+template <char AlphaLeft, char AlphaRight>
+requires(AlphaRight >= AlphaLeft)
+TAhoCorasick<AlphaLeft, AlphaRight>::TNode::TNode()
+    : IsTerminal(false),
+      StrNum(UndefinedFlag),
+      SuffixLink(UndefinedFlag),
+      ToTerminalLink(UndefinedFlag) {
+  std::fill(Next, Next + AlphaSize, UndefinedFlag);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
