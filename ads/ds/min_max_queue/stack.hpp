@@ -67,9 +67,9 @@ private:
 
   static void uninitializedCopy(T* copy_to, const TStack<T>& copy_from);
 
-  T* data_;
-  TSizeType size_;
-  TSizeType capacity_;
+  T* Data_;
+  TSizeType Size_;
+  TSizeType Capacity_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

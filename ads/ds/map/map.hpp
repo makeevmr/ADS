@@ -87,11 +87,11 @@ private:
 
     ~TNode();
 
-    TMap::TPointer value;
-    TNode* left;
-    TNode* right;
-    TNode* parent;
-    TMap::TSizeType level;
+    TMap::TPointer Value;
+    TNode* Left;
+    TNode* Right;
+    TNode* Parent;
+    TMap::TSizeType Level;
   };
 
   class TIterator {
@@ -130,7 +130,7 @@ private:
     [[nodiscard]] bool operator!=(const TIterator& right) const noexcept;
 
   private:
-    TNode* ptr_;
+    TNode* Ptr_;
   };
 
   class TConstIterator {
@@ -168,7 +168,7 @@ private:
     [[nodiscard]] bool operator!=(const TConstIterator& right) const noexcept;
 
   private:
-    TNode* ptr_;
+    TNode* Ptr_;
   };
 
   TNode* skew(TNode* node) noexcept;
@@ -198,11 +198,11 @@ private:
   // Pointer to leftmost node
   [[nodiscard]] static TNode* beginNode(TNode* node) noexcept;
 
-  TNode* root_;
-  TIterator b_iter_;
-  TIterator e_iter_;
-  TSizeType size_;
-  TKeyCompare comparator_;
+  TNode* Root_;
+  TIterator BegIter_;
+  TIterator EndIter_;
+  TSizeType Size_;
+  TKeyCompare Comparator_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

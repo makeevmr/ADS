@@ -20,7 +20,7 @@ public:
 
 private:
   inline static unsigned int created_objects = 0;
-  int* data_;
+  int* Data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -12,37 +12,37 @@ namespace NAds::NDs::NHeap {
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::THeap()
-    : data_(nullptr),
-      size_(0),
-      capacity_(0),
-      comparator_(TCompare()) {}
+    : Data_(nullptr),
+      Size_(0),
+      Capacity_(0),
+      Comparator_(TCompare()) {}
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::THeap(const TSizeType capacity)
-    : data_(reinterpret_cast<TValueType*>(
+    : Data_(reinterpret_cast<TValueType*>(
           ::operator new(sizeof(TValueType) * capacity))),
-      size_(0),
-      capacity_(capacity),
-      comparator_(TCompare()) {}
+      Size_(0),
+      Capacity_(capacity),
+      Comparator_(TCompare()) {}
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::THeap(TValueType* construct_from_data, TSizeType size)
-    : data_(reinterpret_cast<TValueType*>(
+    : Data_(reinterpret_cast<TValueType*>(
           ::operator new(sizeof(TValueType) * size))),
-      size_(size),
-      capacity_(size),
-      comparator_(TCompare()) {
-  uninitializedCopy(data_, construct_from_data, size);
+      Size_(size),
+      Capacity_(size),
+      Comparator_(TCompare()) {
+  uninitializedCopy(Data_, construct_from_data, size);
 }
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::THeap(const THeap<T, TCompare>& other)
-    : data_(reinterpret_cast<TValueType*>(
-          ::operator new(sizeof(TValueType) * other.capacity_))),
-      size_(other.size_),
-      capacity_(other.capacity_),
-      comparator_(TCompare()) {
-  uninitializedCopy(data_, other);
+    : Data_(reinterpret_cast<TValueType*>(
+          ::operator new(sizeof(TValueType) * other.Capacity_))),
+      Size_(other.Size_),
+      Capacity_(other.Capacity_),
+      Comparator_(TCompare()) {
+  uninitializedCopy(Data_, other);
 }
 
 template <typename T, typename TCompare>
@@ -50,22 +50,22 @@ THeap<T, TCompare>& THeap<T, TCompare>::operator=(
     const THeap<T, TCompare>& other) {
   if (this != &other) {
     TValueType* new_data = reinterpret_cast<TValueType*>(
-        ::operator new(sizeof(TValueType) * other.capacity_));
+        ::operator new(sizeof(TValueType) * other.Capacity_));
     uninitializedCopy(new_data, other);
-    free(data_, size_);
-    data_ = new_data;
-    size_ = other.size_;
-    capacity_ = other.capacity_;
+    free(Data_, Size_);
+    Data_ = new_data;
+    Size_ = other.Size_;
+    Capacity_ = other.Capacity_;
   }
   return *this;
 }
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::THeap(THeap&& other) noexcept
-    : data_(nullptr),
-      size_(0),
-      capacity_(0),
-      comparator_(TCompare()) {
+    : Data_(nullptr),
+      Size_(0),
+      Capacity_(0),
+      Comparator_(TCompare()) {
   swap(other);
 }
 
@@ -73,10 +73,10 @@ template <typename T, typename TCompare>
 THeap<T, TCompare>& THeap<T, TCompare>::operator=(
     THeap<T, TCompare>&& other) noexcept {
   if (this != &other) {
-    free(data_, size_);
-    data_ = nullptr;
-    size_ = 0;
-    capacity_ = 0;
+    free(Data_, Size_);
+    Data_ = nullptr;
+    Size_ = 0;
+    Capacity_ = 0;
     swap(other);
   }
   return *this;
@@ -84,70 +84,70 @@ THeap<T, TCompare>& THeap<T, TCompare>::operator=(
 
 template <typename T, typename TCompare>
 THeap<T, TCompare>::~THeap() {
-  free(data_, size_);
+  free(Data_, Size_);
 }
 
 // Element access
 template <typename T, typename TCompare>
 [[nodiscard]] typename THeap<T, TCompare>::TConstReference
 THeap<T, TCompare>::top() const {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Heap is empty");
   }
-  return data_[0];
+  return Data_[0];
 }
 
 // Capacity
 template <typename T, typename TCompare>
 [[nodiscard]] bool THeap<T, TCompare>::empty() const noexcept {
-  return size_ == 0;
+  return Size_ == 0;
 }
 
 template <typename T, typename TCompare>
 [[nodiscard]] typename THeap<T, TCompare>::TSizeType
 THeap<T, TCompare>::getSize() const noexcept {
-  return size_;
+  return Size_;
 }
 
 // Modifiers
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::push(const TValueType& value) {
-  if (size_ == capacity_) {
+  if (Size_ == Capacity_) {
     this->resize();
   }
-  new (data_ + size_) TValueType(value);
-  ++size_;
-  siftingUp(size_ - 1);
+  new (Data_ + Size_) TValueType(value);
+  ++Size_;
+  siftingUp(Size_ - 1);
 }
 
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::push(const TValueType&& value) {
-  if (size_ == capacity_) {
+  if (Size_ == Capacity_) {
     this->resize();
   }
-  new (data_ + size_) TValueType(std::move(value));
-  ++size_;
-  siftingUp(size_ - 1);
+  new (Data_ + Size_) TValueType(std::move(value));
+  ++Size_;
+  siftingUp(Size_ - 1);
 }
 
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::pop() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Heap is empty");
   }
-  data_[0] = std::move(data_[size_ - 1]);
+  Data_[0] = std::move(Data_[Size_ - 1]);
   if (!std::is_trivially_destructible_v<T>) {
-    (data_ + size_ - 1)->~TValueType();
+    (Data_ + Size_ - 1)->~TValueType();
   }
-  --size_;
+  --Size_;
   siftingDown(0);
 }
 
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::swap(THeap<T, TCompare>& other) noexcept {
-  std::swap(data_, other.data_);
-  std::swap(size_, other.size_);
-  std::swap(capacity_, other.capacity_);
+  std::swap(Data_, other.Data_);
+  std::swap(Size_, other.Size_);
+  std::swap(Capacity_, other.Capacity_);
 }
 
 template <typename T, typename TCompare>
@@ -168,9 +168,9 @@ void THeap<T, TCompare>::uninitializedCopy(
     TValueType* copy_to, const THeap<T, TCompare>& copy_from) {
   TSizeType copied_objects = 0;
   try {
-    for (; copied_objects < copy_from.size_; ++copied_objects) {
+    for (; copied_objects < copy_from.Size_; ++copied_objects) {
       new (copy_to + copied_objects)
-          TValueType(copy_from.data_[copied_objects]);
+          TValueType(copy_from.Data_[copied_objects]);
     }
   } catch (...) {
     free(copy_to, copied_objects);
@@ -213,23 +213,23 @@ THeap<T, TCompare>::getParent(TSizeType index) const noexcept {
 
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::resize() {
-  TSizeType new_capacity = capacity_ > 0 ? capacity_ * 2 : capacity_ + 1;
+  TSizeType new_capacity = Capacity_ > 0 ? Capacity_ * 2 : Capacity_ + 1;
   TValueType* new_data = reinterpret_cast<TValueType*>(
       ::operator new(sizeof(TValueType) * new_capacity));
   if (std::is_move_constructible_v<TValueType>) {
     TSizeType moved_objects = 0;
-    while (moved_objects < size_) {
+    while (moved_objects < Size_) {
       new (new_data + moved_objects)
-          TValueType(std::move(data_[moved_objects]));
+          TValueType(std::move(Data_[moved_objects]));
       ++moved_objects;
     }
-    ::operator delete(data_);
+    ::operator delete(Data_);
   } else {
     uninitializedCopy(new_data, *this);
-    free(data_, size_);
+    free(Data_, Size_);
   }
-  data_ = new_data;
-  capacity_ = new_capacity;
+  Data_ = new_data;
+  Capacity_ = new_capacity;
 }
 
 template <typename T, typename TCompare>
@@ -241,14 +241,14 @@ void THeap<T, TCompare>::siftingDown(TSizeType index) noexcept(
     iter_start_index = iter_end_index;
     TSizeType left = getLeft(iter_start_index);
     TSizeType right = getRight(iter_start_index);
-    if ((left < size_) && (comparator_(data_[left], data_[iter_end_index]))) {
+    if ((left < Size_) && (comparator_(Data_[left], Data_[iter_end_index]))) {
       iter_end_index = left;
     }
-    if ((right < size_) && (comparator_(data_[right], data_[iter_end_index]))) {
+    if ((right < Size_) && (comparator_(Data_[right], Data_[iter_end_index]))) {
       iter_end_index = right;
     }
     if (iter_start_index != iter_end_index) {
-      std::swap(data_[iter_start_index], data_[iter_end_index]);
+      std::swap(Data_[iter_start_index], Data_[iter_end_index]);
     }
   } while (iter_start_index != iter_end_index);
 }
@@ -260,8 +260,8 @@ void THeap<T, TCompare>::siftingUp(TSizeType index) noexcept(
   while ((index > 0) && !is_sifting_complete) {
     is_sifting_complete = true;
     TSizeType parent = getParent(index);
-    if (comparator_(data_[index], data_[parent])) {
-      std::swap(data_[index], data_[parent]);
+    if (Comparator_(Data_[index], Data_[parent])) {
+      std::swap(Data_[index], Data_[parent]);
       index = parent;
       is_sifting_complete = false;
     }
@@ -270,7 +270,7 @@ void THeap<T, TCompare>::siftingUp(TSizeType index) noexcept(
 
 template <typename T, typename TCompare>
 void THeap<T, TCompare>::makeHeap() noexcept(std::is_nothrow_swappable_v<T>) {
-  for (TSizeType i = (size_ / 2 - 1); i > 0; --i) {
+  for (TSizeType i = (Size_ / 2 - 1); i > 0; --i) {
     siftingDown(i);
   }
 }

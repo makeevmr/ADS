@@ -48,9 +48,9 @@ public:
   void push(T&& value);
 
 private:
-  TSizeType size_;
-  TStack<T> push_stack_;
-  TStack<T> pop_stack_;
+  TSizeType Size_;
+  TStack<T> PushStack_;
+  TStack<T> PopStack_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,9 +99,9 @@ public:
   void resize(TSizeType new_capacity);
 
 private:
-  TSizeType size_;
-  TStack<TMinMaxNode> push_stack_;
-  TStack<TMinMaxNode> pop_stack_;
+  TSizeType Size_;
+  TStack<TMinMaxNode> PushStack_;
+  TStack<TMinMaxNode> PopStack_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,8 @@ namespace {
 
 }  // namespace
 
+////////////////////////////////////////////////////////////////////////////////
+
 [[nodiscard]] std::vector<std::size_t> kmpSubstrSearch(
     const std::string& text, const std::string& substr) {
   const std::size_t substr_size = substr.size();

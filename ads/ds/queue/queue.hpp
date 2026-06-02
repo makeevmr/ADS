@@ -47,10 +47,10 @@ public:
   void push(T&& value);
 
 private:
-  T data_[N];
-  std::size_t size_;
-  std::size_t top_pointer_;
-  std::size_t back_pointer_;
+  T Data_[N];
+  std::size_t Size_;
+  std::size_t TopPointer_;
+  std::size_t BackPointer_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,11 +104,11 @@ private:
 
   void resize();
 
-  T* data_;
-  std::size_t size_;
-  std::size_t capacity_;
-  std::size_t top_pointer_;
-  std::size_t back_pointer_;
+  T* Data_;
+  std::size_t Size_;
+  std::size_t Capacity_;
+  std::size_t TopPointer_;
+  std::size_t BackPointer_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

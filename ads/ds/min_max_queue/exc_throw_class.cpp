@@ -11,9 +11,9 @@ TExcThrowClass::TExcThrowClass() {
   if (created_objects % 20 == 0) {
     throw std::runtime_error("Exception in default constructor");
   }
-  data_ = new int[10];
+  Data_ = new int[10];
   for (int i = 0; i < 10; ++i) {
-    data_[i] = i;
+    Data_[i] = i;
   }
 }
 
@@ -22,43 +22,44 @@ TExcThrowClass::TExcThrowClass(const TExcThrowClass& other) {
   if (created_objects % 20 == 0) {
     throw std::runtime_error("Exception in copy constructor");
   }
-  data_ = new int[10];
+  Data_ = new int[10];
   for (int i = 0; i < 10; ++i) {
-    data_[i] = other.data_[i];
+    Data_[i] = other.Data_[i];
   }
 }
 
 TExcThrowClass& TExcThrowClass::operator=(const TExcThrowClass& other) {
   if (this != &other) {
-    delete[] data_;
-    data_ = new int[10];
+    delete[] Data_;
+    Data_ = new int[10];
     for (int i = 0; i < 10; ++i) {
-      data_[i] = i;
+      Data_[i] = i;
     }
   }
   return *this;
 }
 
 TExcThrowClass::TExcThrowClass(TExcThrowClass&& other) noexcept
-    : data_(other.data_) {
+    : Data_(other.Data_) {
   ++created_objects;
-  other.data_ = nullptr;
+  other.Data_ = nullptr;
 }
 
 TExcThrowClass& TExcThrowClass::operator=(TExcThrowClass&& other) noexcept {
   ++created_objects;
   if (this != &other) {
-    delete[] data_;
-    data_ = other.data_;
-    other.data_ = nullptr;
+    delete[] Data_;
+    Data_ = other.Data_;
+    other.Data_ = nullptr;
   }
   return *this;
 }
 
 TExcThrowClass::~TExcThrowClass() {
   --created_objects;
-  delete[] data_;
+  delete[] Data_;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NMinMaxQueue

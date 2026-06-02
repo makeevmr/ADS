@@ -13,9 +13,9 @@ namespace NAds::NDs::NQueue {
 
 template <typename T, std::size_t N>
 TQueue<T, N>::TQueue() noexcept
-    : size_(0),
-      top_pointer_(0),
-      back_pointer_(0) {}
+    : Size_(0),
+      TopPointer_(0),
+      BackPointer_(0) {}
 
 template <typename T, std::size_t N>
 TQueue<T, N>::TQueue(const TQueue<T, N>& other) = default;
@@ -36,78 +36,78 @@ TQueue<T, N>::~TQueue() = default;
 
 template <typename T, std::size_t N>
 [[nodiscard]] TQueue<T, N>::TReference TQueue<T, N>::front() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  return data_[top_pointer_];
+  return Data_[TopPointer_];
 }
 
 template <typename T, std::size_t N>
 [[nodiscard]] TQueue<T, N>::TConstReference TQueue<T, N>::front() const {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  return data_[top_pointer_];
+  return Data_[TopPointer_];
 }
 
 template <typename T, std::size_t N>
 [[nodiscard]] TQueue<T, N>::TReference TQueue<T, N>::back() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  std::size_t index = back_pointer_ == 0 ? N - 1 : back_pointer_ - 1;
-  return data_[index];
+  std::size_t index = BackPointer_ == 0 ? N - 1 : BackPointer_ - 1;
+  return Data_[index];
 }
 
 template <typename T, std::size_t N>
 [[nodiscard]] TQueue<T, N>::TConstReference TQueue<T, N>::back() const {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  std::size_t index = back_pointer_ == 0 ? N - 1 : back_pointer_ - 1;
-  return data_[index];
+  std::size_t index = BackPointer_ == 0 ? N - 1 : BackPointer_ - 1;
+  return Data_[index];
 }
 
 template <typename T, std::size_t N>
 [[nodiscard]] bool TQueue<T, N>::empty() const noexcept {
-  return size_ == 0;
+  return Size_ == 0;
 }
 
 template <typename T, std::size_t N>
 [[nodiscard]] std::size_t TQueue<T, N>::getSize() const noexcept {
-  return size_;
+  return Size_;
 }
 
 template <typename T, std::size_t N>
 void TQueue<T, N>::pop() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  ++top_pointer_ %= N;
-  --size_;
+  ++TopPointer_ %= N;
+  --Size_;
 }
 
 template <typename T, std::size_t N>
 void TQueue<T, N>::push(const T& value) {
-  data_[back_pointer_] = value;
-  if (size_ == N) {
-    ++top_pointer_ %= N;
-    ++back_pointer_ %= N;
+  Data_[BackPointer_] = value;
+  if (Size_ == N) {
+    ++TopPointer_ %= N;
+    ++BackPointer_ %= N;
   } else {
-    ++back_pointer_ %= N;
-    ++size_;
+    ++BackPointer_ %= N;
+    ++Size_;
   }
 }
 
 template <typename T, std::size_t N>
 void TQueue<T, N>::push(T&& value) {
-  data_[back_pointer_] = std::move(value);
-  if (size_ == N) {
-    ++top_pointer_ %= N;
-    ++back_pointer_ %= N;
+  Data_[BackPointer_] = std::move(value);
+  if (Size_ == N) {
+    ++TopPointer_ %= N;
+    ++BackPointer_ %= N;
   } else {
-    ++back_pointer_ %= N;
-    ++size_;
+    ++BackPointer_ %= N;
+    ++Size_;
   }
 }
 
@@ -115,19 +115,19 @@ void TQueue<T, N>::push(T&& value) {
 
 template <typename T>
 TQueue<T, 0>::TQueue(std::size_t capacity)
-    : data_(reinterpret_cast<T*>(::operator new(sizeof(T) * capacity))),
-      size_(0),
-      capacity_(capacity),
-      top_pointer_(0),
-      back_pointer_(0) {}
+    : Data_(reinterpret_cast<T*>(::operator new(sizeof(T) * capacity))),
+      Size_(0),
+      Capacity_(capacity),
+      TopPointer_(0),
+      BackPointer_(0) {}
 
 template <typename T>
 TQueue<T, 0>::TQueue(const TQueue<T, 0>& other)
-    : data_(reinterpret_cast<T*>(::operator new(sizeof(T) * other.capacity_))),
-      size_(other.size_),
-      capacity_(other.capacity_),
-      top_pointer_(0),
-      back_pointer_(other.size_) {
+    : Data_(reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_))),
+      Size_(other.Size_),
+      Capacity_(other.Capacity_),
+      TopPointer_(0),
+      BackPointer_(other.Size_) {
   uninitializedCopy(other);
 }
 
@@ -135,13 +135,13 @@ template <typename T>
 TQueue<T, 0>::TQueue& TQueue<T, 0>::operator=(const TQueue<T, 0>& other) {
   if (this != &other) {
     T* new_data =
-        reinterpret_cast<T*>(::operator new(sizeof(T) * other.capacity_));
+        reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_));
     std::size_t copied_objects = 0;
-    std::size_t other_data_index = other.top_pointer_;
+    std::size_t other_data_index = other.TopPointer_;
     try {
-      for (; copied_objects < other.size_; ++copied_objects) {
-        new (new_data + copied_objects) T(other.data_[other_data_index]);
-        ++other_data_index %= other.capacity_;
+      for (; copied_objects < other.Size_; ++copied_objects) {
+        new (new_data + copied_objects) T(other.Data_[other_data_index]);
+        ++other_data_index %= other.Capacity_;
       }
     } catch (...) {
       if (!std::is_trivially_destructible_v<T>) {
@@ -152,35 +152,35 @@ TQueue<T, 0>::TQueue& TQueue<T, 0>::operator=(const TQueue<T, 0>& other) {
       ::operator delete(new_data);
       throw;
     }
-    free(size_);
-    data_ = new_data;
-    size_ = other.size_;
-    capacity_ = other.capacity_;
-    top_pointer_ = 0;
-    back_pointer_ = size_;
+    free(Size_);
+    Data_ = new_data;
+    Size_ = other.Size_;
+    Capacity_ = other.Capacity_;
+    TopPointer_ = 0;
+    BackPointer_ = Size_;
   }
   return *this;
 }
 
 template <typename T>
 TQueue<T, 0>::TQueue(TQueue<T, 0>&& other) noexcept
-    : data_(nullptr),
-      size_(0),
-      capacity_(0),
-      top_pointer_(0),
-      back_pointer_(0) {
+    : Data_(nullptr),
+      Size_(0),
+      Capacity_(0),
+      TopPointer_(0),
+      BackPointer_(0) {
   swap(other);
 }
 
 template <typename T>
 TQueue<T, 0>::TQueue& TQueue<T, 0>::operator=(TQueue<T, 0>&& other) noexcept {
   if (this != &other) {
-    free(size_);
-    data_ = nullptr;
-    size_ = 0;
-    capacity_ = 0;
-    top_pointer_ = 0;
-    back_pointer_ = 0;
+    free(Size_);
+    Data_ = nullptr;
+    Size_ = 0;
+    Capacity_ = 0;
+    TopPointer_ = 0;
+    BackPointer_ = 0;
     swap(other);
   }
   return *this;
@@ -188,116 +188,116 @@ TQueue<T, 0>::TQueue& TQueue<T, 0>::operator=(TQueue<T, 0>&& other) noexcept {
 
 template <typename T>
 TQueue<T, 0>::~TQueue() {
-  free(size_);
+  free(Size_);
 }
 
 template <typename T>
 [[nodiscard]] TQueue<T, 0>::TReference TQueue<T, 0>::front() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  return data_[top_pointer_];
+  return Data_[TopPointer_];
 }
 
 template <typename T>
 [[nodiscard]] TQueue<T, 0>::TConstReference TQueue<T, 0>::front() const {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  return data_[top_pointer_];
+  return Data_[TopPointer_];
 }
 
 template <typename T>
 [[nodiscard]] TQueue<T, 0>::TReference TQueue<T, 0>::back() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  std::size_t index = back_pointer_ == 0 ? capacity_ - 1 : back_pointer_ - 1;
-  return data_[index];
+  std::size_t index = BackPointer_ == 0 ? Capacity_ - 1 : BackPointer_ - 1;
+  return Data_[index];
 }
 
 template <typename T>
 [[nodiscard]] TQueue<T, 0>::TConstReference TQueue<T, 0>::back() const {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
-  std::size_t index = back_pointer_ == 0 ? capacity_ - 1 : back_pointer_ - 1;
-  return data_[index];
+  std::size_t index = BackPointer_ == 0 ? Capacity_ - 1 : BackPointer_ - 1;
+  return Data_[index];
 }
 
 template <typename T>
 [[nodiscard]] bool TQueue<T, 0>::empty() const noexcept {
-  return size_ == 0;
+  return Size_ == 0;
 }
 
 template <typename T>
 [[nodiscard]] std::size_t TQueue<T, 0>::getSize() const noexcept {
-  return size_;
+  return Size_;
 }
 
 template <typename T>
 void TQueue<T, 0>::pop() {
-  if (size_ == 0) {
+  if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
   if (!std::is_trivially_destructible_v<T>) {
-    (data_ + top_pointer_)->~T();
+    (Data_ + TopPointer_)->~T();
   }
-  ++top_pointer_ %= capacity_;
-  --size_;
+  ++TopPointer_ %= Capacity_;
+  --Size_;
 }
 
 template <typename T>
 void TQueue<T, 0>::push(const T& value) {
-  if (size_ == capacity_) {
+  if (Size_ == Capacity_) {
     resize();
   }
-  new (data_ + back_pointer_) T(value);
-  ++back_pointer_ %= capacity_;
-  ++size_;
+  new (Data_ + BackPointer_) T(value);
+  ++BackPointer_ %= Capacity_;
+  ++Size_;
 }
 
 template <typename T>
 void TQueue<T, 0>::push(T&& value) {
-  if (size_ == capacity_) {
+  if (Size_ == Capacity_) {
     resize();
   }
-  new (data_ + back_pointer_) T(std::move(value));
-  ++back_pointer_ %= capacity_;
-  ++size_;
+  new (Data_ + BackPointer_) T(std::move(value));
+  ++BackPointer_ %= Capacity_;
+  ++Size_;
 }
 
 template <typename T>
 void TQueue<T, 0>::swap(TQueue<T, 0>& other) noexcept {
-  std::swap(data_, other.data_);
-  std::swap(size_, other.size_);
-  std::swap(capacity_, other.capacity_);
-  std::swap(top_pointer_, other.top_pointer_);
-  std::swap(back_pointer_, other.back_pointer_);
+  std::swap(Data_, other.Data_);
+  std::swap(Size_, other.Size_);
+  std::swap(Capacity_, other.Capacity_);
+  std::swap(TopPointer_, other.TopPointer_);
+  std::swap(BackPointer_, other.BackPointer_);
 }
 
 template <typename T>
 void TQueue<T, 0>::free(std::size_t destructor_calls) noexcept {
   if (!std::is_trivially_destructible_v<T>) {
-    std::size_t destruction_index = top_pointer_;
+    std::size_t destruction_index = TopPointer_;
     std::size_t destroyed_objects = 0;
     while (destroyed_objects < destructor_calls) {
-      (data_ + destruction_index)->~T();
-      ++destruction_index %= capacity_;
+      (Data_ + destruction_index)->~T();
+      ++destruction_index %= Capacity_;
       ++destroyed_objects;
     }
   }
-  ::operator delete(data_);
+  ::operator delete(Data_);
 }
 
 template <typename T>
 void TQueue<T, 0>::uninitializedCopy(const TQueue<T, 0>& other) {
   std::size_t copied_objects = 0;
-  std::size_t other_data_index = other.top_pointer_;
+  std::size_t other_data_index = other.TopPointer_;
   try {
-    for (; copied_objects < other.size_; ++copied_objects) {
-      new (data_ + copied_objects) T(other.data_[other_data_index]);
-      ++other_data_index %= other.capacity_;
+    for (; copied_objects < other.Size_; ++copied_objects) {
+      new (Data_ + copied_objects) T(other.Data_[other_data_index]);
+      ++other_data_index %= other.Capacity_;
     }
   } catch (...) {
     free(copied_objects);
@@ -307,28 +307,28 @@ void TQueue<T, 0>::uninitializedCopy(const TQueue<T, 0>& other) {
 
 template <typename T>
 void TQueue<T, 0>::resize() {
-  if (capacity_ == 0) {
-    ::operator delete(data_);
-    capacity_ = 1;
-    data_ = reinterpret_cast<T*>(::operator new(sizeof(T) * capacity_));
+  if (Capacity_ == 0) {
+    ::operator delete(Data_);
+    Capacity_ = 1;
+    Data_ = reinterpret_cast<T*>(::operator new(sizeof(T) * Capacity_));
   } else {
-    std::size_t new_capacity = capacity_ * 2;
+    std::size_t new_capacity = Capacity_ * 2;
     T* new_data =
         reinterpret_cast<T*>(::operator new(sizeof(T) * new_capacity));
     std::size_t copied_objects = 0;
-    std::size_t old_data_pointer = top_pointer_;
+    std::size_t old_data_pointer = TopPointer_;
     if (std::is_move_constructible_v<T>) {
-      while (copied_objects < size_) {
-        new (new_data + copied_objects) T(std::move(data_[old_data_pointer]));
-        ++old_data_pointer %= capacity_;
+      while (copied_objects < Size_) {
+        new (new_data + copied_objects) T(std::move(Data_[old_data_pointer]));
+        ++old_data_pointer %= Capacity_;
         ++copied_objects;
       }
-      ::operator delete(data_);
+      ::operator delete(Data_);
     } else {
       try {
-        while (copied_objects < size_) {
-          new (new_data + copied_objects) T(data_[old_data_pointer]);
-          ++old_data_pointer %= capacity_;
+        while (copied_objects < Size_) {
+          new (new_data + copied_objects) T(Data_[old_data_pointer]);
+          ++old_data_pointer %= Capacity_;
           ++copied_objects;
         }
       } catch (...) {
@@ -341,16 +341,16 @@ void TQueue<T, 0>::resize() {
         throw;
       }
       if (!std::is_trivially_destructible_v<T>) {
-        for (std::size_t i = 0; i < size_; ++i) {
-          (data_ + i)->~T();
+        for (std::size_t i = 0; i < Size_; ++i) {
+          (Data_ + i)->~T();
         }
       }
-      ::operator delete(data_);
+      ::operator delete(Data_);
     }
-    data_ = new_data;
-    capacity_ = new_capacity;
-    top_pointer_ = 0;
-    back_pointer_ = size_;
+    Data_ = new_data;
+    Capacity_ = new_capacity;
+    TopPointer_ = 0;
+    BackPointer_ = Size_;
   }
 }
 

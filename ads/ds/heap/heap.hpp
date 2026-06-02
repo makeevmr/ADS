@@ -72,10 +72,10 @@ private:
 
   void makeHeap() noexcept(std::is_nothrow_swappable_v<T>);
 
-  TValueType* data_;
-  TSizeType size_;
-  TSizeType capacity_;
-  TValueCompare comparator_;
+  TValueType* Data_;
+  TSizeType Size_;
+  TSizeType Capacity_;
+  TValueCompare Comparator_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
