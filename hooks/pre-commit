@@ -16,13 +16,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Map each staged *-inl.hpp to its owner header (X-inl.hpp -> X.hpp). An -inl
-# file is not a standalone translation unit: fed to clang-tidy directly its
-# include guard is unset, so the fallback "#include X.hpp" pulls the header,
-# which re-includes the -inl with the guard set -> definitions parsed twice ->
-# "redefinition" errors. Tidying the owner .hpp instead parses the -inl in the
-# correct context, and HeaderFilterRegex '\.hpp$' still reports diagnostics
-# located inside the -inl file. Dedupe so each header is checked once.
+# Map each staged *-inl.hpp to its owner header (X-inl.hpp -> X.hpp).
 TIDY_FILES=$(for f in $STAGED_FILES; do
     case "$f" in
         *-inl.hpp)
