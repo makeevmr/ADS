@@ -29,6 +29,11 @@ CheckOptions:
   - key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp
     value: '^T$'
 
+  - key: readability-identifier-naming.AbstractClassCase
+    value: 'CamelCase'
+  - key: readability-identifier-naming.AbstractClassPrefix
+    value: 'I'
+
   - key: readability-identifier-naming.NamespaceCase
     value: CamelCase
   - key: readability-identifier-naming.NamespacePrefix
