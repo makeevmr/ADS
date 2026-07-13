@@ -2,6 +2,9 @@
 
 My implementation of widely used algorithms and data structures
 
+## Confugire hooks
+`git config core.hooksPath hooks`
+
 ## Run tests
 
 ```
