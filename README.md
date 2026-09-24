@@ -31,6 +31,7 @@ cmake --build . --target test_segment_tree
 
 ### Data structures
 - `test_aho_corasick`
+- `test_heap`
 - `test_segment_tree`
 
 ## Executable paths
@@ -42,4 +43,5 @@ cmake --build . --target test_segment_tree
 
 ### Data structures
 - `./tests/ds/test_aho_corasick`
+- `./tests/ds/test_heap`
 - `./tests/ds/test_segment_tree`

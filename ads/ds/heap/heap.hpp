@@ -37,7 +37,7 @@ public:
   // Capacity
   [[nodiscard]] bool empty() const noexcept;
 
-  [[nodiscard]] TSizeType getSize() const noexcept;
+  [[nodiscard]] TSizeType size() const noexcept;
 
   // Modifiers
   void push(const TValueType& value);

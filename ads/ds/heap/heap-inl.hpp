@@ -104,8 +104,8 @@ template <typename T, typename TCompare>
 }
 
 template <typename T, typename TCompare>
-[[nodiscard]] typename THeap<T, TCompare>::TSizeType
-THeap<T, TCompare>::getSize() const noexcept {
+[[nodiscard]] typename THeap<T, TCompare>::TSizeType THeap<T, TCompare>::size()
+    const noexcept {
   return Size_;
 }
 
@@ -241,10 +241,10 @@ void THeap<T, TCompare>::siftingDown(TSizeType index) noexcept(
     iter_start_index = iter_end_index;
     TSizeType left = getLeft(iter_start_index);
     TSizeType right = getRight(iter_start_index);
-    if ((left < Size_) && (comparator_(Data_[left], Data_[iter_end_index]))) {
+    if ((left < Size_) && (Comparator_(Data_[left], Data_[iter_end_index]))) {
       iter_end_index = left;
     }
-    if ((right < Size_) && (comparator_(Data_[right], Data_[iter_end_index]))) {
+    if ((right < Size_) && (Comparator_(Data_[right], Data_[iter_end_index]))) {
       iter_end_index = right;
     }
     if (iter_start_index != iter_end_index) {

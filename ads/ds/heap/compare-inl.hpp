@@ -13,6 +13,11 @@ bool TMoreCompare<T>::operator()(const T& left, const T& right) {
   return left > right;
 }
 
+template <typename T>
+bool TLessCompare<T>::operator()(const T& left, const T& right) {
+  return left < right;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NHeap

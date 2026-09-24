@@ -6,6 +6,8 @@
 
 using namespace NAds::NDs::NSegmentTree;
 
+namespace {
+
 template <typename T>
 struct TSum {
   T operator()(const T& left, const T& right) const noexcept {
@@ -26,6 +28,8 @@ struct TMin {
     return std::min(left, right);
   }
 };
+
+}  // namespace
 
 TEST(SegmentTree, CreateTree) {
   std::vector<int> vec = {1, 2, 3, 7, 10};

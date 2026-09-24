@@ -48,7 +48,7 @@ list(
 
 # executable names for tests
 list(APPEND ALGO_DIR_NAMES euclidean kmp sieve)
-list(APPEND DS_DIR_NAMES aho_corasick segment_tree)
+list(APPEND DS_DIR_NAMES aho_corasick heap segment_tree)
 
 include_directories(${SOURCE_DIR})
 include_directories(${UNITTESTS_DIR})

@@ -10,6 +10,12 @@ public:
   bool operator()(const T& left, const T& right);
 };
 
+template <typename T>
+class TLessCompare {
+public:
+  bool operator()(const T& left, const T& right);
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NHeap
