@@ -1,41 +1,59 @@
 #!/bin/bash
 
-# Find staged C++ source and header files (added/copied/modified, no deletes)
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.cpp' '*.cc' '*.cxx' '*.h' '*.hpp')
+# Find staged C++ source and header files (added/copied/modified, no deletes).
+mapfile -d '' -t staged_files < <(git diff --cached --name-only -z --diff-filter=ACM -- \
+    '*.cpp' '*.cc' '*.cxx' '*.h' '*.hpp')
 
-if [ -z "$STAGED_FILES" ]; then
+if [ ${#staged_files[@]} -eq 0 ]; then
     exit 0
 fi
 
-# Check formatting first (cheap, fails fast). --dry-run --Werror does not
-# modify files; it exits non-zero if any reformatting is needed.
-echo "Running clang-format check on staged files..."
-clang-format --dry-run --Werror $STAGED_FILES
-if [ $? -ne 0 ]; then
-    echo "❌ Clang-format check failed. Run: clang-format -i <files>. Commit aborted."
-    exit 1
-fi
+failed_files=()
+format_passed_files=()
 
-# Map each staged *-inl.hpp to its owner header (X-inl.hpp -> X.hpp).
-TIDY_FILES=$(for f in $STAGED_FILES; do
-    case "$f" in
-        *-inl.hpp)
-            owner="${f%-inl.hpp}.hpp"
-            if [ -f "$owner" ]; then echo "$owner"; else echo "$f"; fi
-            ;;
-        *) echo "$f" ;;
-    esac
-done | sort -u)
+# Check each file separately so only files that fail are unstaged.
+echo "Running clang-format check on staged files..."
+for file in "${staged_files[@]}"; do
+    if clang-format --dry-run --Werror -- "$file"; then
+        format_passed_files+=("$file")
+    else
+        echo "❌ Clang-format check failed: $file"
+        failed_files+=("$file")
+    fi
+done
 
 echo "Running clang-tidy on staged files..."
 
 # Run clang-tidy. Assumes compile_commands.json is in your build directory.
-# Replace "-p build" with your build directory path if different.
-clang-tidy -p build $TIDY_FILES --warnings-as-errors='*'
+# Map each staged *-inl.hpp to its owner header (X-inl.hpp -> X.hpp), but
+# unstage the original file if the owner fails the check.
+declare -A tidy_result=()
+for file in "${format_passed_files[@]}"; do
+    tidy_file="$file"
+    if [[ "$file" == *-inl.hpp ]]; then
+        owner="${file%-inl.hpp}.hpp"
+        if [ -f "$owner" ]; then
+            tidy_file="$owner"
+        fi
+    fi
 
-# Capture the exit status
-if [ $? -ne 0 ]; then
-    echo "❌ Clang-tidy failed on staged files. Commit aborted."
+    if [[ -z ${tidy_result["$tidy_file"]+set} ]]; then
+        if clang-tidy -p build "$tidy_file" --warnings-as-errors='*'; then
+            tidy_result["$tidy_file"]=0
+        else
+            tidy_result["$tidy_file"]=1
+        fi
+    fi
+
+    if [ "${tidy_result["$tidy_file"]}" -ne 0 ]; then
+        echo "❌ Clang-tidy check failed: $file"
+        failed_files+=("$file")
+    fi
+done
+
+if [ ${#failed_files[@]} -ne 0 ]; then
+    git restore --staged -- "${failed_files[@]}" || exit 1
+    echo "❌ Some checks failed. Failed files unstaged. Commit aborted."
     exit 1
 fi
 
