@@ -1,4 +1,4 @@
-# CustomDS
+# ADS
 
 My implementation of widely used algorithms and data structures
 
