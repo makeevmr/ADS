@@ -6,7 +6,7 @@
 
 namespace NAds::NDs::NMap {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TKey, typename T, typename TCompare>
 TMap<TKey, T, TCompare>::TMap()
@@ -76,38 +76,36 @@ TMap<TKey, T, TCompare>::~TMap() {
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TIterator
-TMap<TKey, T, TCompare>::begin() noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::begin() noexcept {
   return BegIter_;
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::begin() const noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::begin()
+    const noexcept {
   return TConstIterator(BegIter_);
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::cbegin() const noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::cbegin()
+    const noexcept {
   return TConstIterator(BegIter_);
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TIterator
-TMap<TKey, T, TCompare>::end() noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::end() noexcept {
   return EndIter_;
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::end() const noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::end()
+    const noexcept {
   return TConstIterator(EndIter_);
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::cend() const noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::cend()
+    const noexcept {
   return TConstIterator(EndIter_);
 }
 
@@ -117,20 +115,18 @@ template <typename TKey, typename T, typename TCompare>
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TSizeType
-TMap<TKey, T, TCompare>::getSize() const noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TSizeType TMap<TKey, T, TCompare>::getSize() const noexcept {
   return Size_;
 }
 
 template <typename TKey, typename T, typename TCompare>
-std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool>
-TMap<TKey, T, TCompare>::insert(TConstReference value) {
+std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool> TMap<TKey, T, TCompare>::insert(
+    TConstReference value) {
   TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->Value->first == value.first)) {
     return std::pair<TIterator, bool>{TIterator(parent), false};
   }
-  TNode* new_node =
-      new TNode({new TValueType(value), nullptr, nullptr, parent, 1});
+  TNode* new_node = new TNode({new TValueType(value), nullptr, nullptr, parent, 1});
   ++Size_;
   if (parent == nullptr) {
     Root_ = new_node;
@@ -151,8 +147,7 @@ TMap<TKey, T, TCompare>::insert(TConstReference value) {
     bool is_tree_changed = false;
     while ((rebalance_node != nullptr) && (unchanged_nodes < 3)) {
       is_tree_changed = rebalance_node != skew(rebalance_node);
-      is_tree_changed =
-          is_tree_changed || rebalance_node != split(rebalance_node);
+      is_tree_changed = is_tree_changed || rebalance_node != split(rebalance_node);
       if (!is_tree_changed) {
         ++unchanged_nodes;
       } else {
@@ -165,14 +160,13 @@ TMap<TKey, T, TCompare>::insert(TConstReference value) {
 }
 
 template <typename TKey, typename T, typename TCompare>
-std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool>
-TMap<TKey, T, TCompare>::insert(TValueType&& value) {
+std::pair<typename TMap<TKey, T, TCompare>::TIterator, bool> TMap<TKey, T, TCompare>::insert(
+    TValueType&& value) {
   TNode* parent = findParent(value.first);
   if ((parent != nullptr) && (parent->Value->first == value.first)) {
     return std::pair<TIterator, bool>{TIterator(parent), false};
   }
-  TNode* new_node = new TNode(
-      {new TValueType(std::move(value)), nullptr, nullptr, parent, 1});
+  TNode* new_node = new TNode({new TValueType(std::move(value)), nullptr, nullptr, parent, 1});
   ++Size_;
   if (parent == nullptr) {
     Root_ = new_node;
@@ -193,8 +187,7 @@ TMap<TKey, T, TCompare>::insert(TValueType&& value) {
     bool is_tree_changed = false;
     while ((rebalance_node != nullptr) && (unchanged_nodes < 3)) {
       is_tree_changed = rebalance_node != skew(rebalance_node);
-      is_tree_changed =
-          is_tree_changed || rebalance_node != split(rebalance_node);
+      is_tree_changed = is_tree_changed || rebalance_node != split(rebalance_node);
       if (!is_tree_changed) {
         ++unchanged_nodes;
       } else {
@@ -207,8 +200,7 @@ TMap<TKey, T, TCompare>::insert(TValueType&& value) {
 }
 
 template <typename TKey, typename T, typename TCompare>
-void TMap<TKey, T, TCompare>::erase(
-    const TMap<TKey, T, TCompare>::TKeyType& erased_key) noexcept {
+void TMap<TKey, T, TCompare>::erase(const TMap<TKey, T, TCompare>::TKeyType& erased_key) noexcept {
   if (Root_ == nullptr) {
     return;
   }
@@ -217,11 +209,9 @@ void TMap<TKey, T, TCompare>::erase(
     TNode* rebalance_node = nullptr;
     if (current_node->Left == nullptr && current_node->Right == nullptr) {
       rebalance_node = trivialNodeErase(current_node, nullptr);
-    } else if (current_node->Left != nullptr &&
-               current_node->Right == nullptr) {
+    } else if (current_node->Left != nullptr && current_node->Right == nullptr) {
       rebalance_node = trivialNodeErase(current_node, current_node->Left);
-    } else if (current_node->Left == nullptr &&
-               current_node->Right != nullptr) {
+    } else if (current_node->Left == nullptr && current_node->Right != nullptr) {
       rebalance_node = trivialNodeErase(current_node, current_node->Right);
     } else {
       TNode* next_node = next(current_node);
@@ -274,8 +264,7 @@ TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::find(
 
 template <typename TKey, typename T, typename TCompare>
 TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::find(
-    const typename TMap<TKey, T, TCompare>::TKeyType& search_key)
-    const noexcept {
+    const typename TMap<TKey, T, TCompare>::TKeyType& search_key) const noexcept {
   return TConstIterator(findNode(search_key));
 }
 
@@ -285,14 +274,13 @@ template <typename TKey, typename T, typename TCompare>
   return findNode(key) != nullptr;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TKey, typename T, typename TCompare>
 TMap<TKey, T, TCompare>::TNode::TNode(TMap<TKey, T, TCompare>::TPointer value,
                                       TMap<TKey, T, TCompare>::TNode* left,
                                       TMap<TKey, T, TCompare>::TNode* right,
-                                      TMap<TKey, T, TCompare>::TNode* parent,
-                                      TMap::TSizeType level)
+                                      TMap<TKey, T, TCompare>::TNode* parent, TMap::TSizeType level)
     : Value(value),
       Left(left),
       Right(right),
@@ -300,8 +288,7 @@ TMap<TKey, T, TCompare>::TNode::TNode(TMap<TKey, T, TCompare>::TPointer value,
       Level(level) {}
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TNode::TNode(
-    const TMap<TKey, T, TCompare>::TNode& other)
+TMap<TKey, T, TCompare>::TNode::TNode(const TMap<TKey, T, TCompare>::TNode& other)
     : Value(new TValueType(*(other.Value))),
       Left(nullptr),
       Right(nullptr),
@@ -329,11 +316,10 @@ TMap<TKey, T, TCompare>::TNode::~TNode() {
   Level = 0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator::TIterator(
-    TMap<TKey, T, TCompare>::TNode* ptr) noexcept
+TMap<TKey, T, TCompare>::TIterator::TIterator(TMap<TKey, T, TCompare>::TNode* ptr) noexcept
     : Ptr_(ptr) {};
 
 template <typename TKey, typename T, typename TCompare>
@@ -342,8 +328,7 @@ TMap<TKey, T, TCompare>::TIterator::TIterator(
     : Ptr_(other.Ptr_) {};
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator&
-TMap<TKey, T, TCompare>::TIterator::operator=(
+TMap<TKey, T, TCompare>::TIterator& TMap<TKey, T, TCompare>::TIterator::operator=(
     const TMap<TKey, T, TCompare>::TIterator& other) & noexcept {
   if (this != &other) {
     Ptr_ = other.Ptr_;
@@ -367,30 +352,26 @@ TMap<TKey, T, TCompare>::TIterator::operator->() const noexcept {
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator&
-TMap<TKey, T, TCompare>::TIterator::operator++() {
+TMap<TKey, T, TCompare>::TIterator& TMap<TKey, T, TCompare>::TIterator::operator++() {
   Ptr_ = TMap::next(Ptr_);
   return *this;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator
-TMap<TKey, T, TCompare>::TIterator::operator++(int) {
+TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::TIterator::operator++(int) {
   TIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator&
-TMap<TKey, T, TCompare>::TIterator::operator--() {
+TMap<TKey, T, TCompare>::TIterator& TMap<TKey, T, TCompare>::TIterator::operator--() {
   Ptr_ = TMap::prev(Ptr_);
   return *this;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TIterator
-TMap<TKey, T, TCompare>::TIterator::operator--(int) {
+TMap<TKey, T, TCompare>::TIterator TMap<TKey, T, TCompare>::TIterator::operator--(int) {
   TIterator tmp = *this;
   --(*this);
   return tmp;
@@ -408,7 +389,7 @@ template <typename TKey, typename T, typename TCompare>
   return Ptr_ != right.Ptr_;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TKey, typename T, typename TCompare>
 TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
@@ -421,13 +402,11 @@ TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
     : Ptr_(other.Ptr_) {};
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(
-    const TConstIterator& other) noexcept
+TMap<TKey, T, TCompare>::TConstIterator::TConstIterator(const TConstIterator& other) noexcept
     : Ptr_(other.Ptr_) {};
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator&
-TMap<TKey, T, TCompare>::TConstIterator::operator=(
+TMap<TKey, T, TCompare>::TConstIterator& TMap<TKey, T, TCompare>::TConstIterator::operator=(
     const TMap<TKey, T, TCompare>::TConstIterator& other) & noexcept {
   if (this != &other) {
     Ptr_ = other.Ptr_;
@@ -451,30 +430,26 @@ TMap<TKey, T, TCompare>::TConstIterator::operator->() const noexcept {
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator&
-TMap<TKey, T, TCompare>::TConstIterator::operator++() {
+TMap<TKey, T, TCompare>::TConstIterator& TMap<TKey, T, TCompare>::TConstIterator::operator++() {
   Ptr_ = TMap::next(Ptr_);
   return *this;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::TConstIterator::operator++(int) {
+TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::TConstIterator::operator++(int) {
   TMap<TKey, T, TCompare>::TConstIterator tmp = *this;
   ++(*this);
   return tmp;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator&
-TMap<TKey, T, TCompare>::TConstIterator::operator--() {
+TMap<TKey, T, TCompare>::TConstIterator& TMap<TKey, T, TCompare>::TConstIterator::operator--() {
   Ptr_ = TMap::prev(Ptr_);
   return *this;
 }
 
 template <typename TKey, typename T, typename TCompare>
-TMap<TKey, T, TCompare>::TConstIterator
-TMap<TKey, T, TCompare>::TConstIterator::operator--(int) {
+TMap<TKey, T, TCompare>::TConstIterator TMap<TKey, T, TCompare>::TConstIterator::operator--(int) {
   TMap<TKey, T, TCompare>::TConstIterator tmp = *this;
   --(*this);
   return tmp;
@@ -492,7 +467,7 @@ template <typename TKey, typename T, typename TCompare>
   return Ptr_ != right.Ptr_;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TKey, typename T, typename TCompare>
 TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::skew(
@@ -551,10 +526,8 @@ TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::split(
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
-TMap<TKey, T, TCompare>::trivialNodeErase(
-    TMap<TKey, T, TCompare>::TNode* node_to_erase,
-    TMap<TKey, T, TCompare>::TNode* child) noexcept {
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::trivialNodeErase(
+    TMap<TKey, T, TCompare>::TNode* node_to_erase, TMap<TKey, T, TCompare>::TNode* child) noexcept {
   if (child != nullptr) {
     child->Parent = node_to_erase->Parent;
   }
@@ -581,12 +554,9 @@ TMap<TKey, T, TCompare>::trivialNodeErase(
 }
 
 template <typename TKey, typename T, typename TCompare>
-void TMap<TKey, T, TCompare>::decreaseNodeLevel(
-    TMap<TKey, T, TCompare>::TNode* node) noexcept {
-  TSizeType left_diff =
-      node->Left != nullptr ? node->Level - node->Left->level : node->Level;
-  TSizeType right_diff =
-      node->Right != nullptr ? node->Level - node->Right->level : node->Level;
+void TMap<TKey, T, TCompare>::decreaseNodeLevel(TMap<TKey, T, TCompare>::TNode* node) noexcept {
+  TSizeType left_diff = node->Left != nullptr ? node->Level - node->Left->level : node->Level;
+  TSizeType right_diff = node->Right != nullptr ? node->Level - node->Right->level : node->Level;
   if (left_diff > 1 || right_diff > 1) {
     if (node->Right != nullptr && node->Right->level == node->Level) {
       --node->Right->level;
@@ -650,8 +620,7 @@ template <typename TKey, typename T, typename TCompare>
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
-TMap<TKey, T, TCompare>::findParent(
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::findParent(
     const TMap<TKey, T, TCompare>::TKeyType& search_key) const noexcept {
   TNode* parent = nullptr;
   TNode* node = Root_;
@@ -674,8 +643,7 @@ TMap<TKey, T, TCompare>::findParent(
 }
 
 template <typename TKey, typename T, typename TCompare>
-[[nodiscard]] TMap<TKey, T, TCompare>::TNode*
-TMap<TKey, T, TCompare>::beginNode(
+[[nodiscard]] TMap<TKey, T, TCompare>::TNode* TMap<TKey, T, TCompare>::beginNode(
     TMap<TKey, T, TCompare>::TNode* node) noexcept {
   if (node == nullptr) {
     return nullptr;
@@ -686,6 +654,6 @@ TMap<TKey, T, TCompare>::beginNode(
   return node;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NMap

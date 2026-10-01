@@ -11,8 +11,7 @@ using TLetterAhoCorasick = TAhoCorasick<'a', 'z'>;
 
 void expectSetEquality(
     const TLetterAhoCorasick::TOccurrences& occurrences,
-    const std::unordered_map<std::size_t, std::unordered_set<std::size_t>>&
-        expected_occurrences) {
+    const std::unordered_map<std::size_t, std::unordered_set<std::size_t>>& expected_occurrences) {
   std::size_t expected_occurrences_total_size = 0;
   for (const auto& [_, set] : expected_occurrences) {
     expected_occurrences_total_size += set.size();
@@ -31,8 +30,7 @@ TEST(AhoCorasickAutomata, SimpleTest) {
   automata.addString("she");
   automata.addString("hers");
   const std::string text = "ahishers";
-  std::unordered_map<std::size_t, std::unordered_set<std::size_t>>
-      expected_occurrences;
+  std::unordered_map<std::size_t, std::unordered_set<std::size_t>> expected_occurrences;
   expected_occurrences[4].insert(0);
   expected_occurrences[3].insert(1);
   expected_occurrences[4].insert(2);

@@ -9,7 +9,7 @@
 
 namespace NAds::NDs::NAhoCorasick {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <char AlphaLeft, char AlphaRight>
 requires(AlphaRight >= AlphaLeft)
@@ -40,8 +40,7 @@ void TAhoCorasick<AlphaLeft, AlphaRight>::addString(const std::string& s) {
 template <char AlphaLeft, char AlphaRight>
 requires(AlphaRight >= AlphaLeft)
 [[nodiscard]] TAhoCorasick<AlphaLeft, AlphaRight>::TOccurrences
-TAhoCorasick<AlphaLeft, AlphaRight>::findAllOccurrences(
-    const std::string& text) {
+TAhoCorasick<AlphaLeft, AlphaRight>::findAllOccurrences(const std::string& text) {
   if (!IsBuilt_) {
     buildAutomata();
     IsBuilt_ = true;
@@ -54,9 +53,9 @@ TAhoCorasick<AlphaLeft, AlphaRight>::findAllOccurrences(
     std::size_t traverse_back_node = curr_node;
     do {
       if (Nodes_[traverse_back_node].IsTerminal) {
-        occurences.push_back(TOccurrenceInfo{
-            .StrStartPos = ((i + 1) - Nodes_[traverse_back_node].StrSize),
-            .StrNum = Nodes_[traverse_back_node].StrNum});
+        occurences.push_back(
+            TOccurrenceInfo{.StrStartPos = ((i + 1) - Nodes_[traverse_back_node].StrSize),
+                            .StrNum = Nodes_[traverse_back_node].StrNum});
       }
       traverse_back_node = Nodes_[traverse_back_node].ToTerminalLink;
     } while (traverse_back_node != NoPathFlag);
@@ -88,19 +87,16 @@ void TAhoCorasick<AlphaLeft, AlphaRight>::buildAutomata() {
         continue;
       }
       Nodes_[child].SuffixLink =
-          (parent == 0 ? 0
-                       : Nodes_[Nodes_[parent].SuffixLink].Next[c - AlphaLeft]);
+          (parent == 0 ? 0 : Nodes_[Nodes_[parent].SuffixLink].Next[c - AlphaLeft]);
       const std::size_t& suff_link_node = Nodes_[child].SuffixLink;
       Nodes_[child].ToTerminalLink =
-          (Nodes_[suff_link_node].IsTerminal
-               ? suff_link_node
-               : Nodes_[suff_link_node].ToTerminalLink);
+          (Nodes_[suff_link_node].IsTerminal ? suff_link_node
+                                             : Nodes_[suff_link_node].ToTerminalLink);
       for (char d = AlphaLeft; d <= AlphaRight; ++d) {
         if (Nodes_[child].Next[d - AlphaLeft] != UndefinedFlag) {
           continue;
         }
-        Nodes_[child].Next[d - AlphaLeft] =
-            Nodes_[Nodes_[child].SuffixLink].Next[d - AlphaLeft];
+        Nodes_[child].Next[d - AlphaLeft] = Nodes_[Nodes_[child].SuffixLink].Next[d - AlphaLeft];
       }
       nodes_queue.push(child);
     }
@@ -117,6 +113,6 @@ TAhoCorasick<AlphaLeft, AlphaRight>::TNode::TNode()
   std::fill(Next, Next + AlphaSize, UndefinedFlag);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NAhoCorasick

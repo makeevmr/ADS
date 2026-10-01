@@ -9,7 +9,7 @@
 
 namespace NAds::NDs::NQueue {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, std::size_t N>
 TQueue<T, N>::TQueue() noexcept
@@ -21,15 +21,13 @@ template <typename T, std::size_t N>
 TQueue<T, N>::TQueue(const TQueue<T, N>& other) = default;
 
 template <typename T, std::size_t N>
-TQueue<T, N>::TQueue& TQueue<T, N>::operator=(const TQueue<T, N>& other) =
-    default;
+TQueue<T, N>::TQueue& TQueue<T, N>::operator=(const TQueue<T, N>& other) = default;
 
 template <typename T, std::size_t N>
 TQueue<T, N>::TQueue(TQueue<T, N>&& other) noexcept = default;
 
 template <typename T, std::size_t N>
-TQueue<T, N>::TQueue& TQueue<T, N>::operator=(TQueue<T, N>&& other) noexcept =
-    default;
+TQueue<T, N>::TQueue& TQueue<T, N>::operator=(TQueue<T, N>&& other) noexcept = default;
 
 template <typename T, std::size_t N>
 TQueue<T, N>::~TQueue() = default;
@@ -111,7 +109,7 @@ void TQueue<T, N>::push(T&& value) {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 TQueue<T, 0>::TQueue(std::size_t capacity)
@@ -134,8 +132,7 @@ TQueue<T, 0>::TQueue(const TQueue<T, 0>& other)
 template <typename T>
 TQueue<T, 0>::TQueue& TQueue<T, 0>::operator=(const TQueue<T, 0>& other) {
   if (this != &other) {
-    T* new_data =
-        reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_));
+    T* new_data = reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_));
     std::size_t copied_objects = 0;
     std::size_t other_data_index = other.TopPointer_;
     try {
@@ -313,8 +310,7 @@ void TQueue<T, 0>::resize() {
     Data_ = reinterpret_cast<T*>(::operator new(sizeof(T) * Capacity_));
   } else {
     std::size_t new_capacity = Capacity_ * 2;
-    T* new_data =
-        reinterpret_cast<T*>(::operator new(sizeof(T) * new_capacity));
+    T* new_data = reinterpret_cast<T*>(::operator new(sizeof(T) * new_capacity));
     std::size_t copied_objects = 0;
     std::size_t old_data_pointer = TopPointer_;
     if (std::is_move_constructible_v<T>) {
@@ -354,6 +350,6 @@ void TQueue<T, 0>::resize() {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NQueue

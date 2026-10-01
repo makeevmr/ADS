@@ -8,12 +8,11 @@
 
 namespace NAds::NDs::NSegmentTree {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
-TSegmentTree<T, TFunctor, NeutralElement>::TSegmentTree(
-    const std::vector<T>& vec)
+TSegmentTree<T, TFunctor, NeutralElement>::TSegmentTree(const std::vector<T>& vec)
     : BinOperation_(),
       VecSize_(vec.size()),
       SegmentTree_(4 * vec.size()) {
@@ -28,8 +27,7 @@ requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
 [[nodiscard]] T TSegmentTree<T, TFunctor, NeutralElement>::segmentQuery(
     const std::size_t& left, const std::size_t& right) const {
   if (left > right) {
-    throw std::range_error(
-        "Left index of the query must be not greater than right one");
+    throw std::range_error("Left index of the query must be not greater than right one");
   }
   if (right >= VecSize_) {
     throw std::range_error("The segment exceeds the size of the vector");
@@ -39,8 +37,8 @@ requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
 
 template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, TFunctor, NeutralElement>::indexUpdate(
-    const std::size_t& vec_ind, const T& new_vec_value) {
+void TSegmentTree<T, TFunctor, NeutralElement>::indexUpdate(const std::size_t& vec_ind,
+                                                            const T& new_vec_value) {
   if (vec_ind >= VecSize_) {
     throw std::range_error("Index exceeds the size of the vector");
   }
@@ -49,9 +47,10 @@ void TSegmentTree<T, TFunctor, NeutralElement>::indexUpdate(
 
 template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, TFunctor, NeutralElement>::build(
-    const std::vector<T>& base_array, const std::size_t& tree_ind,
-    const std::size_t& segment_left, const std::size_t& segment_right) {
+void TSegmentTree<T, TFunctor, NeutralElement>::build(const std::vector<T>& base_array,
+                                                      const std::size_t& tree_ind,
+                                                      const std::size_t& segment_left,
+                                                      const std::size_t& segment_right) {
   if (segment_left == segment_right) {
     SegmentTree_[tree_ind] = base_array[segment_left];
   } else {
@@ -60,17 +59,16 @@ void TSegmentTree<T, TFunctor, NeutralElement>::build(
     const std::size_t tree_right_ind = tree_ind * 2 + 2;
     build(base_array, tree_left_ind, segment_left, segment_middle);
     build(base_array, tree_right_ind, segment_middle + 1, segment_right);
-    SegmentTree_[tree_ind] = BinOperation_(SegmentTree_[tree_left_ind],
-                                           SegmentTree_[tree_right_ind]);
+    SegmentTree_[tree_ind] =
+        BinOperation_(SegmentTree_[tree_left_ind], SegmentTree_[tree_right_ind]);
   }
 }
 
 template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
 [[nodiscard]] T TSegmentTree<T, TFunctor, NeutralElement>::subtreeSegmentQuery(
-    const std::size_t& tree_ind, const std::size_t& segment_left,
-    const std::size_t& segment_right, const std::size_t& query_left,
-    const std::size_t& query_right) const {
+    const std::size_t& tree_ind, const std::size_t& segment_left, const std::size_t& segment_right,
+    const std::size_t& query_left, const std::size_t& query_right) const {
   if (query_left > query_right) {
     return NeutralElement;
   }
@@ -80,20 +78,19 @@ requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
   const std::size_t segment_middle = (segment_left + segment_right) / 2;
   const std::size_t tree_left_ind = tree_ind * 2 + 1;
   const std::size_t tree_right_ind = tree_ind * 2 + 2;
-  return BinOperation_(
-      subtreeSegmentQuery(tree_left_ind, segment_left, segment_middle,
-                          query_left, std::min(query_right, segment_middle)),
-      subtreeSegmentQuery(tree_right_ind, segment_middle + 1, segment_right,
-                          std::max(query_left, segment_middle + 1),
-                          query_right));
+  return BinOperation_(subtreeSegmentQuery(tree_left_ind, segment_left, segment_middle, query_left,
+                                           std::min(query_right, segment_middle)),
+                       subtreeSegmentQuery(tree_right_ind, segment_middle + 1, segment_right,
+                                           std::max(query_left, segment_middle + 1), query_right));
 }
 
 template <typename T, typename TFunctor, T NeutralElement>
 requires CBinaryOperator<TFunctor, T> && std::is_copy_assignable_v<T>
-void TSegmentTree<T, TFunctor, NeutralElement>::subtreeIndexUpdate(
-    const std::size_t& tree_ind, const std::size_t& segment_left,
-    const std::size_t& segment_right, const std::size_t& vec_ind,
-    const T& new_vec_value) {
+void TSegmentTree<T, TFunctor, NeutralElement>::subtreeIndexUpdate(const std::size_t& tree_ind,
+                                                                   const std::size_t& segment_left,
+                                                                   const std::size_t& segment_right,
+                                                                   const std::size_t& vec_ind,
+                                                                   const T& new_vec_value) {
   if (segment_left == segment_right) {
     SegmentTree_[tree_ind] = new_vec_value;
     return;
@@ -102,15 +99,13 @@ void TSegmentTree<T, TFunctor, NeutralElement>::subtreeIndexUpdate(
   const std::size_t tree_left_ind = tree_ind * 2 + 1;
   const std::size_t tree_right_ind = tree_ind * 2 + 2;
   if (vec_ind <= segment_middle) {
-    subtreeIndexUpdate(tree_left_ind, segment_left, segment_middle, vec_ind,
-                       new_vec_value);
+    subtreeIndexUpdate(tree_left_ind, segment_left, segment_middle, vec_ind, new_vec_value);
   } else {
-    subtreeIndexUpdate(tree_right_ind, segment_middle + 1, segment_right,
-                       vec_ind, new_vec_value);
+    subtreeIndexUpdate(tree_right_ind, segment_middle + 1, segment_right, vec_ind, new_vec_value);
   }
-  SegmentTree_[tree_ind] =
-      BinOperation_(SegmentTree_[tree_left_ind], SegmentTree_[tree_right_ind]);
+  SegmentTree_[tree_ind] = BinOperation_(SegmentTree_[tree_left_ind], SegmentTree_[tree_right_ind]);
 }
-////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NSegmentTree

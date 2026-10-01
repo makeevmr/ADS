@@ -6,7 +6,7 @@
 
 namespace NAds::NDs::NMinMaxQueue {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 TQueue<T>::TQueue(const TSizeType& capacity)
@@ -109,7 +109,7 @@ void TQueue<T>::push(T&& value) {
   ++Size_;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TQueue<TMinMaxNode>::TQueue(const TSizeType& capacity)
     : Size_(0),
@@ -118,13 +118,11 @@ TQueue<TMinMaxNode>::TQueue(const TSizeType& capacity)
 
 TQueue<TMinMaxNode>::TQueue(const TQueue<TMinMaxNode>& other) = default;
 
-TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(
-    const TQueue<TMinMaxNode>& other) = default;
+TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(const TQueue<TMinMaxNode>& other) = default;
 
 TQueue<TMinMaxNode>::TQueue(TQueue<TMinMaxNode>&& other) noexcept = default;
 
-TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(
-    TQueue<TMinMaxNode>&& other) noexcept = default;
+TQueue<TMinMaxNode>& TQueue<TMinMaxNode>::operator=(TQueue<TMinMaxNode>&& other) noexcept = default;
 
 TQueue<TMinMaxNode>::~TQueue() = default;
 
@@ -139,8 +137,7 @@ TQueue<TMinMaxNode>::~TQueue() = default;
   return PopStack_.top();
 }
 
-[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::front()
-    const {
+[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::front() const {
   if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -160,8 +157,7 @@ TQueue<TMinMaxNode>::~TQueue() = default;
   return PopStack_.bottom();
 }
 
-[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::back()
-    const {
+[[nodiscard]] TQueue<TMinMaxNode>::TConstReference TQueue<TMinMaxNode>::back() const {
   if (Size_ == 0) {
     throw std::length_error("Empty queue");
   }
@@ -195,12 +191,10 @@ TQueue<TMinMaxNode>::~TQueue() = default;
   }
   const TMinMaxNode& pop_stack_top = PopStack_.top();
   const TMinMaxNode& push_stack_top = PushStack_.top();
-  int max_value = push_stack_top.MaxValue > pop_stack_top.MaxValue
-                      ? push_stack_top.MaxValue
-                      : pop_stack_top.MaxValue;
-  int min_value = push_stack_top.MinValue < pop_stack_top.MinValue
-                      ? push_stack_top.MinValue
-                      : pop_stack_top.MinValue;
+  int max_value = push_stack_top.MaxValue > pop_stack_top.MaxValue ? push_stack_top.MaxValue
+                                                                   : pop_stack_top.MaxValue;
+  int min_value = push_stack_top.MinValue < pop_stack_top.MinValue ? push_stack_top.MinValue
+                                                                   : pop_stack_top.MinValue;
   return max_value - min_value;
 }
 
@@ -210,8 +204,7 @@ void TQueue<TMinMaxNode>::pop() {
     throw std::length_error("Empty queue");
   }
   if (PopStack_.empty()) {
-    TStack<TMinMaxNode>::template TMoveStackContent<TMinMaxNode>::get(
-        PopStack_, PushStack_);
+    TStack<TMinMaxNode>::template TMoveStackContent<TMinMaxNode>::get(PopStack_, PushStack_);
   }
   PopStack_.pop();
   --Size_;
@@ -239,6 +232,6 @@ void TQueue<TMinMaxNode>::resize(TSizeType new_capacity) {
   PushStack_.resize(new_capacity);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NMinMaxQueue

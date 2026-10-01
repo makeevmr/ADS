@@ -4,7 +4,7 @@
 
 namespace NAds::NDs::NHeap {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, typename TCompare>
 class THeap {
@@ -49,14 +49,11 @@ public:
 private:
   void swap(THeap<T, TCompare>& other) noexcept;
 
-  static void free(TValueType* data_to_free,
-                   TSizeType destructor_calls) noexcept;
+  static void free(TValueType* data_to_free, TSizeType destructor_calls) noexcept;
 
-  static void uninitializedCopy(TValueType* copy_to,
-                                const THeap<T, TCompare>& copy_from);
+  static void uninitializedCopy(TValueType* copy_to, const THeap<T, TCompare>& copy_from);
 
-  static void uninitializedCopy(TValueType* copy_to,
-                                const TValueType* copy_from, TSizeType size);
+  static void uninitializedCopy(TValueType* copy_to, const TValueType* copy_from, TSizeType size);
 
   [[nodiscard]] TSizeType getLeft(TSizeType index) const noexcept;
 
@@ -78,7 +75,7 @@ private:
   TValueCompare Comparator_;
 };
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NHeap
 

@@ -7,8 +7,7 @@ using namespace NAds::NAlgo;
 using namespace NAds::NAlgo::NSieve;
 
 TEST(SieveOfEratosthenes, Test1) {
-  std::vector<bool> expected_result = {false, false, true, true, false,
-                                       true,  false, true, false};
+  std::vector<bool> expected_result = {false, false, true, true, false, true, false, true, false};
   expectVectorEquality(createEratoSieve(8), expected_result);
 }
 
@@ -18,9 +17,8 @@ TEST(SieveOfEratosthenes, Test2) {
 }
 
 TEST(SieveOfEratosthenes, Test3) {
-  std::vector<bool> expected_result = {false, false, true,  true,  false, true,
-                                       false, true,  false, false, false, true,
-                                       false, true,  false, false, false};
+  std::vector<bool> expected_result = {false, false, true, true,  false, true,  false, true, false,
+                                       false, false, true, false, true,  false, false, false};
   expectVectorEquality(createEratoSieve(16), expected_result);
 }
 

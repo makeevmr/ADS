@@ -5,7 +5,7 @@
 
 namespace NAds::NDs::NMap {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Implementation of map using AA Tree
 // The comparator must satisfy strict weak ordering relation
@@ -80,8 +80,7 @@ public:
 
 private:
   struct TNode {
-    TNode(TMap::TPointer value, TNode* left, TNode* right, TNode* parent,
-          TMap::TSizeType level);
+    TNode(TMap::TPointer value, TNode* left, TNode* right, TNode* parent, TMap::TSizeType level);
 
     TNode(const TNode& other);
 
@@ -177,8 +176,7 @@ private:
 
   // Deleting a node in case of less than two children
   // return parent of erased node
-  [[nodiscard]] TNode* trivialNodeErase(TNode* node_to_erase,
-                                        TNode* child) noexcept;
+  [[nodiscard]] TNode* trivialNodeErase(TNode* node_to_erase, TNode* child) noexcept;
 
   void static decreaseNodeLevel(TNode* node) noexcept;
 
@@ -205,7 +203,7 @@ private:
   TKeyCompare Comparator_;
 };
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NMap
 

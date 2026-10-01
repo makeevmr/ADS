@@ -5,15 +5,14 @@
 
 namespace NAds::NDs::NSegmentTree {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename TFunctor, typename TArgType>
-concept CBinaryOperator =
-    requires(TFunctor func_obj, TArgType arg1, TArgType arg2) {
-      { func_obj(arg1, arg2) } -> std::same_as<TArgType>;
-    };
+concept CBinaryOperator = requires(TFunctor func_obj, TArgType arg1, TArgType arg2) {
+  { func_obj(arg1, arg2) } -> std::same_as<TArgType>;
+};
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO add methods:
 // 1. To assign new_value to all elements in segment_tree_[left, ..., right]
@@ -23,8 +22,7 @@ class TSegmentTree {
 public:
   explicit TSegmentTree(const std::vector<T>& vec);
 
-  [[nodiscard]] T segmentQuery(const std::size_t& left,
-                               const std::size_t& right) const;
+  [[nodiscard]] T segmentQuery(const std::size_t& left, const std::size_t& right) const;
 
   void indexUpdate(const std::size_t& vec_ind, const T& new_vec_value);
 
@@ -32,23 +30,21 @@ private:
   void build(const std::vector<T>& base_array, const std::size_t& tree_ind,
              const std::size_t& segment_left, const std::size_t& segment_right);
 
-  [[nodiscard]] T subtreeSegmentQuery(const std::size_t& tree_ind,
-                                      const std::size_t& segment_left,
+  [[nodiscard]] T subtreeSegmentQuery(const std::size_t& tree_ind, const std::size_t& segment_left,
                                       const std::size_t& segment_right,
                                       const std::size_t& query_left,
                                       const std::size_t& query_right) const;
 
-  void subtreeIndexUpdate(const std::size_t& tree_ind,
-                          const std::size_t& segment_left,
-                          const std::size_t& segment_right,
-                          const std::size_t& vec_ind, const T& new_vec_value);
+  void subtreeIndexUpdate(const std::size_t& tree_ind, const std::size_t& segment_left,
+                          const std::size_t& segment_right, const std::size_t& vec_ind,
+                          const T& new_vec_value);
 
   TFunctor BinOperation_;
   std::size_t VecSize_;
   std::vector<T> SegmentTree_;
 };
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NSegmentTree
 

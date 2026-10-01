@@ -7,7 +7,7 @@
 
 namespace NAds::NDs::NAhoCorasick {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: add tests
 template <char AlphaLeft, char AlphaRight>
@@ -27,10 +27,8 @@ public:
   [[nodiscard]] TOccurrences findAllOccurrences(const std::string& text);
 
 private:
-  static constexpr std::int64_t AlphaSize =
-      static_cast<std::int64_t>(AlphaRight - AlphaLeft) + 1;
-  static constexpr std::size_t UndefinedFlag =
-      std::numeric_limits<std::size_t>::max();
+  static constexpr std::int64_t AlphaSize = static_cast<std::int64_t>(AlphaRight - AlphaLeft) + 1;
+  static constexpr std::size_t UndefinedFlag = std::numeric_limits<std::size_t>::max();
   static constexpr std::size_t NoPathFlag = UndefinedFlag - 1;
 
   // This function must be called after all strings was added
@@ -59,7 +57,7 @@ private:
   std::vector<TNode> Nodes_;
 };
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NAhoCorasick
 

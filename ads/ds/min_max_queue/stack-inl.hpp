@@ -9,7 +9,7 @@
 
 namespace NAds::NDs::NMinMaxQueue {
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 TStack<T>::TStack(const TSizeType& capacity)
@@ -28,8 +28,7 @@ TStack<T>::TStack(const TStack<T>& other)
 template <typename T>
 TStack<T>::TStack& TStack<T>::operator=(const TStack<T>& other) {
   if (this != &other) {
-    T* new_data =
-        reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_));
+    T* new_data = reinterpret_cast<T*>(::operator new(sizeof(T) * other.Capacity_));
     uninitializedCopy(new_data, other);
     free(Data_, Size_);
     Data_ = new_data;
@@ -153,12 +152,11 @@ void TStack<T>::push(const T&& value) {
   ++Size_;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 template <typename TType>
-void TStack<T>::TMoveStackContent<TType>::get(TStack<TType>& move_to,
-                                              TStack<TType>& move_from) {
+void TStack<T>::TMoveStackContent<TType>::get(TStack<TType>& move_to, TStack<TType>& move_from) {
   if (std::is_move_constructible_v<TType>) {
     while (!move_from.empty()) {
       move_to.push(std::move(move_from.top()));
@@ -172,7 +170,7 @@ void TStack<T>::TMoveStackContent<TType>::get(TStack<TType>& move_to,
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 void TStack<T>::swap(TStack<T>& other) noexcept {
@@ -206,31 +204,30 @@ void TStack<T>::uninitializedCopy(T* copy_to, const TStack<T>& copy_from) {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Specialization for a problem condition
-void TStack<TMinMaxNode>::TMoveStackContent<TMinMaxNode>::get(
-    TStack<TMinMaxNode>& move_to, TStack<TMinMaxNode>& move_from) {
+void TStack<TMinMaxNode>::TMoveStackContent<TMinMaxNode>::get(TStack<TMinMaxNode>& move_to,
+                                                              TStack<TMinMaxNode>& move_from) {
   while (!move_from.empty()) {
     if (move_to.empty()) {
       TMinMaxNode& move_from_top = move_from.top();
-      move_to.push(TMinMaxNode{move_from_top.SelfValue, move_from_top.SelfValue,
-                               move_from_top.SelfValue});
+      move_to.push(
+          TMinMaxNode{move_from_top.SelfValue, move_from_top.SelfValue, move_from_top.SelfValue});
     } else {
       TMinMaxNode& move_to_top = move_to.top();
       TMinMaxNode& move_from_top = move_from.top();
-      move_to.push(TMinMaxNode{move_from_top.SelfValue,
-                               move_to_top.MinValue < move_from_top.SelfValue
-                                   ? move_to_top.MinValue
-                                   : move_from_top.SelfValue,
-                               move_to_top.MaxValue > move_from_top.SelfValue
-                                   ? move_to_top.MaxValue
-                                   : move_from_top.SelfValue});
+      move_to.push(
+          TMinMaxNode{move_from_top.SelfValue,
+                      move_to_top.MinValue < move_from_top.SelfValue ? move_to_top.MinValue
+                                                                     : move_from_top.SelfValue,
+                      move_to_top.MaxValue > move_from_top.SelfValue ? move_to_top.MaxValue
+                                                                     : move_from_top.SelfValue});
     }
     move_from.pop();
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace NAds::NDs::NMinMaxQueue
